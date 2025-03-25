@@ -7,6 +7,7 @@ import { PlaceResult } from '@/utils/placesApi';
 import { Review, getReviewsForPlace, addReview } from '@/utils/mockReviewsData';
 import { AntDesign } from '@expo/vector-icons';
 import ReviewSheet from './ReviewSheet';
+import { router } from 'expo-router';
 
 interface PizzaPlaceBottomSheetProps {
   place: PlaceResult | null;
@@ -159,11 +160,22 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         <View style={tw`p-4 border-b border-gray-200`}>
           <View style={tw`items-center mb-6 mt-2`}>
             <TouchableOpacity 
-              style={tw`bg-red-600 py-3 px-6 rounded-xl w-4/5`}
+              style={tw`bg-red-600 py-3 px-6 rounded-xl w-4/5 mb-3`}
               onPress={() => setReviewSheetVisible(true)}
             >
               <Text style={tw`text-white font-bold text-center text-lg`}>
                 LEAVE A REVIEW
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={tw`bg-blue-600 py-3 px-6 rounded-xl w-4/5`}
+              onPress={() => router.push({
+                pathname: "/(tabs)/chat",
+                params: { placeId: place?.id || '' }
+              })}
+            >
+              <Text style={tw`text-white font-bold text-center text-lg`}>
+                CHAT ROOM
               </Text>
             </TouchableOpacity>
           </View>
