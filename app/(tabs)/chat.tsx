@@ -31,110 +31,7 @@ const CURRENT_USER = {
   name: `User ${id}`,
   avatar: '',
 };
-
-// Initial empty states
-const INITIAL_CHAT_GROUPS: ChatGroup[] = [
-  {
-    id: '1',
-    name: 'NYC Pizza Lovers',
-    lastMessage: 'Just tried the new place on 5th Ave!',
-    timestamp: '10:30 AM',
-    unread: 3,
-    avatar: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=100&auto=format&fit=crop'
-  },
-  {
-    id: '2',
-    name: 'Brooklyn Pizza Club',
-    lastMessage: 'Meeting this Friday at Roberta\'s?',
-    timestamp: 'Yesterday',
-    unread: 0,
-    avatar: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=100&auto=format&fit=crop'
-  },
-  {
-    id: '3',
-    name: 'Pizza Recommendations',
-    lastMessage: 'Has anyone tried the Detroit style at Emmy Squared?',
-    timestamp: 'Monday',
-    unread: 1,
-    avatar: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=100&auto=format&fit=crop'
-  },
-  {
-    id: '4',
-    name: 'Pizza Chefs',
-    lastMessage: 'My sourdough starter is finally ready!',
-    timestamp: '3/20/25',
-    unread: 0,
-    avatar: 'https://images.unsplash.com/photo-1595854341625-f33e09b6a29c?q=80&w=100&auto=format&fit=crop'
-  },
-];
-
-// Initial empty messages
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: '1',
-    text: 'Hey pizza lovers! Anyone tried the new place on 5th Ave?',
-    sender: 'John',
-    senderId: 'user123',
-    timestamp: '10:15 AM',
-    avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: false
-  },
-  {
-    id: '2',
-    text: 'Yes! Their margherita is amazing 🍕',
-    sender: 'You',
-    senderId: 'user456',
-    timestamp: '10:18 AM',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: true
-  },
-  {
-    id: '3',
-    text: 'I heard they use a special flour imported from Naples',
-    sender: 'Sarah',
-    senderId: 'user789',
-    timestamp: '10:20 AM',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: false
-  },
-  {
-    id: '4',
-    text: 'The crust is perfectly charred but still chewy inside',
-    sender: 'Mike',
-    senderId: 'user321',
-    timestamp: '10:22 AM',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: false
-  },
-  {
-    id: '5',
-    text: 'We should organize a pizza crawl this weekend!',
-    sender: 'You',
-    senderId: 'user456',
-    timestamp: '10:25 AM',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: true
-  },
-  {
-    id: '6',
-    text: 'Great idea! I can suggest a route through Brooklyn',
-    sender: 'Sarah',
-    senderId: 'user789',
-    timestamp: '10:28 AM',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: false
-  },
-  {
-    id: '7',
-    text: 'Count me in! I know a hidden gem in Williamsburg',
-    sender: 'John',
-    senderId: 'user123',
-    timestamp: '10:30 AM',
-    avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=100&auto=format&fit=crop',
-    isCurrentUser: false
-  },
-];
-
+ 
 export default function ChatScreen() {
   const router = useRouter();
   const { placeId } = useLocalSearchParams();
@@ -164,48 +61,47 @@ export default function ChatScreen() {
   }, [activeChat]);
   
   // Load chat groups when component mounts
-  useEffect(() => {
-    const loadChatGroups = async () => {
-      try {
-        setIsLoading(true);
-        // If placeId is provided, load specific chat group
-        if (placeId) {
-          setMessages([]);
-          const { data: groups } = await supabase.from('Chats').select('*')  
-          const placeGroup = groups?.find(group => group.placeId === placeId);
-          if (placeGroup) {
-            setChatGroups([placeGroup]);
-            openChat(placeGroup);
-            setActiveChat(placeGroup);
-            Animated.timing(slideAnim, {
-              toValue: 1,
-              duration: 300,
-              useNativeDriver: true,
-              easing: Easing.inOut(Easing.ease)
-            }).start();
-          } else {
-            const placeGroup = mockPizzaPlaces.find(place => place.id === placeId); 
-            setChatGroups(groups || []);
-            setActiveChat({ placeId, name: placeGroup?.name || '' });
-            openChat({ placeId, name: placeGroup?.name || ''  });
-          } 
-          
-         
-          
-        } else {
-          const { data: groups } = await supabase.from('Chats').select('*') 
-          setChatGroups(groups || []);
-        }
-      } catch (error) {
-        console.error('Error loading chat groups:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
+  useEffect(() => { 
     loadChatGroups();
   }, [placeId]);
  
+  const loadChatGroups = async () => {
+    try {
+      setIsLoading(true);
+      // If placeId is provided, load specific chat group
+      if (placeId) {
+        setMessages([]);
+        const { data: groups } = await supabase.from('Chats').select('*')  
+        const placeGroup = groups?.find(group => group.placeId === placeId);
+        if (placeGroup) {
+          setChatGroups([placeGroup]);
+          openChat(placeGroup);
+          setActiveChat(placeGroup);
+          Animated.timing(slideAnim, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+            easing: Easing.inOut(Easing.ease)
+          }).start();
+        } else {
+          const placeGroup = mockPizzaPlaces.find(place => place.id === placeId); 
+          setChatGroups(groups || []);
+          setActiveChat({ placeId, name: placeGroup?.name || '' });
+          openChat({ placeId, name: placeGroup?.name || ''  });
+        } 
+        
+       
+        
+      } else {
+        const { data: groups } = await supabase.from('Chats').select('*').order('timestamp', { ascending: false });
+        setChatGroups(groups || []);
+      }
+    } catch (error) {
+      console.error('Error loading chat groups:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   // Keyboard listeners
   useEffect(() => {
@@ -299,6 +195,7 @@ export default function ChatScreen() {
       await supabase.from('Chats').upsert({
         placeId: activeChat.placeId,
         lastMessage: messageText, 
+        timestamp: new Date().toISOString()
       },{
         onConflict: 'placeId'
       });
@@ -380,6 +277,7 @@ export default function ChatScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setActiveChat(null);
     setMessages([]);
+    loadChatGroups();
     // Clear placeId from URL params
     router.replace('/(tabs)/chat');
   };
