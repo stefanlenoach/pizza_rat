@@ -1,0 +1,7139 @@
+{
+  "metadata": {
+    "total_places": 300,
+    "boroughs": [
+      "Manhattan",
+      "Brooklyn",
+      "Queens",
+      "Bronx",
+      "Staten Island"
+    ],
+    "date_collected": "2025-03-23",
+    "source": "Google Places API"
+  },
+  "places": [
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1435 Broadway, New York, NY 10018, USA",
+      "location": {
+        "latitude": 40.754679499999995,
+        "longitude": -73.9870291
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 21154,
+      "displayName": {
+        "text": "Joe's Pizza Broadway",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "888 6th Ave, New York, NY 10001, USA",
+      "location": {
+        "latitude": 40.748154299999996,
+        "longitude": -73.9886899
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1247,
+      "displayName": {
+        "text": "QUALITY PIZZA CO. MIDTOWN",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "959 2nd Ave, New York, NY 10022, USA",
+      "location": {
+        "latitude": 40.7554471,
+        "longitude": -73.9684135
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 697,
+      "displayName": {
+        "text": "La Pizza Italia",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "meal_delivery",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "70 Vanderbilt Ave, New York, NY 10017, USA",
+      "location": {
+        "latitude": 40.7546824,
+        "longitude": -73.9768744
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2370,
+      "displayName": {
+        "text": "Uncle Paul's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "413 8th Ave, New York, NY 10001, USA",
+      "location": {
+        "latitude": 40.750150100000006,
+        "longitude": -73.9952496
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 7676,
+      "displayName": {
+        "text": "NY Pizza Suprema",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "980 6th Ave, New York, NY 10018, USA",
+      "location": {
+        "latitude": 40.7512109,
+        "longitude": -73.98638009999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 562,
+      "displayName": {
+        "text": "Roma Pizza & restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "5 W 51st St, New York, NY 10020, USA",
+      "location": {
+        "latitude": 40.759607599999995,
+        "longitude": -73.9774833
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 279,
+      "displayName": {
+        "text": "Abitino's Pizzeria Rock Center",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "625 9th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.759984300000006,
+        "longitude": -73.99180659999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 504,
+      "displayName": {
+        "text": "M & Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "617 9th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.759617000000006,
+        "longitude": -73.99209379999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 40,
+      "displayName": {
+        "text": "$1.50 NYC Hand Tossed Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "fast_food_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "69 7th Ave S, New York, NY 10014, USA",
+      "location": {
+        "latitude": 40.732198,
+        "longitude": -74.0034014
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 5531,
+      "displayName": {
+        "text": "Bleecker Street Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "vegan_restaurant",
+        "italian_restaurant",
+        "vegetarian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "690 Lexington Ave, New York, NY 10022, USA",
+      "location": {
+        "latitude": 40.7607046,
+        "longitude": -73.9695543
+      },
+      "rating": 4.7,
+      "userRatingCount": 1525,
+      "displayName": {
+        "text": "My Pie Pizzeria Romana",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "31 W 46th St, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.7567881,
+        "longitude": -73.98023490000001
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 448,
+      "displayName": {
+        "text": "Pizza Foto",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2 E 33rd St, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.747606999999995,
+        "longitude": -73.9848854
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 4046,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "730 10th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7644759,
+        "longitude": -73.9916909
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 280,
+      "displayName": {
+        "text": "LaVista Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "coffee_shop",
+        "meal_delivery",
+        "cafe",
+        "meal_takeaway",
+        "food_delivery",
+        "food_store",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1796 Broadway, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.767235899999996,
+        "longitude": -73.981421
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 587,
+      "displayName": {
+        "text": "Farinella",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "691 10th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.7631167,
+        "longitude": -73.99336079999999
+      },
+      "rating": 4.5,
+      "userRatingCount": 245,
+      "displayName": {
+        "text": "Royal Napoli Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "621 2nd Ave, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.7447394,
+        "longitude": -73.97616219999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 258,
+      "displayName": {
+        "text": "iPizzaNY- Midtown East",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "167 W 48th St, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.7597869,
+        "longitude": -73.98374919999999
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1484,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "818 6th Ave, New York, NY 10001, USA",
+      "location": {
+        "latitude": 40.7461489,
+        "longitude": -73.9902178
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1207,
+      "displayName": {
+        "text": "ANDIAMO PIZZA",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "wine_bar",
+        "night_club",
+        "fine_dining_restaurant",
+        "catering_service",
+        "pizza_restaurant",
+        "brunch_restaurant",
+        "bar",
+        "food_delivery",
+        "food_store",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2 Bank St, New York, NY 10014, USA",
+      "location": {
+        "latitude": 40.7370953,
+        "longitude": -74.0015636
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 677,
+      "displayName": {
+        "text": "L'Antica Pizzeria Da Michele NYC",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "162 3rd Ave, New York, NY 10003, USA",
+      "location": {
+        "latitude": 40.7346328,
+        "longitude": -73.9864793
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 147,
+      "displayName": {
+        "text": "La Citta Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "117 W 57th St, New York, NY 10001, USA",
+      "location": {
+        "latitude": 40.7648918,
+        "longitude": -73.9779745
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 3100,
+      "displayName": {
+        "text": "Angelo's Coal Oven Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "7 Carmine St, New York, NY 10014, USA",
+      "location": {
+        "latitude": 40.7306597,
+        "longitude": -74.0021707
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 9309,
+      "displayName": {
+        "text": "Joe's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "coffee_shop",
+        "breakfast_restaurant",
+        "meal_takeaway",
+        "italian_restaurant",
+        "cafe",
+        "food_delivery",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1505 3rd Ave, New York, NY 10028, USA",
+      "location": {
+        "latitude": 40.7779287,
+        "longitude": -73.9542821
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 335,
+      "displayName": {
+        "text": "Giacomo's Pizza and Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "370 W 58th St Front A, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7683543,
+        "longitude": -73.985096
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 530,
+      "displayName": {
+        "text": "Amore Pizza Caf\u00e9",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "150 E 14th St, New York, NY 10003, USA",
+      "location": {
+        "latitude": 40.7332362,
+        "longitude": -73.9876852
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 3573,
+      "displayName": {
+        "text": "Joe's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1012 6th Ave, New York, NY 10018, USA",
+      "location": {
+        "latitude": 40.7519591,
+        "longitude": -73.98569130000001
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 143,
+      "displayName": {
+        "text": "Pizza Town",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "210 W 50th St, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7614519,
+        "longitude": -73.98452309999999
+      },
+      "rating": 4.2,
+      "userRatingCount": 131,
+      "displayName": {
+        "text": "Famous New York Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "235 Mulberry St, New York, NY 10012, USA",
+      "location": {
+        "latitude": 40.722738299999996,
+        "longitude": -73.99613470000001
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 5016,
+      "displayName": {
+        "text": "Rubirosa",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "145 1st Ave., New York, NY 10003, USA",
+      "location": {
+        "latitude": 40.7281911,
+        "longitude": -73.98509899999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 2269,
+      "displayName": {
+        "text": "East Village Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "390 3rd Ave, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.741977,
+        "longitude": -73.9811015
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 309,
+      "displayName": {
+        "text": "NYC PIZZA KITCHEN",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "11-03 36th Ave, Queens, NY 11106, USA",
+      "location": {
+        "latitude": 40.7611881,
+        "longitude": -73.9396325
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 417,
+      "displayName": {
+        "text": "Il Miglio Brick Oven Pizzeria & Italian Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "922 2nd Ave, New York, NY 10017, USA",
+      "location": {
+        "latitude": 40.754054,
+        "longitude": -73.968825
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 776,
+      "displayName": {
+        "text": "La Vera Pizzeria & Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "658 9th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.7608035,
+        "longitude": -73.9906251
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 312,
+      "displayName": {
+        "text": "iPizzaNY- Times Square",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "736 7th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7604282,
+        "longitude": -73.9841041
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 4661,
+      "displayName": {
+        "text": "Famous Original Ray's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "840 8th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7626089,
+        "longitude": -73.985659
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1151,
+      "displayName": {
+        "text": "Famous Pops Pizzas",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "wine_bar",
+        "meal_takeaway",
+        "italian_restaurant",
+        "cafe",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "178 Lexington Ave, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.744514699999996,
+        "longitude": -73.98142469999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1755,
+      "displayName": {
+        "text": "Vezzo NYC Thin Crust Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "671 8th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.7577441,
+        "longitude": -73.98978180000002
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 509,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "282 3rd Ave, New York, NY 10010, USA",
+      "location": {
+        "latitude": 40.738377899999996,
+        "longitude": -73.9837817
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 227,
+      "displayName": {
+        "text": "Tutto Mia Pizza Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "69 W 55th St, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7629224,
+        "longitude": -73.9774359
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1800,
+      "displayName": {
+        "text": "PizzArte",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "309 W 50th St, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7626548,
+        "longitude": -73.98666469999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1651,
+      "displayName": {
+        "text": "Don Antonio",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "958 3rd Ave, New York, NY 10022, USA",
+      "location": {
+        "latitude": 40.7606438,
+        "longitude": -73.9675579
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 780,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "210 W 50th St Concourse #1, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7614519,
+        "longitude": -73.98452309999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 167,
+      "displayName": {
+        "text": "See No Evil Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "489 3rd Ave, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.7450913,
+        "longitude": -73.97833059999999
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 208,
+      "displayName": {
+        "text": "Romano Pizza Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "fast_food_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "473 Lexington Ave, New York, NY 10017, USA",
+      "location": {
+        "latitude": 40.753731699999996,
+        "longitude": -73.9742256
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1584,
+      "displayName": {
+        "text": "$1.50 Fresh Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "712 9th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7625836,
+        "longitude": -73.98941099999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 98,
+      "displayName": {
+        "text": "Royal Napoli Pizza Two",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "278 Bleecker St, New York, NY 10014, USA",
+      "location": {
+        "latitude": 40.7316187,
+        "longitude": -74.00344679999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 6934,
+      "displayName": {
+        "text": "John's of Bleecker Street",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "fast_food_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2 East 39th Street, 5th Ave Off, New York, NY 10016, USA",
+      "location": {
+        "latitude": 40.7512565,
+        "longitude": -73.9819345
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 349,
+      "displayName": {
+        "text": "The Original Little Italy",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "547 9th Ave, New York, NY 10018, USA",
+      "location": {
+        "latitude": 40.7574821,
+        "longitude": -73.99364469999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2120,
+      "displayName": {
+        "text": "Capizzi",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "meal_delivery",
+        "pizza_restaurant",
+        "meal_takeaway",
+        "fast_food_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1723 Broadway, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7646066,
+        "longitude": -73.9825329
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 4237,
+      "displayName": {
+        "text": "$1.50 Fresh Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "fast_food_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "143 W 40th St, New York, NY 10018, USA",
+      "location": {
+        "latitude": 40.7546501,
+        "longitude": -73.9877309
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 2412,
+      "displayName": {
+        "text": "$1.50 Fresh Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1233 1st Ave. #6309, New York, NY 10065, USA",
+      "location": {
+        "latitude": 40.764447,
+        "longitude": -73.958677
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 409,
+      "displayName": {
+        "text": "Pizza Park",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "200 W 41st St, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.755479300000005,
+        "longitude": -73.9878516
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1478,
+      "displayName": {
+        "text": "Carnegie Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "852 8th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7630116,
+        "longitude": -73.98533809999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 111,
+      "displayName": {
+        "text": "Roma Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "937 8th Ave, New York, NY 10019, USA",
+      "location": {
+        "latitude": 40.7658111,
+        "longitude": -73.9838523
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 192,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1290 6th Ave, New York, NY 10104, USA",
+      "location": {
+        "latitude": 40.760667399999996,
+        "longitude": -73.978797
+      },
+      "rating": 4.8,
+      "userRatingCount": 258,
+      "displayName": {
+        "text": "SIM\u00d2 PIZZA - MIDTOWN",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "227 Malcolm X Blvd, New York, NY 10027, USA",
+      "location": {
+        "latitude": 40.8055464,
+        "longitude": -73.9474615
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1430,
+      "displayName": {
+        "text": "Sottocasa Pizzeria Harlem",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "359 E 68th St, New York, NY 10065, USA",
+      "location": {
+        "latitude": 40.765397,
+        "longitude": -73.9579862
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 229,
+      "displayName": {
+        "text": "Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "177 Spring St, New York, NY 10012, USA",
+      "location": {
+        "latitude": 40.7249292,
+        "longitude": -74.0024511
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1145,
+      "displayName": {
+        "text": "Famous Ben's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "686 8th Ave, New York, NY 10036, USA",
+      "location": {
+        "latitude": 40.758055600000006,
+        "longitude": -73.98888889999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1442,
+      "displayName": {
+        "text": "Famous Famiglia Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Manhattan"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "216 Bedford Ave, Brooklyn, NY 11249, USA",
+      "location": {
+        "latitude": 40.716889599999995,
+        "longitude": -73.958936
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 3113,
+      "displayName": {
+        "text": "Joe's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "298 Atlantic Ave, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.68835,
+        "longitude": -73.9889708
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1092,
+      "displayName": {
+        "text": "Sottocasa",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1 Front St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.7026459,
+        "longitude": -73.993247
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 8965,
+      "displayName": {
+        "text": "Grimaldi's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "58 N 9th St, Brooklyn, NY 11249, USA",
+      "location": {
+        "latitude": 40.72099070000001,
+        "longitude": -73.960269
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 230,
+      "displayName": {
+        "text": "Macoletta",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "587 Manhattan Ave, Brooklyn, NY 11222, USA",
+      "location": {
+        "latitude": 40.722880499999995,
+        "longitude": -73.95042409999999
+      },
+      "rating": 4.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 74,
+      "displayName": {
+        "text": "Rome to Brooklyn, pizza & panzerotti",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "637 Driggs Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7150648,
+        "longitude": -73.9583744
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 981,
+      "displayName": {
+        "text": "Ace's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "33 Havemeyer St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7156194,
+        "longitude": -73.95347939999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1843,
+      "displayName": {
+        "text": "Best Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "232 Vanderbilt Ave, Brooklyn, NY 11205, USA",
+      "location": {
+        "latitude": 40.690468599999996,
+        "longitude": -73.9695758
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1094,
+      "displayName": {
+        "text": "Graziella's of Brooklyn Wood Burning Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "19 Old Fulton St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.7027467,
+        "longitude": -73.9934349
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 6122,
+      "displayName": {
+        "text": "Juliana\u2019s",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "deli",
+        "cafe",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "80 Front St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.7023963,
+        "longitude": -73.9894556
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1797,
+      "displayName": {
+        "text": "Front Street Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "bar",
+        "event_venue",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "358 Graham Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7149929,
+        "longitude": -73.9441765
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1526,
+      "displayName": {
+        "text": "Carmine's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "85 5th Ave, Brooklyn, NY 11217, USA",
+      "location": {
+        "latitude": 40.68,
+        "longitude": -73.9777778
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 576,
+      "displayName": {
+        "text": "Pizza Town",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "128 Central Ave, Brooklyn, NY 11221, USA",
+      "location": {
+        "latitude": 40.6997662,
+        "longitude": -73.9284855
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 491,
+      "displayName": {
+        "text": "Rosie Pizza Bar",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "vegan_restaurant",
+        "vegetarian_restaurant",
+        "meal_delivery",
+        "hamburger_restaurant",
+        "fast_food_restaurant",
+        "dessert_shop",
+        "confectionery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "american_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "443 Knickerbocker Ave, Brooklyn, NY 11237, USA",
+      "location": {
+        "latitude": 40.6992231,
+        "longitude": -73.9188171
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1586,
+      "displayName": {
+        "text": "Tony's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "37 Washington Ave, Brooklyn, NY 11205, USA",
+      "location": {
+        "latitude": 40.6974156,
+        "longitude": -73.96745179999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 922,
+      "displayName": {
+        "text": "Il Porto Ristorante & Wood Fired Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "192 Duffield St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.6924256,
+        "longitude": -73.9844552
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 689,
+      "displayName": {
+        "text": "Little Pizza Parlor",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "42 4th Ave, Brooklyn, NY 11217, USA",
+      "location": {
+        "latitude": 40.6835136,
+        "longitude": -73.9791813
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 185,
+      "displayName": {
+        "text": "Brooklyn's Homeslice Pizzeria II",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "brunch_restaurant",
+        "meal_delivery",
+        "wine_bar",
+        "coffee_shop",
+        "italian_restaurant",
+        "cafe",
+        "american_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "123 Havemeyer St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7125596,
+        "longitude": -73.9567886
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 524,
+      "displayName": {
+        "text": "Leo",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "254 S 2nd St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.711605299999995,
+        "longitude": -73.9578691
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 4087,
+      "displayName": {
+        "text": "L'Industrie Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "350 Lewis Ave, Brooklyn, NY 11233, USA",
+      "location": {
+        "latitude": 40.683731099999996,
+        "longitude": -73.93538749999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2203,
+      "displayName": {
+        "text": "Saraghina Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "237 5th Ave, Brooklyn, NY 11215, USA",
+      "location": {
+        "latitude": 40.675212599999995,
+        "longitude": -73.98096819999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 372,
+      "displayName": {
+        "text": "Brooklyn DOP",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "wine_bar",
+        "brunch_restaurant",
+        "pizza_restaurant",
+        "meal_takeaway",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1079 Broadway, Brooklyn, NY 11221, USA",
+      "location": {
+        "latitude": 40.694666399999996,
+        "longitude": -73.9307191
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 694,
+      "displayName": {
+        "text": "Santa Panza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "sandwich_shop",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "355 Graham Ave #3708, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7150421,
+        "longitude": -73.94472499999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 338,
+      "displayName": {
+        "text": "Tony's Brooklyn Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "72 5th Ave, Brooklyn, NY 11217, USA",
+      "location": {
+        "latitude": 40.680808899999995,
+        "longitude": -73.9777158
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 606,
+      "displayName": {
+        "text": "Pizza Secret Ristorante e Pizzeria Napoletana",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "261 Moore St, Brooklyn, NY 11206, USA",
+      "location": {
+        "latitude": 40.7050613,
+        "longitude": -73.93357830000001
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1874,
+      "displayName": {
+        "text": "Roberta's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "vegan_restaurant",
+        "vegetarian_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "148 Bedford Ave, Brooklyn, NY 11249, USA",
+      "location": {
+        "latitude": 40.7188807,
+        "longitude": -73.95677549999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1572,
+      "displayName": {
+        "text": "Vinnie's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "544 Lorimer St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.713140599999996,
+        "longitude": -73.94911379999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 613,
+      "displayName": {
+        "text": "Sal's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2725 86th St, Brooklyn, NY 11223, USA",
+      "location": {
+        "latitude": 40.5947277,
+        "longitude": -73.9814713
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 10568,
+      "displayName": {
+        "text": "L&B Spumoni Gardens",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "990 Metropolitan Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.714256000000006,
+        "longitude": -73.9365791
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 90,
+      "displayName": {
+        "text": "Lala\u2019s Brooklyn Apizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "387 Court St, Brooklyn, NY 11231, USA",
+      "location": {
+        "latitude": 40.6800784,
+        "longitude": -73.99685769999999
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 515,
+      "displayName": {
+        "text": "Baby Luc's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1491 Broadway, Brooklyn, NY 11221, USA",
+      "location": {
+        "latitude": 40.687331900000004,
+        "longitude": -73.91784109999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 834,
+      "displayName": {
+        "text": "BK Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "181 7th Ave, Brooklyn, NY 11215, USA",
+      "location": {
+        "latitude": 40.6712628,
+        "longitude": -73.9775736
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 375,
+      "displayName": {
+        "text": "Pino's La Forchetta Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "640 Manhattan Ave, Brooklyn, NY 11222, USA",
+      "location": {
+        "latitude": 40.7242235,
+        "longitude": -73.95075589999999
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 392,
+      "displayName": {
+        "text": "Upside Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "coffee_shop",
+        "meal_takeaway",
+        "food_store",
+        "cafe",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "141 Flushing Ave, Brooklyn, NY 11205, USA",
+      "location": {
+        "latitude": 40.698169799999995,
+        "longitude": -73.9710137
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 62,
+      "displayName": {
+        "text": "Pizza Yard",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "575 Henry St, Brooklyn, NY 11231, USA",
+      "location": {
+        "latitude": 40.681826,
+        "longitude": -74.0003184
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2720,
+      "displayName": {
+        "text": "Lucali",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "558 Driggs Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.717011,
+        "longitude": -73.9567895
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 104,
+      "displayName": {
+        "text": "Driggs Pizza Parlor",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "meal_delivery",
+        "pizza_restaurant",
+        "meal_takeaway",
+        "food_delivery",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "432 Union Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.713387499999996,
+        "longitude": -73.95126069999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 827,
+      "displayName": {
+        "text": "Montesacro Brooklyn",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "55 Water St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.7034191,
+        "longitude": -73.99160719999999
+      },
+      "rating": 3.5,
+      "userRatingCount": 124,
+      "displayName": {
+        "text": "Fornino",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1055 1st Ave., New York, NY 10022, USA",
+      "location": {
+        "latitude": 40.7586945,
+        "longitude": -73.9629144
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 445,
+      "displayName": {
+        "text": "Brooklyn Pizza Masters",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "305 Bedford Ave, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.7134558,
+        "longitude": -73.9617665
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 618,
+      "displayName": {
+        "text": "Fini Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "43-69 11th St, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.750057399999996,
+        "longitude": -73.94898289999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 138,
+      "displayName": {
+        "text": "Lupo Rosso",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "486 DeKalb Ave, Brooklyn, NY 11205, USA",
+      "location": {
+        "latitude": 40.690474,
+        "longitude": -73.9570816
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 60,
+      "displayName": {
+        "text": "Famous Joe Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "meal_delivery",
+        "italian_restaurant",
+        "cafe",
+        "meal_takeaway",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "155 Atlantic Ave, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.690645200000006,
+        "longitude": -73.9949106
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 397,
+      "displayName": {
+        "text": "Brado NYC Thin Crust Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "959 2nd Ave, New York, NY 10022, USA",
+      "location": {
+        "latitude": 40.7554471,
+        "longitude": -73.9684135
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 697,
+      "displayName": {
+        "text": "La Pizza Italia",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "132 Eagle St, Brooklyn, NY 11222, USA",
+      "location": {
+        "latitude": 40.735071999999995,
+        "longitude": -73.9556164
+      },
+      "rating": 4.8,
+      "userRatingCount": 34,
+      "displayName": {
+        "text": "San Antonio's Wood Fired Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "87 Atlantic Ave, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.6912825,
+        "longitude": -73.9973211
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 952,
+      "displayName": {
+        "text": "Table 87",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "691 6th Ave, Brooklyn, NY 11215, USA",
+      "location": {
+        "latitude": 40.660387799999995,
+        "longitude": -73.9905395
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 484,
+      "displayName": {
+        "text": "Giuseppina's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1424 Avenue J, Brooklyn, NY 11230, USA",
+      "location": {
+        "latitude": 40.6250267,
+        "longitude": -73.9615228
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 4299,
+      "displayName": {
+        "text": "Di Fara Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "6 Grand St, Brooklyn, NY 11249, USA",
+      "location": {
+        "latitude": 40.716196499999995,
+        "longitude": -73.96656759999999
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 383,
+      "displayName": {
+        "text": "Roberta's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "755 Grand St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.711920899999996,
+        "longitude": -73.94290780000001
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 300,
+      "displayName": {
+        "text": "Rome to Brooklyn, Pizza & Panzerotti",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "800 Grand St, Brooklyn, NY 11211, USA",
+      "location": {
+        "latitude": 40.711675799999995,
+        "longitude": -73.9413252
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 41,
+      "displayName": {
+        "text": "Best Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "114 Court St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.6902356,
+        "longitude": -73.992334
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 916,
+      "displayName": {
+        "text": "My Little Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "214 Hicks St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.6950091,
+        "longitude": -73.9961082
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1168,
+      "displayName": {
+        "text": "Dellarocco's Brick Oven Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "coffee_shop",
+        "meal_delivery",
+        "italian_restaurant",
+        "cafe",
+        "food_delivery",
+        "food_store",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "261 5th Ave, Brooklyn, NY 11215, USA",
+      "location": {
+        "latitude": 40.6743251,
+        "longitude": -73.98168679999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1490,
+      "displayName": {
+        "text": "La Villa Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "753 Fulton St, Brooklyn, NY 11217, USA",
+      "location": {
+        "latitude": 40.6865951,
+        "longitude": -73.9746735
+      },
+      "rating": 4.6,
+      "userRatingCount": 155,
+      "displayName": {
+        "text": "Oma Grassa",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "meal_takeaway",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "473 3rd Ave, Brooklyn, NY 11215, USA",
+      "location": {
+        "latitude": 40.670657999999996,
+        "longitude": -73.99135199999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1094,
+      "displayName": {
+        "text": "Table 87",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "11-03 36th Ave, Queens, NY 11106, USA",
+      "location": {
+        "latitude": 40.7611881,
+        "longitude": -73.9396325
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 417,
+      "displayName": {
+        "text": "Il Miglio Brick Oven Pizzeria & Italian Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "28-17 36th Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.75755830000001,
+        "longitude": -73.93146209999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 397,
+      "displayName": {
+        "text": "Reg'z New York Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4 Water St, Brooklyn, NY 11201, USA",
+      "location": {
+        "latitude": 40.703164699999995,
+        "longitude": -73.99372
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1528,
+      "displayName": {
+        "text": "Ignazio's",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "juice_shop",
+        "coffee_shop",
+        "italian_restaurant",
+        "cafe",
+        "dessert_shop",
+        "confectionery",
+        "bakery",
+        "food_store",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "27-10 Queens Plaza S, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.7499515,
+        "longitude": -73.93961399999999
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 396,
+      "displayName": {
+        "text": "Lucky Pizzeria & Cafe Inc",
+        "languageCode": "en"
+      },
+      "borough": "Brooklyn"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "11-03 36th Ave, Queens, NY 11106, USA",
+      "location": {
+        "latitude": 40.7611881,
+        "longitude": -73.9396325
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 417,
+      "displayName": {
+        "text": "Il Miglio Brick Oven Pizzeria & Italian Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "28-17 36th Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.75755830000001,
+        "longitude": -73.93146209999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 397,
+      "displayName": {
+        "text": "Reg'z New York Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "43-69 11th St, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.750057399999996,
+        "longitude": -73.94898289999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 138,
+      "displayName": {
+        "text": "Lupo Rosso",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "22-36A 31st St, Astoria, NY 11105, USA",
+      "location": {
+        "latitude": 40.7754384,
+        "longitude": -73.9118482
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 292,
+      "displayName": {
+        "text": "Champion Pizza Ditmars",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "4001 Queens Blvd, Sunnyside, NY 11104, USA",
+      "location": {
+        "latitude": 40.7440679,
+        "longitude": -73.9240252
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 565,
+      "displayName": {
+        "text": "Sunnyside Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "coffee_shop",
+        "juice_shop",
+        "dessert_shop",
+        "confectionery",
+        "cafe",
+        "italian_restaurant",
+        "bakery",
+        "food_store",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "store",
+        "establishment"
+      ],
+      "formattedAddress": "27-10 Queens Plaza S, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.7499515,
+        "longitude": -73.93961399999999
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 396,
+      "displayName": {
+        "text": "Lucky Pizzeria & Cafe Inc",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "8134 Baxter Ave #1, Elmhurst, NY 11373, USA",
+      "location": {
+        "latitude": 40.7459936,
+        "longitude": -73.88355659999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1787,
+      "displayName": {
+        "text": "Louie's",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "38-28 27th St, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.754786599999996,
+        "longitude": -73.935689
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 434,
+      "displayName": {
+        "text": "Beebe's at Boro Hotel",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "2519 40th Ave, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.7533995,
+        "longitude": -73.9371302
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1117,
+      "displayName": {
+        "text": "GoodFellas Pizzeria of L.I.C.",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "41-10 49th St, Sunnyside, NY 11104, USA",
+      "location": {
+        "latitude": 40.745917899999995,
+        "longitude": -73.915403
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 157,
+      "displayName": {
+        "text": "Leonardo\u2019s Pizza - Sunnyside, Queens.",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "39-09 47th Ave, Queens, NY 11104, USA",
+      "location": {
+        "latitude": 40.7421976,
+        "longitude": -73.9260852
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 498,
+      "displayName": {
+        "text": "GoodFellas pizzeria of SunnySide",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "ice_cream_shop",
+        "dessert_shop",
+        "confectionery",
+        "acai_shop",
+        "brazilian_restaurant",
+        "italian_restaurant",
+        "food_store",
+        "health",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "store",
+        "establishment"
+      ],
+      "formattedAddress": "44-12 31st Ave, Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.7595163,
+        "longitude": -73.9135648
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 195,
+      "displayName": {
+        "text": "Bella Donna Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "wine_bar",
+        "food_store",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "store",
+        "establishment"
+      ],
+      "formattedAddress": "2815 24th Ave, Long Island City, NY 11102, USA",
+      "location": {
+        "latitude": 40.7732003,
+        "longitude": -73.9163731
+      },
+      "rating": 4.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2323,
+      "displayName": {
+        "text": "Macoletta",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "62-98 Forest Ave, Ridgewood, NY 11385, USA",
+      "location": {
+        "latitude": 40.71085310000001,
+        "longitude": -73.9052694
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 586,
+      "displayName": {
+        "text": "Mano's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "4407 Queens Blvd, Long Island City, NY 11104, USA",
+      "location": {
+        "latitude": 40.7436673,
+        "longitude": -73.9201336
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 925,
+      "displayName": {
+        "text": "Sotto Le Stelle",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "37-05 28th Ave, Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.7663041,
+        "longitude": -73.91494759999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 130,
+      "displayName": {
+        "text": "ASAP Pizza Spot & Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "41-02 Astoria Blvd S, Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.768548599999995,
+        "longitude": -73.90988279999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 116,
+      "displayName": {
+        "text": "Gia's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "31-01 36th Ave, Long Island City, NY 11106, USA",
+      "location": {
+        "latitude": 40.756577,
+        "longitude": -73.92943609999999
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 183,
+      "displayName": {
+        "text": "Leo's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "31-01 21st St, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.7671151,
+        "longitude": -73.9297435
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 722,
+      "displayName": {
+        "text": "Rosa's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "37-08 30th Ave., Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.7643555,
+        "longitude": -73.9164369
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 562,
+      "displayName": {
+        "text": "Andrew Bellucci's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4013 30th Ave., Long Island City, NY 11103, USA",
+      "location": {
+        "latitude": 40.7637449,
+        "longitude": -73.9143606
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 204,
+      "displayName": {
+        "text": "Gaudio's",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "wine_bar",
+        "pizza_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "26-21 Jackson Ave, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.747557,
+        "longitude": -73.9416924
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 896,
+      "displayName": {
+        "text": "Levante",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3131b 23rd Ave, Astoria, NY 11105, USA",
+      "location": {
+        "latitude": 40.773766099999996,
+        "longitude": -73.91176999999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 100,
+      "displayName": {
+        "text": "Jack's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "33-02 35th Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.757176,
+        "longitude": -73.926876
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 832,
+      "displayName": {
+        "text": "Napoli Pizza & Pasta",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2904 30th Ave., Long Island City, NY 11102, USA",
+      "location": {
+        "latitude": 40.7677255,
+        "longitude": -73.9234622
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 482,
+      "displayName": {
+        "text": "Bellucci Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2916 Crescent St, Queens, NY 11102, USA",
+      "location": {
+        "latitude": 40.768969999999996,
+        "longitude": -73.925
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 135,
+      "displayName": {
+        "text": "Taste of Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "47-23 Vernon Blvd, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.7449462,
+        "longitude": -73.95322519999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 680,
+      "displayName": {
+        "text": "Centro Pizza Bar & Italian Kitchen",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "48-11 Vernon Blvd, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.743708999999996,
+        "longitude": -73.95360699999999
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1464,
+      "displayName": {
+        "text": "sLICe LIC Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "8301 Northern Blvd, Jackson Heights, NY 11372, USA",
+      "location": {
+        "latitude": 40.755936,
+        "longitude": -73.884323
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 91,
+      "displayName": {
+        "text": "Elements Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "44-06 60th St, Woodside, NY 11377, USA",
+      "location": {
+        "latitude": 40.741946899999995,
+        "longitude": -73.9046047
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 143,
+      "displayName": {
+        "text": "Woodside Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "23-02 31st St, Queens, NY 11105, USA",
+      "location": {
+        "latitude": 40.7744867,
+        "longitude": -73.9132566
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 157,
+      "displayName": {
+        "text": "Figlia",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "5526 69th St, Maspeth, NY 11378, USA",
+      "location": {
+        "latitude": 40.726969,
+        "longitude": -73.89563199999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 2449,
+      "displayName": {
+        "text": "Rosa's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "28-17 Jackson Ave, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.748849,
+        "longitude": -73.9386253
+      },
+      "rating": 4.2,
+      "userRatingCount": 45,
+      "displayName": {
+        "text": "Ace's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "28-17 Astoria Blvd, Astoria, NY 11102, USA",
+      "location": {
+        "latitude": 40.770811599999995,
+        "longitude": -73.9200695
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 573,
+      "displayName": {
+        "text": "Basil Brick Oven Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "34-12 31st Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.7628772,
+        "longitude": -73.9207806
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1059,
+      "displayName": {
+        "text": "Milkflower",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4116 Queens Blvd, Sunnyside, NY 11104, USA",
+      "location": {
+        "latitude": 40.743293099999995,
+        "longitude": -73.9229366
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 488,
+      "displayName": {
+        "text": "Philomena's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "29-13 23rd Ave, Astoria, NY 11105, USA",
+      "location": {
+        "latitude": 40.774947,
+        "longitude": -73.913207
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 374,
+      "displayName": {
+        "text": "Nonnas 1977",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3050 14th St, Astoria, NY 11102, USA",
+      "location": {
+        "latitude": 40.7696664,
+        "longitude": -73.931054
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 235,
+      "displayName": {
+        "text": "Brother's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "28-53 36th St, Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.765270900000004,
+        "longitude": -73.9170567
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 22,
+      "displayName": {
+        "text": "The Oven - Pizza and Rolls",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "34-24 30th Ave., Astoria, NY 11103, USA",
+      "location": {
+        "latitude": 40.7653363,
+        "longitude": -73.9183791
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 339,
+      "displayName": {
+        "text": "Grand Avenue Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "90-13 Astoria Blvd, East Elmhurst, NY 11369, USA",
+      "location": {
+        "latitude": 40.763780499999996,
+        "longitude": -73.8785529
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 744,
+      "displayName": {
+        "text": "Airways Pizza Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "16304 Jamaica Ave, Jamaica, NY 11433, USA",
+      "location": {
+        "latitude": 40.704566,
+        "longitude": -73.7967214
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1502,
+      "displayName": {
+        "text": "Margherita Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "47-06 Greenpoint Ave, Sunnyside, NY 11104, USA",
+      "location": {
+        "latitude": 40.742477699999995,
+        "longitude": -73.9176414
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 108,
+      "displayName": {
+        "text": "La Bella Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "74-02 Metropolitan Ave, Middle Village, NY 11379, USA",
+      "location": {
+        "latitude": 40.7127002,
+        "longitude": -73.8781394
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 550,
+      "displayName": {
+        "text": "Carlo's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "71-63 Austin St, Forest Hills, NY 11375, USA",
+      "location": {
+        "latitude": 40.7195049,
+        "longitude": -73.8426616
+      },
+      "rating": 4.4,
+      "userRatingCount": 638,
+      "displayName": {
+        "text": "Austin Street Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "81-28 Lefferts Blvd, Kew Gardens, NY 11415, USA",
+      "location": {
+        "latitude": 40.708981,
+        "longitude": -73.830536
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 2550,
+      "displayName": {
+        "text": "Dani's House of Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "50-22 39th Ave, Woodside, NY 11377, USA",
+      "location": {
+        "latitude": 40.7486142,
+        "longitude": -73.91301299999999
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 572,
+      "displayName": {
+        "text": "Donatos Italian Restaurant & Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "fine_dining_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "bar",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "35-11 35th Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.7567144,
+        "longitude": -73.9246701
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 537,
+      "displayName": {
+        "text": "Sac's Place",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "31-12 Broadway, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.761603199999996,
+        "longitude": -73.92502429999999
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 831,
+      "displayName": {
+        "text": "Champion Pizza - Astoria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "58-19 Woodside Ave, Woodside, NY 11377, USA",
+      "location": {
+        "latitude": 40.745624899999996,
+        "longitude": -73.905564
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 764,
+      "displayName": {
+        "text": "Pizza Boy II",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "restaurant",
+        "pizza_restaurant",
+        "bar_and_grill",
+        "italian_restaurant",
+        "american_restaurant",
+        "bar",
+        "meal_takeaway",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "37-11 35th Ave, Long Island City, NY 11101, USA",
+      "location": {
+        "latitude": 40.7559058,
+        "longitude": -73.923031
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1671,
+      "displayName": {
+        "text": "UNO Pizzeria & Grill Long Island City, NY",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "diner",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "19-27 Ditmars Blvd, Astoria, NY 11105, USA",
+      "location": {
+        "latitude": 40.7807852,
+        "longitude": -73.91702099999999
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 159,
+      "displayName": {
+        "text": "Astoria Family Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "mexican_restaurant",
+        "pizza_restaurant",
+        "sandwich_shop",
+        "breakfast_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "food_store",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "store",
+        "establishment"
+      ],
+      "formattedAddress": "18-01 26th Rd, Queens, NY 11102, USA",
+      "location": {
+        "latitude": 40.773320299999995,
+        "longitude": -73.9271369
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 49,
+      "displayName": {
+        "text": "Sophistian Mexican Pizzeria Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "2107 Broadway, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.76577,
+        "longitude": -73.9307615
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 185,
+      "displayName": {
+        "text": "Samaria Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "2503 30th Ave., Queens, NY 11102, USA",
+      "location": {
+        "latitude": 40.7686759,
+        "longitude": -73.9247597
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 366,
+      "displayName": {
+        "text": "3 Bros 99 Cent Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "brunch_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "36-08 Ditmars Blvd, Astoria, NY 11105, USA",
+      "location": {
+        "latitude": 40.7740578,
+        "longitude": -73.9080352
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 599,
+      "displayName": {
+        "text": "Tufino Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "30-01 Broadway, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.76240990000001,
+        "longitude": -73.92598579999999
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 350,
+      "displayName": {
+        "text": "Dino's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "3220 34th Ave, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.7589312,
+        "longitude": -73.9259412
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 66,
+      "displayName": {
+        "text": "Bros Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "bar",
+        "restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "40-1 Queens Blvd, Sunnyside, NY 11104, USA",
+      "location": {
+        "latitude": 40.744115,
+        "longitude": -73.92404239999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1122,
+      "displayName": {
+        "text": "SoleLuna",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "restaurant",
+        "pizza_restaurant",
+        "point_of_interest",
+        "food",
+        "establishment"
+      ],
+      "formattedAddress": "31-06 21st St, Astoria, NY 11106, USA",
+      "location": {
+        "latitude": 40.7671632,
+        "longitude": -73.9302175
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 30,
+      "displayName": {
+        "text": "PIZZA 21st",
+        "languageCode": "en"
+      },
+      "borough": "Queens"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "Retail Market, 2344 Arthur Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8541746,
+        "longitude": -73.8881983
+      },
+      "rating": 4.7,
+      "userRatingCount": 22,
+      "displayName": {
+        "text": "Funici A Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "412 E 149th St, Bronx, NY 10455, USA",
+      "location": {
+        "latitude": 40.8157044,
+        "longitude": -73.9172299
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 256,
+      "displayName": {
+        "text": "Best Italian Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2357 Arthur Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8547726,
+        "longitude": -73.8884726
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1422,
+      "displayName": {
+        "text": "Zero Otto Nove",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "226 Willis Ave, Bronx, NY 10454, USA",
+      "location": {
+        "latitude": 40.8085671,
+        "longitude": -73.923008
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 54,
+      "displayName": {
+        "text": "Villano Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "157 E 170th St, Bronx, NY 10452, USA",
+      "location": {
+        "latitude": 40.8393168,
+        "longitude": -73.914706
+      },
+      "rating": 4.5,
+      "userRatingCount": 15,
+      "displayName": {
+        "text": "Best Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "404 Hunts Point Ave, Bronx, NY 10474, USA",
+      "location": {
+        "latitude": 40.8098307,
+        "longitude": -73.880663
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 714,
+      "displayName": {
+        "text": "Fratilli's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "590 E 191st St, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.858749599999996,
+        "longitude": -73.8848173
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 623,
+      "displayName": {
+        "text": "Pugsley Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2004 Williamsbridge Rd, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.854467899999996,
+        "longitude": -73.8543857
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 287,
+      "displayName": {
+        "text": "Sorrento's Pizzeria Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "600 E 187th St, Little Italy, NY 10458, USA",
+      "location": {
+        "latitude": 40.8553028,
+        "longitude": -73.88759139999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1390,
+      "displayName": {
+        "text": "Full Moon Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "722 Courtlandt Ave, Bronx, NY 10451, USA",
+      "location": {
+        "latitude": 40.8208232,
+        "longitude": -73.9173428
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 46,
+      "displayName": {
+        "text": "Pepe Joe's Brick Oven Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1839 Grand Concourse, Bronx, NY 10453, USA",
+      "location": {
+        "latitude": 40.848124899999995,
+        "longitude": -73.90767939999999
+      },
+      "rating": 3.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 202,
+      "displayName": {
+        "text": "Concourse Pizza and Pasta",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "839 Prospect Ave, Bronx, NY 10459, USA",
+      "location": {
+        "latitude": 40.819980699999995,
+        "longitude": -73.9019161
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 267,
+      "displayName": {
+        "text": "Giovani's Big Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "204 W 231st St, Bronx, NY 10463, USA",
+      "location": {
+        "latitude": 40.8789994,
+        "longitude": -73.9052446
+      },
+      "rating": 4.6,
+      "userRatingCount": 147,
+      "displayName": {
+        "text": "Joe's Brick Oven Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "751 Westchester Ave, Bronx, NY 10455, USA",
+      "location": {
+        "latitude": 40.817917099999995,
+        "longitude": -73.9057926
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 346,
+      "displayName": {
+        "text": "Bona Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1005 Morris Park Ave # A, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.848393,
+        "longitude": -73.856195
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 237,
+      "displayName": {
+        "text": "Luciano\u2019s Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "560 E 149th St #2812, Bronx, NY 10455, USA",
+      "location": {
+        "latitude": 40.8141247,
+        "longitude": -73.91327820000001
+      },
+      "rating": 3.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 424,
+      "displayName": {
+        "text": "Fresca Pizza & Pasta",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4033 E Tremont Ave, Bronx, NY 10465, USA",
+      "location": {
+        "latitude": 40.8195619,
+        "longitude": -73.8172086
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 688,
+      "displayName": {
+        "text": "Tommy's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "breakfast_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "553 E 138th St, Bronx, NY 10454, USA",
+      "location": {
+        "latitude": 40.807056200000005,
+        "longitude": -73.9175518
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 359,
+      "displayName": {
+        "text": "Ray\u2019s Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1051 Morris Park Ave, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.849095999999996,
+        "longitude": -73.854693
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1215,
+      "displayName": {
+        "text": "Emilio's of Morris Park",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "123 Westchester Square, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.8403243,
+        "longitude": -73.8421656
+      },
+      "rating": 4.6,
+      "userRatingCount": 57,
+      "displayName": {
+        "text": "Eighths Pizza (Bronx)",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1599 Westchester Ave, Bronx, NY 10472, USA",
+      "location": {
+        "latitude": 40.8293305,
+        "longitude": -73.87572999999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 391,
+      "displayName": {
+        "text": "Yankee\u2019s Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2136 Williamsbridge Rd, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.856507,
+        "longitude": -73.85558639999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 184,
+      "displayName": {
+        "text": "Original Joe\u2019s Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "37 Bruckner Blvd, Bronx, NY 10454, USA",
+      "location": {
+        "latitude": 40.8071134,
+        "longitude": -73.9276713
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 75,
+      "displayName": {
+        "text": "Bronx Slice",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "meal_delivery",
+        "pizza_restaurant",
+        "food_delivery",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "579 Grand Concourse, Bronx, NY 10451, USA",
+      "location": {
+        "latitude": 40.8194431,
+        "longitude": -73.92722049999999
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1806,
+      "displayName": {
+        "text": "Giovanni's",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2559 Third Ave, Bronx, NY 10451, USA",
+      "location": {
+        "latitude": 40.811568,
+        "longitude": -73.9270509
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 389,
+      "displayName": {
+        "text": "Angie's Cafe & Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1665 Metropolitan Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.8406624,
+        "longitude": -73.8555094
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 163,
+      "displayName": {
+        "text": "Pizza Place",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "124 W 238th St, Bronx, NY 10463, USA",
+      "location": {
+        "latitude": 40.8834526,
+        "longitude": -73.89784829999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 24,
+      "displayName": {
+        "text": "D'Tigre's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1544 Boone Ave, Bronx, NY 10460, USA",
+      "location": {
+        "latitude": 40.833134,
+        "longitude": -73.88449419999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 41,
+      "displayName": {
+        "text": "Milano PIzza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "80 W Fordham Rd, Bronx, NY 10468, USA",
+      "location": {
+        "latitude": 40.862634899999996,
+        "longitude": -73.9044246
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 129,
+      "displayName": {
+        "text": "Mario's Pizza & Italian Homemade Cuisine - on W Fordham Road",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3625 Kingsbridge Ave, Bronx, NY 10463, USA",
+      "location": {
+        "latitude": 40.884581,
+        "longitude": -73.901999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 858,
+      "displayName": {
+        "text": "Kingsbridge Social Club",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2823 Middletown Rd, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.8436121,
+        "longitude": -73.8359497
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 605,
+      "displayName": {
+        "text": "Frank's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "spanish_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1926 D Cross Bronx Expy, Bronx, NY 10472, USA",
+      "location": {
+        "latitude": 40.8325639,
+        "longitude": -73.859421
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 54,
+      "displayName": {
+        "text": "Holi's Pizza and Spanish Food",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "86 E 161st St #2245, Bronx, NY 10451, USA",
+      "location": {
+        "latitude": 40.8270987,
+        "longitude": -73.9246301
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 133,
+      "displayName": {
+        "text": "Suma Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2483 Arthur Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.857581599999996,
+        "longitude": -73.8860807
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 406,
+      "displayName": {
+        "text": "Tony & Tina's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "772 Castle Hill Ave, Bronx, NY 10473, USA",
+      "location": {
+        "latitude": 40.8228332,
+        "longitude": -73.8486061
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 465,
+      "displayName": {
+        "text": "Frank's Original Pizza Italia",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1356 E Gun Hill Rd, Bronx, NY 10469, USA",
+      "location": {
+        "latitude": 40.870269,
+        "longitude": -73.8462076
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1439,
+      "displayName": {
+        "text": "Nick's",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3009 Middletown Rd # A, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.844175199999995,
+        "longitude": -73.83007479999999
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 183,
+      "displayName": {
+        "text": "Joe's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3430 Boston Rd, Bronx, NY 10469, USA",
+      "location": {
+        "latitude": 40.8758762,
+        "longitude": -73.84934799999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 262,
+      "displayName": {
+        "text": "Jerry's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "656 Morris Park Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.8447497,
+        "longitude": -73.8674317
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 312,
+      "displayName": {
+        "text": "Morris Park Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "21 Bedford Park Blvd, Bronx, NY 10468, USA",
+      "location": {
+        "latitude": 40.8731811,
+        "longitude": -73.88882170000001
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 505,
+      "displayName": {
+        "text": "Jerome Pizza Pasta",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2370 Belmont Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8541412,
+        "longitude": -73.8865738
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1499,
+      "displayName": {
+        "text": "Antonio's Trattoria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2094 Starling Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.8358309,
+        "longitude": -73.8554371
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 326,
+      "displayName": {
+        "text": "Jerry's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "fast_food_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1300 Crosby Ave, Bronx, NY 10461, USA",
+      "location": {
+        "latitude": 40.8382629,
+        "longitude": -73.8287011
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1683,
+      "displayName": {
+        "text": "Louie & Ernie's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1723 University Ave, Bronx, NY 10453, USA",
+      "location": {
+        "latitude": 40.8497834,
+        "longitude": -73.91698319999999
+      },
+      "rating": 3.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 429,
+      "displayName": {
+        "text": "My Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2539 Webster Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.862033499999995,
+        "longitude": -73.8912488
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 93,
+      "displayName": {
+        "text": "Pizza Squad",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1616 Westchester Ave, Bronx, NY 10472, USA",
+      "location": {
+        "latitude": 40.8292019,
+        "longitude": -73.8747617
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 176,
+      "displayName": {
+        "text": "New Yankee",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "621 E 187th St, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8553074,
+        "longitude": -73.8866334
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 197,
+      "displayName": {
+        "text": "Famosa Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "647 Courtlandt Ave, Bronx, NY 10451, USA",
+      "location": {
+        "latitude": 40.8190297,
+        "longitude": -73.918548
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 17,
+      "displayName": {
+        "text": "Courtland Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "wine_bar",
+        "pizza_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2477 Arthur Ave, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8573164,
+        "longitude": -73.88623199999999
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 736,
+      "displayName": {
+        "text": "MichaelAngelo's Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "pizza_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3883 E Tremont Ave, Bronx, NY 10465, USA",
+      "location": {
+        "latitude": 40.823223999999996,
+        "longitude": -73.81927499999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1976,
+      "displayName": {
+        "text": "Patricia's Pizza of Tremont",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "308 E 141st St, Bronx, NY 10454, USA",
+      "location": {
+        "latitude": 40.8122201,
+        "longitude": -73.92466449999999
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 349,
+      "displayName": {
+        "text": "Gio's Pizza and Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "749 Lydig Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.8545641,
+        "longitude": -73.8659036
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 750,
+      "displayName": {
+        "text": "John & Joe's Pizzeria and Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "bar",
+        "banquet_hall",
+        "event_venue",
+        "catering_service",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1913 Bronxdale Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.8487296,
+        "longitude": -73.8622597
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 4485,
+      "displayName": {
+        "text": "Pine Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "957 Aldus St # 1, Bronx, NY 10459, USA",
+      "location": {
+        "latitude": 40.8232255,
+        "longitude": -73.89098589999999
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 255,
+      "displayName": {
+        "text": "Tetaj Brothers Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "vegetarian_restaurant",
+        "fine_dining_restaurant",
+        "meal_delivery",
+        "wine_bar",
+        "meal_takeaway",
+        "cafe",
+        "bar",
+        "catering_service",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "980 Morris Park Ave, Bronx, NY 10462, USA",
+      "location": {
+        "latitude": 40.847700499999995,
+        "longitude": -73.8565725
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 481,
+      "displayName": {
+        "text": "Patsy's Pizzeria Morris Park",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1411 Bronx River Ave, Bronx, NY 10472, USA",
+      "location": {
+        "latitude": 40.8343571,
+        "longitude": -73.87955079999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 38,
+      "displayName": {
+        "text": "Elys Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "710 E 187th St, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.8538929,
+        "longitude": -73.8841568
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 170,
+      "displayName": {
+        "text": "Joe's Little Italy Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "699 E 187th St, Bronx, NY 10458, USA",
+      "location": {
+        "latitude": 40.854323199999996,
+        "longitude": -73.8845522
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 346,
+      "displayName": {
+        "text": "Mario's Pizza & Italian Homemade Cuisine E 187th St",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2367 Grand Concourse, Bronx, NY 10468, USA",
+      "location": {
+        "latitude": 40.859179999999995,
+        "longitude": -73.899294
+      },
+      "rating": 3.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 81,
+      "displayName": {
+        "text": "Best Italian Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3631 E Tremont Ave, Bronx, NY 10465, USA",
+      "location": {
+        "latitude": 40.8284934,
+        "longitude": -73.8238715
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 392,
+      "displayName": {
+        "text": "Cestra's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Bronx"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2220B Forest Ave, Staten Island, NY 10303, USA",
+      "location": {
+        "latitude": 40.6261573,
+        "longitude": -74.16317260000001
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 195,
+      "displayName": {
+        "text": "Verde's Pizza & Pasta House",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "524 Port Richmond Ave, Staten Island, NY 10302, USA",
+      "location": {
+        "latitude": 40.630206799999996,
+        "longitude": -74.14024789999999
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2746,
+      "displayName": {
+        "text": "Denino\u2019s Pizzeria & Tavern",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1756 Forest Ave, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.6240011,
+        "longitude": -74.1473046
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 106,
+      "displayName": {
+        "text": "Di Farina Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "Pizza Parlor, 965 Jewett Ave, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.6128341,
+        "longitude": -74.1305854
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 60,
+      "displayName": {
+        "text": "The Pizza Parlor",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "10 Akron St, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.6118786,
+        "longitude": -74.1585003
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 50,
+      "displayName": {
+        "text": "Il Sapore cafe",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "seafood_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1758 Victory Blvd, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.612941,
+        "longitude": -74.122097
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1334,
+      "displayName": {
+        "text": "Joe & Pat's Pizzeria & Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "739 Henderson Ave, Staten Island, NY 10310, USA",
+      "location": {
+        "latitude": 40.6372378,
+        "longitude": -74.11709150000002
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 183,
+      "displayName": {
+        "text": "Primo's Famous Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "bar",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "60 Hancock St, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.5887494,
+        "longitude": -74.0951856
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 1393,
+      "displayName": {
+        "text": "Lee's Tavern",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "694 Arthur Kill Rd, Staten Island, NY 10308, USA",
+      "location": {
+        "latitude": 40.5594463,
+        "longitude": -74.1644799
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 230,
+      "displayName": {
+        "text": "Pizzaioli of Staten Island",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "fast_food_restaurant",
+        "meal_takeaway",
+        "italian_restaurant",
+        "catering_service",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1281 Arthur Kill Rd, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.5657706,
+        "longitude": -74.18288600000001
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 219,
+      "displayName": {
+        "text": "Casa Nino's Pizza Bar",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "hamburger_restaurant",
+        "sandwich_shop",
+        "meal_takeaway",
+        "italian_restaurant",
+        "american_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "572 Midland Ave, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.5721968,
+        "longitude": -74.0933692
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 61,
+      "displayName": {
+        "text": "Amalfi Coast Pizzeria and Restaurant Inc",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1789 Richmond Rd, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.5865432,
+        "longitude": -74.10471869999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 183,
+      "displayName": {
+        "text": "Rustic Pizza & Pasteria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "55 Gunton Pl, Staten Island, NY 10309, USA",
+      "location": {
+        "latitude": 40.5508271,
+        "longitude": -74.2106184
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 92,
+      "displayName": {
+        "text": "Mamma Mia Pizzeria & Cucina",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1801 Hylan Blvd, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.5852436,
+        "longitude": -74.0937593
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 874,
+      "displayName": {
+        "text": "Campania Coal-Fired Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4029 Hylan Blvd, Staten Island, NY 10308, USA",
+      "location": {
+        "latitude": 40.541670599999996,
+        "longitude": -74.1468653
+      },
+      "rating": 4.6,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 1221,
+      "displayName": {
+        "text": "Goodfella's",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "87 Stuyvesant Pl, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6439818,
+        "longitude": -74.0775219
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 403,
+      "displayName": {
+        "text": "A & S Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "89 Guyon Ave, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.564994,
+        "longitude": -74.127704
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 78,
+      "displayName": {
+        "text": "Justinos Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "11 Holden Blvd, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.604666900000005,
+        "longitude": -74.12119729999999
+      },
+      "rating": 4.8,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 51,
+      "displayName": {
+        "text": "Italian Touch Pizza Pasta and Catering",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1757 Arthur Kill Rd, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.559698100000006,
+        "longitude": -74.19719289999999
+      },
+      "rating": 4.9,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 94,
+      "displayName": {
+        "text": "Royal Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "278 New Dorp Ln, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.57212930000001,
+        "longitude": -74.113109
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 515,
+      "displayName": {
+        "text": "Pizzeria Giove",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "977 Victory Blvd, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6203273,
+        "longitude": -74.0993573
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 88,
+      "displayName": {
+        "text": "DOUGH by Licastri Silver Lake",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2146 Forest Ave, Staten Island, NY 10303, USA",
+      "location": {
+        "latitude": 40.626374299999995,
+        "longitude": -74.1609938
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 178,
+      "displayName": {
+        "text": "Mama Rosaria's Pizza & Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "5 Hyatt St, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6422971,
+        "longitude": -74.0767217
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 52,
+      "displayName": {
+        "text": "Mvp pizza corp",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "brunch_restaurant",
+        "meal_delivery",
+        "sandwich_shop",
+        "meal_takeaway",
+        "pizza_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "538 Forest Ave, Staten Island, NY 10310, USA",
+      "location": {
+        "latitude": 40.630085099999995,
+        "longitude": -74.10812179999999
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2142,
+      "displayName": {
+        "text": "Panini Grill",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "76 Bay St #2511, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6401217,
+        "longitude": -74.0758298
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 838,
+      "displayName": {
+        "text": "Pier 76",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "750 Port Richmond Ave, Staten Island, NY 10302, USA",
+      "location": {
+        "latitude": 40.6255202,
+        "longitude": -74.1437842
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2070,
+      "displayName": {
+        "text": "Brother's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1298 Forest Ave, Staten Island, NY 10302, USA",
+      "location": {
+        "latitude": 40.626188299999995,
+        "longitude": -74.1331945
+      },
+      "rating": 4.7,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 333,
+      "displayName": {
+        "text": "Ungaro Coal Fired Pizza Cafe",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "27 Brower Ct, Staten Island, NY 10308, USA",
+      "location": {
+        "latitude": 40.5511082,
+        "longitude": -74.15119170000001
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 586,
+      "displayName": {
+        "text": "Nonna's Pizza Great Kills",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1372 Bay St, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.61001600000001,
+        "longitude": -74.063474
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 232,
+      "displayName": {
+        "text": "Rosebank Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "meal_delivery",
+        "pizza_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "401 Forest Ave, Staten Island, NY 10310, USA",
+      "location": {
+        "latitude": 40.6310462,
+        "longitude": -74.1029363
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 390,
+      "displayName": {
+        "text": "Cafe Milano Pizzeria and Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "185 Bricktown Way, Staten Island, NY 10309, USA",
+      "location": {
+        "latitude": 40.5308065,
+        "longitude": -74.2310481
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 568,
+      "displayName": {
+        "text": "Millie's of Staten Island",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "italian_restaurant",
+        "food_delivery",
+        "restaurant",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1547 Arthur Kill Rd, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.563147699999995,
+        "longitude": -74.19168979999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 169,
+      "displayName": {
+        "text": "Italian Touch Pizza & Pasta",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "wine_bar",
+        "pizza_restaurant",
+        "bar",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4651 Hylan Blvd, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.5294873,
+        "longitude": -74.1616851
+      },
+      "rating": 4.6,
+      "userRatingCount": 199,
+      "displayName": {
+        "text": "O'Sfizio Ristorante",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "616 Forest Ave, Staten Island, NY 10310, USA",
+      "location": {
+        "latitude": 40.6296803,
+        "longitude": -74.10972710000001
+      },
+      "rating": 4.6,
+      "userRatingCount": 67,
+      "displayName": {
+        "text": "Don Roberto\u2019s Classic Italian",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "italian_restaurant",
+        "bar",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "280 Watchogue Rd, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.615977,
+        "longitude": -74.1386825
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 960,
+      "displayName": {
+        "text": "Jimmy Max",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3900 Richmond Ave, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.542787,
+        "longitude": -74.16409
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 877,
+      "displayName": {
+        "text": "Campania Coal-Fired Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3831 Richmond Ave, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.5448653,
+        "longitude": -74.1653819
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 109,
+      "displayName": {
+        "text": "DOUGH by Licastri Eltingville",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "meal_takeaway",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1499 Forest Ave, Staten Island, NY 10302, USA",
+      "location": {
+        "latitude": 40.625971199999995,
+        "longitude": -74.13728979999999
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 271,
+      "displayName": {
+        "text": "La Bella Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3161 Amboy Rd, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.5642171,
+        "longitude": -74.1334468
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 73,
+      "displayName": {
+        "text": "Ambrosino's",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "340 Victory Blvd, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6337958,
+        "longitude": -74.08557979999999
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 73,
+      "displayName": {
+        "text": "My Family Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1140 Bay St, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.6152011,
+        "longitude": -74.0673442
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 551,
+      "displayName": {
+        "text": "Tony's Brick Oven",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "catering_service",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "15 Giffords Ln, Staten Island, NY 10308, USA",
+      "location": {
+        "latitude": 40.5512163,
+        "longitude": -74.1501177
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 432,
+      "displayName": {
+        "text": "Mimmo's Brick Oven Pizza & Trattoria | Best Pizza Near Me Staten Island",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "diner",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "food_store",
+        "store",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "755 Targee St, Staten Island, NY 10304, USA",
+      "location": {
+        "latitude": 40.608943,
+        "longitude": -74.08784399999999
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 545,
+      "displayName": {
+        "text": "My Pizza and Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "catering_service",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "596 Bay St, Staten Island, NY 10304, USA",
+      "location": {
+        "latitude": 40.627262099999996,
+        "longitude": -74.0762324
+      },
+      "rating": 4.3,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 510,
+      "displayName": {
+        "text": "Bari's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2491 Victory Blvd, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.610693,
+        "longitude": -74.146137
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 238,
+      "displayName": {
+        "text": "DiLeo's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1445 Richmond Ave, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.6118337,
+        "longitude": -74.1576795
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 337,
+      "displayName": {
+        "text": "La Piazza Pizzeria & Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3201 Richmond Rd Ste B, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.575490699999996,
+        "longitude": -74.1278914
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 50,
+      "displayName": {
+        "text": "Classic Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "240 Arden Ave, Staten Island, NY 10312, USA",
+      "location": {
+        "latitude": 40.553582899999995,
+        "longitude": -74.1931096
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 89,
+      "displayName": {
+        "text": "Ambrosino's",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "2220 Forest Ave, Staten Island, NY 10303, USA",
+      "location": {
+        "latitude": 40.6261874,
+        "longitude": -74.1632561
+      },
+      "rating": 3.6,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 176,
+      "displayName": {
+        "text": "J and B Pizzeria Restaurant",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "446 Nome Ave, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.589666,
+        "longitude": -74.164718
+      },
+      "rating": 3.8,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 517,
+      "displayName": {
+        "text": "Bario's",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1282 Richmond Rd, Staten Island, NY 10304, USA",
+      "location": {
+        "latitude": 40.596155,
+        "longitude": -74.0948638
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 299,
+      "displayName": {
+        "text": "Primo Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "117 Broad St, Staten Island, NY 10304, USA",
+      "location": {
+        "latitude": 40.624817,
+        "longitude": -74.07938100000001
+      },
+      "rating": 4.2,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 440,
+      "displayName": {
+        "text": "Frank's Bay Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1250 Hylan Blvd, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.5972028,
+        "longitude": -74.0841631
+      },
+      "rating": 4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 447,
+      "displayName": {
+        "text": "Brooklyn's Finest Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "117 Broad St, Staten Island, NY 10304, USA",
+      "location": {
+        "latitude": 40.62481210000001,
+        "longitude": -74.0793422
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 90,
+      "displayName": {
+        "text": "Romeo's Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "4255 Amboy Rd, Staten Island, NY 10308, USA",
+      "location": {
+        "latitude": 40.5472234,
+        "longitude": -74.15794319999999
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 2223,
+      "displayName": {
+        "text": "Patrizia's of Brooklyn",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1206 Victory Blvd, Staten Island, NY 10301, USA",
+      "location": {
+        "latitude": 40.6160482,
+        "longitude": -74.1039296
+      },
+      "rating": 3.9,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 238,
+      "displayName": {
+        "text": "Napoli Pizza",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "italian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "3295 Amboy Rd, Staten Island, NY 10306, USA",
+      "location": {
+        "latitude": 40.561009999999996,
+        "longitude": -74.135381
+      },
+      "rating": 4.5,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "userRatingCount": 168,
+      "displayName": {
+        "text": "Domenico's Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "meal_delivery",
+        "food_delivery",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "860 Post Ave, Staten Island, NY 10310, USA",
+      "location": {
+        "latitude": 40.630816,
+        "longitude": -74.129673
+      },
+      "rating": 4.4,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 225,
+      "displayName": {
+        "text": "Michaelangelos Pizzeria",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1919 Hylan Blvd, Staten Island, NY 10305, USA",
+      "location": {
+        "latitude": 40.5829373,
+        "longitude": -74.0966914
+      },
+      "rating": 4.2,
+      "userRatingCount": 118,
+      "displayName": {
+        "text": "Round Pie Pizza Company",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    },
+    {
+      "types": [
+        "italian_restaurant",
+        "pizza_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "formattedAddress": "1441 South Ave, Staten Island, NY 10314, USA",
+      "location": {
+        "latitude": 40.60447020000001,
+        "longitude": -74.1807856
+      },
+      "rating": 4.1,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "userRatingCount": 38,
+      "displayName": {
+        "text": "Pienza Brick Oven Pizza Caf\u00e9",
+        "languageCode": "en"
+      },
+      "borough": "Staten Island"
+    }
+  ]
+}

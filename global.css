@@ -1,0 +1,7 @@
+/* Global styles for React Native */
+/* Note: We're using twrnc for Tailwind CSS in React Native */
+
+/* Apply ClashDisplay font globally */
+* {
+  font-family: 'ClashDisplay';
+}

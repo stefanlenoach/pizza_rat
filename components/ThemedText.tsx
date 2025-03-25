@@ -37,24 +37,29 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: 'ClashDisplay',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
+    fontFamily: 'ClashDisplay',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     lineHeight: 32,
+    fontFamily: 'ClashDisplay',
   },
   subtitle: {
+    fontFamily: 'ClashDisplay',
     fontSize: 20,
     fontWeight: 'bold',
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
+    fontFamily: 'ClashDisplay',
     color: '#0a7ea4',
   },
 });
