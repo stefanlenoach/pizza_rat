@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Easing } from 'react-native';
+import { Easing, Dimensions } from 'react-native';
 import { 
   View, 
   FlatList, 
@@ -129,8 +129,8 @@ export default function ChatScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [activeChat, setActiveChat] = useState<ChatGroup | null>(null);
-  const [chatGroups, setChatGroups] = useState<ChatGroup[]>(INITIAL_CHAT_GROUPS);
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [chatGroups, setChatGroups] = useState<ChatGroup[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -139,6 +139,8 @@ export default function ChatScreen() {
   
   const flatListRef = useRef<any>(null);
   const slideAnim = useRef(new Animated.Value(0)).current;
+  
+  const windowWidth = Dimensions.get('window').width;
   
   // Focus the input when a chat is opened
   useEffect(() => {
@@ -165,6 +167,7 @@ export default function ChatScreen() {
     
     loadChatGroups();
   }, []);
+ 
   
   // Keyboard listeners
   useEffect(() => {
@@ -389,7 +392,7 @@ export default function ChatScreen() {
       {
         translateX: slideAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -400] // Restored original distance
+          outputRange: [0, -windowWidth]
         })
       }
     ]
@@ -400,12 +403,15 @@ export default function ChatScreen() {
       {
         translateX: slideAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [400, 0] // Restored original distance
+          outputRange: [windowWidth, 0]
         })
       }
     ],
     opacity: slideAnim
   };
+
+  console.log('chatGroups',chatGroups)
+  console.log('messages',messages)
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -447,13 +453,14 @@ export default function ChatScreen() {
       <Animated.View 
         style={[
           tw`absolute top-0 bottom-0 left-0 right-0 bg-white`,
+          { width: windowWidth },
           chatDetailTransform
         ]}
       >
         {activeChat && (
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={tw`flex-1`}
+            style={[tw`flex-1`, { width: windowWidth }]}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
           >
             {/* Chat Header with Safe Area */}
