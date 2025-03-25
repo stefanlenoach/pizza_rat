@@ -4,6 +4,7 @@
  */
 
 import Constants from 'expo-constants';
+import * as Device from 'expo-device';
 
 // Base URL for API requests
 const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || 'http://localhost:3000/api';
@@ -16,6 +17,7 @@ export interface ChatGroup {
   timestamp: string;
   unread: number;
   avatar: string;
+  placeId?: string;
 }
 
 export interface ChatMessage {
@@ -28,12 +30,15 @@ export interface ChatMessage {
   isCurrentUser: boolean;
 }
 
+
 // Current user info (would normally come from auth)
-const CURRENT_USER = {
-  id: 'user456',
-  name: 'You',
-  avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop',
+const id = new Date().getTime().toString();
+export const CURRENT_USER = {
+  id,
+  name: `User ${id}`,
+  avatar: '',
 };
+ 
 
 // API functions
 export const chatApi = {
@@ -147,36 +152,31 @@ function getMockChatGroups(): ChatGroup[] {
   return [
     {
       id: '1',
-      name: 'NYC Pizza Lovers',
-      lastMessage: 'Just tried the new place on 5th Ave!',
-      timestamp: '10:30 AM',
+      name: "Pizza Lovers NYC",
+      lastMessage: "The margherita is amazing!",
+      timestamp: "10:30 AM",
       unread: 3,
-      avatar: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=100&auto=format&fit=crop'
+      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+      placeId: "1"
     },
     {
       id: '2',
-      name: 'Brooklyn Pizza Club',
-      lastMessage: 'Meeting this Friday at Roberta\'s?',
-      timestamp: 'Yesterday',
+      name: "Chicago Deep Dish",
+      lastMessage: "Who's up for lunch?",
+      timestamp: "Yesterday",
       unread: 0,
-      avatar: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=100&auto=format&fit=crop'
+      avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+      placeId: "2"
     },
     {
       id: '3',
-      name: 'Pizza Recommendations',
-      lastMessage: 'Has anyone tried the Detroit style at Emmy Squared?',
-      timestamp: 'Monday',
+      name: "Brooklyn Pizza Scene",
+      lastMessage: "New spot opening next week!",
+      timestamp: "2 days ago",
       unread: 1,
-      avatar: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=100&auto=format&fit=crop'
-    },
-    {
-      id: '4',
-      name: 'Pizza Chefs',
-      lastMessage: 'My sourdough starter is finally ready!',
-      timestamp: '3/20/25',
-      unread: 0,
-      avatar: 'https://images.unsplash.com/photo-1595854341625-f33e09b6a29c?q=80&w=100&auto=format&fit=crop'
-    },
+      avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+      placeId: "3"
+    }
   ];
 }
 
@@ -194,7 +194,7 @@ function getMockChatMessages(groupId: string): ChatMessage[] {
       },
       {
         id: '2',
-        text: 'Yes! Their margherita is amazing 🍕',
+        text: 'Yes! Their margherita is amazing ',
         sender: 'You',
         senderId: 'user456',
         timestamp: '10:18 AM',

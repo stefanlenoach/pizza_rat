@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Easing, Dimensions } from 'react-native';
 import { 
@@ -21,6 +21,10 @@ import * as Haptics from 'expo-haptics';
 import tw from '@/utils/tw';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import chatApi, { ChatGroup, ChatMessage } from '@/services/chatApi';
+import { supabase } from '@/lib/supabase';
+import { mockPizzaPlaces } from '@/utils/mockPizzaData';
+import { CURRENT_USER } from '@/services/chatApi'; 
+import moment from 'moment'
 
 // Initial empty states
 const INITIAL_CHAT_GROUPS: ChatGroup[] = [
@@ -127,6 +131,7 @@ const INITIAL_MESSAGES: ChatMessage[] = [
 
 export default function ChatScreen() {
   const router = useRouter();
+  const { placeId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const [activeChat, setActiveChat] = useState<ChatGroup | null>(null);
   const [chatGroups, setChatGroups] = useState<ChatGroup[]>([]);
@@ -141,6 +146,7 @@ export default function ChatScreen() {
   const slideAnim = useRef(new Animated.Value(0)).current;
   
   const windowWidth = Dimensions.get('window').width;
+
   
   // Focus the input when a chat is opened
   useEffect(() => {
@@ -154,19 +160,41 @@ export default function ChatScreen() {
   // Load chat groups when component mounts
   useEffect(() => {
     const loadChatGroups = async () => {
-      setIsLoading(true);
       try {
-        const groups = await chatApi.getChatGroups();
-        setChatGroups(groups);
+        setIsLoading(true);
+        // If placeId is provided, load specific chat group
+        if (placeId) {
+          const { data: groups } = await supabase.from('Chats').select('*')  
+          const placeGroup = groups?.find(group => group.placeId === placeId);
+          if (placeGroup) {
+            setChatGroups([placeGroup]);
+            setActiveChat(placeGroup);
+            Animated.timing(slideAnim, {
+              toValue: 1,
+              duration: 300,
+              useNativeDriver: true,
+              easing: Easing.inOut(Easing.ease)
+            }).start();
+          } else {
+            const placeGroup = mockPizzaPlaces.find(place => place.id === placeId); 
+            setChatGroups(groups || []);
+            setActiveChat({ placeId, name: placeGroup?.name || '' });
+          } 
+
+          
+        } else {
+          const { data: groups } = await supabase.from('Chats').select('*') 
+          setChatGroups(groups || []);
+        }
       } catch (error) {
         console.error('Error loading chat groups:', error);
       } finally {
         setIsLoading(false);
       }
     };
-    
+  
     loadChatGroups();
-  }, []);
+  }, [placeId]);
  
   
   // Keyboard listeners
@@ -219,13 +247,14 @@ export default function ChatScreen() {
     
     try {
       // Optimistically add message to UI
+      const id = Date.now().toString()
       const optimisticMessage: ChatMessage = {
-        id: `temp-${Date.now()}`,
+        id,
         text: messageText,
-        sender: 'You',
-        senderId: 'user456', // Current user ID
+        sender: CURRENT_USER.name,
+        senderId: CURRENT_USER.id, // Current user ID
         timestamp: 'Sending...',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop',
+        avatar: CURRENT_USER.avatar,
         isCurrentUser: true
       };
       
@@ -237,15 +266,32 @@ export default function ChatScreen() {
       });
       
       // Send message to the API
-      const newMessage = await chatApi.sendMessage(activeChat.id, messageText);
-      
-      if (newMessage) {
-        // Replace optimistic message with real one
-        setMessages(prevMessages => 
-          prevMessages.map(msg => 
-            msg.id === optimisticMessage.id ? newMessage : msg
-          )
-        );
+      const timestamp = new Date().toISOString();
+      const { error } = await supabase.from('ChatMessages').insert({
+        id,
+        chatId: activeChat.id,
+        text: messageText,
+        senderId: CURRENT_USER.id,
+        sender: CURRENT_USER.name,
+        timestamp,
+        avatar: CURRENT_USER.avatar, 
+        placeId: activeChat.placeId
+      });
+
+      if (!error) {
+        // Update message with actual timestamp
+        setMessages(prevMessages => {
+          return prevMessages.map(msg => {
+            if(msg.id === optimisticMessage.id) {
+              return {
+                ...msg,
+                timestamp: moment(timestamp).format('YYYY-MM-DD HH:mm:ss'),
+                isCurrentUser: true
+              }
+            }
+            return msg 
+          })
+        });
         
         // Update the chat group's last message
         const updatedGroups = chatGroups.map(group => {
@@ -302,6 +348,8 @@ export default function ChatScreen() {
   const goBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setActiveChat(null);
+    // Clear placeId from URL params
+    router.replace('/(tabs)/chat');
   };
 
   const renderChatGroup = ({ item }: { item: ChatGroup }) => (
@@ -340,7 +388,10 @@ export default function ChatScreen() {
         item.isCurrentUser ? tw`self-end` : tw`self-start`
       ]}
     >
-      <View style={tw`flex-row items-end`}>
+      <View style={[
+        tw`flex-row items-end`,
+        item.isCurrentUser ? tw`flex-row-reverse` : ''
+      ]}>
         {!item.isCurrentUser && (
           <Image 
             source={{ uri: item.avatar }} 
@@ -351,18 +402,18 @@ export default function ChatScreen() {
           style={[
             tw`rounded-2xl p-2.5`, 
             item.isCurrentUser 
-              ? tw`bg-blue-500 rounded-tr-none` 
-              : tw`bg-gray-200 rounded-tl-none`
+              ? tw`bg-blue-500 rounded-br-none ml-auto` 
+              : tw`bg-gray-200 rounded-bl-none mr-auto`
           ]}
         >
           {!item.isCurrentUser && (
-            <Label style={tw` mb-1 text-gray-700`}>
+            <Label style={tw`mb-1 text-gray-700`}>
               {item.sender}
             </Label>
           )}
           <Text 
             style={[
-              tw`text-xs`, 
+              tw`text-sm`, 
               item.isCurrentUser ? tw`text-white` : tw`text-black`
             ]}
           >
@@ -378,14 +429,33 @@ export default function ChatScreen() {
       </View>
       <Text 
         style={[
-          tw`text-xs text-gray-500 mt-0.5`, 
+          tw`text-xs text-gray-500 mt-1`, 
           item.isCurrentUser ? tw`text-right` : tw`text-left ml-10`
         ]}
       >
-        {item.timestamp}
+        { item.timestamp }
       </Text>
     </View>
   );
+
+  const AvatarCircle = ({ name, size = 40 }: { name: string; size?: number }) => {
+    const initial = name.charAt(0).toUpperCase();
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500'];
+    const colorIndex = name.length % colors.length;
+  
+    return (
+      <View 
+        style={[
+          tw`${colors[colorIndex]} rounded-full items-center justify-center`,
+          { width: size, height: size }
+        ]}
+      >
+        <Text style={[tw`text-white font-bold`, { fontSize: size * 0.4 }]}>
+          {initial}
+        </Text>
+      </View>
+    );
+  };
 
   const chatListTransform = {
     transform: [
@@ -411,7 +481,9 @@ export default function ChatScreen() {
   };
 
   console.log('chatGroups',chatGroups)
+  console.log('activeChat',activeChat)
   console.log('messages',messages)
+  console.log('placeId',placeId)
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -469,19 +541,25 @@ export default function ChatScreen() {
                 <TouchableOpacity onPress={goBack} style={tw`mr-2`}>
                   <IconSymbol name="chevron.left" size={24} color="#000" />
                 </TouchableOpacity>
-              <Image 
-                source={{ uri: activeChat.avatar }} 
-                style={tw`w-10 h-10 rounded-full mr-3`}
-              />
-              <View style={tw`flex-1`}>
-                <Subheading>{activeChat.name}</Subheading>
-                <Caption>
-                  {chatGroups.length} members
-                </Caption>
-              </View>
-              <TouchableOpacity style={tw`ml-2 mr-4`}>
-                <IconSymbol name="ellipsis" size={24} color="#000" />
-              </TouchableOpacity>
+                {activeChat.avatar ? (
+                  <Image 
+                    source={{ uri: activeChat.avatar }} 
+                    style={tw`w-10 h-10 rounded-full mr-3`}
+                  />
+                ) : (
+                  <View style={tw`mr-3`}>
+                    <AvatarCircle name={activeChat.name} />
+                  </View>
+                )}
+                <View style={tw`flex-1`}>
+                  <Subheading>{activeChat.name}</Subheading>
+                  <Caption>
+                    {chatGroups.length} members
+                  </Caption>
+                </View>
+                <TouchableOpacity style={tw`ml-2 mr-4`}>
+                  <IconSymbol name="ellipsis" size={24} color="#000" />
+                </TouchableOpacity>
               </View>
             </View>
             

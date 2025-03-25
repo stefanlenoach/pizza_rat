@@ -177,12 +177,50 @@ export const mockPizzaPlaces: MockPlaceResult[] = [
   },
   {
     id: "9",
-    name: "Jovans's Pizza",
+    name: "Jovans's Pizza 1",
     vicinity: "Ada Bohol, Philippines",
     geometry: {
       location: {
         lat: 9.757693916416223,
         lng: 124.5766902254247
+      }
+    },
+    rating: 4.5,
+    user_ratings_total: 1987,
+    place_id: "",
+    price_level: 2,
+    opening_hours: {
+      open_now: true
+    },
+    types: ["pizza_restaurant", "restaurant", "food"]
+  },
+  {
+    id: "10",
+    name: "Jovans's Pizza 2",
+    vicinity: "Ada Bohol, Philippines",
+    geometry: {
+      location: {
+        lat: 37.78583,
+        lng: -122.406417
+      }
+    },
+    rating: 4.5,
+    user_ratings_total: 1987,
+    place_id: "",
+    price_level: 2,
+    opening_hours: {
+      open_now: true
+    },
+    types: ["pizza_restaurant", "restaurant", "food"]
+  },
+  {
+    id: "11",
+    name: "Jovans's Pizza 3",
+    vicinity: "Ada Bohol, Philippines",
+    geometry: {
+      location: {
+        lat: 37.78583,
+        lng: -122.406519
       }
     },
     rating: 4.5,
