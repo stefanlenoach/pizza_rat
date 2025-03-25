@@ -22,9 +22,15 @@ import tw from '@/utils/tw';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import chatApi, { ChatGroup, ChatMessage } from '@/services/chatApi';
 import { supabase } from '@/lib/supabase';
-import { mockPizzaPlaces } from '@/utils/mockPizzaData';
-import { CURRENT_USER } from '@/services/chatApi'; 
+import { mockPizzaPlaces } from '@/utils/mockPizzaData'; 
 import moment from 'moment'
+
+const id = new Date().getTime().toString();
+const CURRENT_USER = {
+  id,
+  name: `User ${id}`,
+  avatar: '',
+};
 
 // Initial empty states
 const INITIAL_CHAT_GROUPS: ChatGroup[] = [
@@ -164,10 +170,12 @@ export default function ChatScreen() {
         setIsLoading(true);
         // If placeId is provided, load specific chat group
         if (placeId) {
+          setMessages([]);
           const { data: groups } = await supabase.from('Chats').select('*')  
           const placeGroup = groups?.find(group => group.placeId === placeId);
           if (placeGroup) {
             setChatGroups([placeGroup]);
+            openChat(placeGroup);
             setActiveChat(placeGroup);
             Animated.timing(slideAnim, {
               toValue: 1,
@@ -179,8 +187,10 @@ export default function ChatScreen() {
             const placeGroup = mockPizzaPlaces.find(place => place.id === placeId); 
             setChatGroups(groups || []);
             setActiveChat({ placeId, name: placeGroup?.name || '' });
+            openChat({ placeId, name: placeGroup?.name || ''  });
           } 
-
+          
+         
           
         } else {
           const { data: groups } = await supabase.from('Chats').select('*') 
@@ -236,6 +246,14 @@ export default function ChatScreen() {
     }
   }, [activeChat, slideAnim]);
 
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
+
   const handleSendMessage = async () => {
     if (inputText.trim() === '' || !activeChat || isSending) return;
     
@@ -268,8 +286,7 @@ export default function ChatScreen() {
       // Send message to the API
       const timestamp = new Date().toISOString();
       const { error } = await supabase.from('ChatMessages').insert({
-        id,
-        chatId: activeChat.id,
+        id, 
         text: messageText,
         senderId: CURRENT_USER.id,
         sender: CURRENT_USER.name,
@@ -278,6 +295,14 @@ export default function ChatScreen() {
         placeId: activeChat.placeId
       });
 
+
+      await supabase.from('Chats').upsert({
+        placeId: activeChat.placeId,
+        lastMessage: messageText, 
+      },{
+        onConflict: 'placeId'
+      });
+ 
       if (!error) {
         // Update message with actual timestamp
         setMessages(prevMessages => {
@@ -333,13 +358,19 @@ export default function ChatScreen() {
     
     // Load messages for this chat in parallel with animation
     try {
-      const chatMessages = await chatApi.getChatMessages(chatGroup.id);
-      setMessages(chatMessages);
-      
-      // Scroll to the bottom immediately after messages load
-      requestAnimationFrame(() => {
-        flatListRef.current?.scrollToEnd({ animated: false });
-      });
+      const { data: chatMessages } = await supabase
+        .from('ChatMessages')
+        .select('*')
+        .eq('placeId', chatGroup.placeId)
+        .order('created_at', { ascending: true });
+ 
+      setMessages((chatMessages || []).map(item => {
+        return  {
+          ...item,
+          timestamp: moment(item.created_at).format('YYYY-MM-DD HH:mm:ss'),
+          isCurrentUser: item.senderId === CURRENT_USER.id
+        }
+      }));
     } catch (error) {
       console.error('Error loading messages:', error);
     }
@@ -348,6 +379,7 @@ export default function ChatScreen() {
   const goBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setActiveChat(null);
+    setMessages([]);
     // Clear placeId from URL params
     router.replace('/(tabs)/chat');
   };
@@ -357,14 +389,23 @@ export default function ChatScreen() {
       style={tw`flex-row items-center p-4 border-b border-gray-200`}
       onPress={() => openChat(item)}
     >
-      <Image 
-        source={{ uri: item.avatar }} 
-        style={tw`w-12 h-12 rounded-full mr-3`}
-      />
+      {item.avatar ? (
+        <Image 
+          source={{ uri: item.avatar }} 
+          style={tw`w-12 h-12 rounded-full mr-3`}
+        />
+      ) : (
+        <View style={tw`mr-3`}>
+          <AvatarCircle 
+            name={mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name} 
+            size={48} 
+          />
+        </View>
+      )}
       <View style={tw`flex-1`}>
         <View style={tw`flex-row justify-between`}>
-          <Subheading style={tw`text-sm`}>{item.name}</Subheading>
-          <Caption>{item.timestamp}</Caption>
+          <Subheading style={tw`text-sm`}>{ mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name}</Subheading>
+          <Caption>{moment(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</Caption>
         </View>
         <Paragraph 
           style={tw`text-gray-600 mt-1`} 
@@ -393,10 +434,22 @@ export default function ChatScreen() {
         item.isCurrentUser ? tw`flex-row-reverse` : ''
       ]}>
         {!item.isCurrentUser && (
-          <Image 
-            source={{ uri: item.avatar }} 
-            style={tw`w-8 h-8 rounded-full mr-2`}
-          />
+          <>
+           {item.avatar ? (
+            <Image 
+              source={{ uri: item.avatar }} 
+              style={tw`w-8 h-8 rounded-full mr-2`}
+            />
+          ) : (
+            <View style={tw`mr-3`}>
+              <AvatarCircle 
+                name={item.sender} 
+                size={48} 
+              />
+            </View>
+          )}
+          </>
+         
         )}
         <View 
           style={[
@@ -439,9 +492,9 @@ export default function ChatScreen() {
   );
 
   const AvatarCircle = ({ name, size = 40 }: { name: string; size?: number }) => {
-    const initial = name.charAt(0).toUpperCase();
+    const initial = name?.charAt?.(0)?.toUpperCase?.();
     const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500'];
-    const colorIndex = name.length % colors.length;
+    const colorIndex = (name?.length ?? 0) % colors.length;
   
     return (
       <View 
@@ -482,7 +535,7 @@ export default function ChatScreen() {
 
   console.log('chatGroups',chatGroups)
   console.log('activeChat',activeChat)
-  console.log('messages',messages)
+  // console.log('messages',messages)
   console.log('placeId',placeId)
 
   return (
@@ -548,11 +601,11 @@ export default function ChatScreen() {
                   />
                 ) : (
                   <View style={tw`mr-3`}>
-                    <AvatarCircle name={activeChat.name} />
+                    <AvatarCircle name={mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name} />
                   </View>
                 )}
                 <View style={tw`flex-1`}>
-                  <Subheading>{activeChat.name}</Subheading>
+                  <Subheading>{mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name}</Subheading>
                   <Caption>
                     {chatGroups.length} members
                   </Caption>
