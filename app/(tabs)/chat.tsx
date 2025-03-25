@@ -250,7 +250,7 @@ export default function ChatScreen() {
     if (messages.length > 0) {
       setTimeout(() => {
         flatListRef.current?.scrollToEnd({ animated: true });
-      }, 100);
+      }, 500);
     }
   }, [messages]);
 
