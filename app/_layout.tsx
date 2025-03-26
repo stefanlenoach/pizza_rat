@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FontProvider } from '@/components/FontProvider';
-
+import { UserProvider } from '../contexts/UserContext';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import '../global.css';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -33,13 +34,31 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <FontProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <UserProvider>
+          <ProtectedRoute>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen 
+                  name="login" 
+                  options={{ 
+                    headerShown: false,
+                    presentation: 'modal'
+                  }} 
+                />
+                <Stack.Screen 
+                  name="signup" 
+                  options={{ 
+                    headerShown: false,
+                    presentation: 'modal'
+                  }} 
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </ProtectedRoute>
+        </UserProvider>
       </FontProvider>
     </GestureHandlerRootView>
   );
