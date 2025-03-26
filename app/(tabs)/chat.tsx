@@ -295,14 +295,14 @@ export default function ChatScreen() {
       ) : (
         <View style={tw`mr-3`}>
           <AvatarCircle 
-            name={mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name} 
+            name={mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name } 
             size={48} 
           />
         </View>
       )}
       <View style={tw`flex-1`}>
         <View style={tw`flex-row justify-between`}>
-          <Subheading style={tw`text-sm`}>{ mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name}</Subheading>
+          <Subheading style={tw`text-sm`}>{ mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name || "(Deleted Place)"}</Subheading>
           <Caption>{moment(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</Caption>
         </View>
         <Paragraph 
@@ -503,7 +503,7 @@ export default function ChatScreen() {
                   </View>
                 )}
                 <View style={tw`flex-1`}>
-                  <Subheading>{mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name}</Subheading>
+                  <Subheading>{mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name|| "(Deleted Place)"}</Subheading>
                   <Caption>
                     {chatGroups.length} members
                   </Caption>
