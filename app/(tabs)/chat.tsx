@@ -24,15 +24,11 @@ import chatApi, { ChatGroup, ChatMessage } from '@/services/chatApi';
 import { supabase } from '@/lib/supabase';
 import { mockPizzaPlaces } from '@/utils/mockPizzaData'; 
 import moment from 'moment'
+import { useUser } from '@/contexts/UserContext';
 
-const id = new Date().getTime().toString();
-const CURRENT_USER = {
-  id,
-  name: `User ${id}`,
-  avatar: '',
-};
  
 export default function ChatScreen() {
+  const { user, userDetails } = useUser();
   const router = useRouter();
   const { placeId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
@@ -50,6 +46,7 @@ export default function ChatScreen() {
   
   const windowWidth = Dimensions.get('window').width;
 
+  console.log('userDetails',userDetails)
   
   // Focus the input when a chat is opened
   useEffect(() => {
@@ -165,10 +162,10 @@ export default function ChatScreen() {
       const optimisticMessage: ChatMessage = {
         id,
         text: messageText,
-        sender: CURRENT_USER.name,
-        senderId: CURRENT_USER.id, // Current user ID
+        sender: userDetails?.name || '',
+        senderId: userDetails?.user_id || '', // Current user ID
         timestamp: 'Sending...',
-        avatar: CURRENT_USER.avatar,
+        avatar: userDetails?.avatar || '',
         isCurrentUser: true
       };
       
@@ -184,10 +181,10 @@ export default function ChatScreen() {
       const { error } = await supabase.from('ChatMessages').insert({
         id, 
         text: messageText,
-        senderId: CURRENT_USER.id,
-        sender: CURRENT_USER.name,
+        senderId: userDetails?.user_id || '',
+        sender: userDetails?.name || '',
         timestamp,
-        avatar: CURRENT_USER.avatar, 
+        avatar: userDetails?.avatar || '', 
         placeId: activeChat.placeId
       });
 
@@ -265,7 +262,7 @@ export default function ChatScreen() {
         return  {
           ...item,
           timestamp: moment(item.created_at).format('YYYY-MM-DD HH:mm:ss'),
-          isCurrentUser: item.senderId === CURRENT_USER.id
+          isCurrentUser: item.senderId === userDetails?.user_id
         }
       }));
     } catch (error) {
