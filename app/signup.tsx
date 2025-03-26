@@ -7,6 +7,7 @@ import { useUser } from '../contexts/UserContext';
 export default function SignupScreen() {
   const router = useRouter();
   const { signUp } = useUser();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,7 +15,7 @@ export default function SignupScreen() {
   const [error, setError] = useState('');
 
   const handleSignup = async () => {
-    if (!email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
@@ -28,7 +29,7 @@ export default function SignupScreen() {
       setLoading(true);
       setError('');
       
-      const { error: signUpError } = await signUp(email, password);
+      const { error: signUpError } = await signUp(email, password, name);
       if (signUpError) throw signUpError;
 
       // On successful signup, show success message and redirect to login
@@ -62,6 +63,21 @@ export default function SignupScreen() {
         ) : null}
 
         <View style={{ gap: 16 }}>
+          <TextInput
+            style={{
+              backgroundColor: '#F3F4F6',
+              borderRadius: 8,
+              paddingHorizontal: 16,
+              paddingVertical: 12,
+              fontSize: 16
+            }}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="words"
+            editable={!loading}
+          />
+
           <TextInput
             style={{
               backgroundColor: '#F3F4F6',
@@ -119,7 +135,7 @@ export default function SignupScreen() {
             onPress={handleSignup}
             disabled={loading}
           >
-            <Text style={{ color: 'white', fontWeight: '600', fontSize: 18 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
               {loading ? 'Creating Account...' : 'Sign Up'}
             </Text>
           </TouchableOpacity>

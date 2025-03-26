@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AccountScreen() {
-  const { user, signOut } = useUser();
+  const { user, userDetails, signOut } = useUser();
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -76,10 +76,10 @@ export default function AccountScreen() {
             <Ionicons name="person-circle" size={80} color="#9CA3AF" />
           </View>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>
-            {user?.email}
+            {userDetails?.name || 'Loading...'}
           </Text>
           <Text style={{ color: '#6B7280', marginBottom: 16 }}>
-            Pizza Rat Member
+            {userDetails?.email || user?.email}
           </Text>
         </View>
 
