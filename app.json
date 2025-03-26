@@ -21,7 +21,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.pizzarat.app",
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,10 +49,25 @@
         {
           "locationAlwaysAndWhenInUsePermission": "PizzaRat needs your location to show you nearby pizza places"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#ffffff"
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7e1d3749-881c-4abf-b9bd-349aa9955c00"
+      }
     }
   }
 }

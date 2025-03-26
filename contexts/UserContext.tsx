@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+import { registerForPushNotifications } from '../lib/notifications';
 
 interface UserDetails {
   user_id: string;
   name: string;
   email: string;
+  push_token?: string;
 }
 
 interface UserContextType {
@@ -28,14 +30,55 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   const loadUserDetails = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      // Load user details
+      const { data: userData, error: userError } = await supabase
         .from('Users')
         .select('user_id, name, email')
         .eq('user_id', userId)
         .single();
 
-      if (error) throw error;
-      setUserDetails(data);
+      if (userError) throw userError;
+      
+      // Load latest push token
+      const { data: tokenData } = await supabase
+        .from('PushTokens')
+        .select('token')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      setUserDetails({
+        ...userData,
+        push_token: tokenData?.token || null
+      });
+
+      // Request push notification permissions and update token if needed
+      if (!tokenData?.token) {
+        try{
+          const token = await registerForPushNotifications();
+          console.log("token",token)
+          if (token) {
+            const { error: insertError } = await supabase
+              .from('PushTokens')
+              .upsert({ 
+                user_id: userId,
+                token,
+                created_at: new Date().toISOString()
+              },
+            {
+              onConflict: 'token'
+            });
+  
+            if (!insertError) {
+              setUserDetails(prev => prev ? { ...prev, push_token: token } : null);
+            }
+          }
+        } catch (error) {
+          console.error('Error registering for push notifications:', error);
+        }
+       
+      }
     } catch (error) {
       console.error('Error loading user details:', error);
       setUserDetails(null);
@@ -111,8 +154,31 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setUserDetails(null);
+    try {
+      // Delete all push tokens for the user before signing out
+      if (user?.id) {
+        const { error: deleteError } = await supabase
+          .from('PushTokens')
+          .delete()
+          .eq('user_id', user.id);
+          
+        if (deleteError) {
+          console.error('Error deleting push tokens:', deleteError);
+        }
+      }
+      
+      // Sign out from Supabase
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      // Clear local user state
+      setUser(null);
+      setSession(null);
+      setUserDetails(null);
+    } catch (error) {
+      console.error('Error signing out:', error);
+      throw error;
+    }
   };
 
   const value = {

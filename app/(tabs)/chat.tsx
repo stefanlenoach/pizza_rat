@@ -45,8 +45,6 @@ export default function ChatScreen() {
   const slideAnim = useRef(new Animated.Value(0)).current;
   
   const windowWidth = Dimensions.get('window').width;
-
-  console.log('userDetails',userDetails)
   
   // Focus the input when a chat is opened
   useEffect(() => {
