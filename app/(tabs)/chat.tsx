@@ -435,7 +435,7 @@ export default function ChatScreen() {
   // console.log('activeChat',activeChat)
   // console.log('messages',messages)
   // console.log('placeId',placeId)
-
+  // console.log('keyboardVisible',keyboardVisible)
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <StatusBar style="dark" />
@@ -484,7 +484,7 @@ export default function ChatScreen() {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={[tw`flex-1`, { width: windowWidth }]}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 90 : 10) : 0}
           >
             {/* Chat Header with Safe Area */}
             <View style={[tw`flex-row items-center border-b border-gray-200 bg-white`, { paddingTop: insets.top }]}>
