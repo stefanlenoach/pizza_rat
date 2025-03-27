@@ -169,7 +169,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       
       // Sign out from Supabase
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // if (error) throw error;
       
       // Clear local user state
       setUser(null);

@@ -33,7 +33,7 @@ export default function SignupScreen() {
       if (signUpError) throw signUpError;
 
       // On successful signup, show success message and redirect to login
-      alert('Please check your email to verify your account');
+      // alert('Please check your email to verify your account');
       router.replace('/login');
     } catch (error: any) {
       setError(error.message || 'An error occurred during signup');
