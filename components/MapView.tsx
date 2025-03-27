@@ -9,7 +9,7 @@ import { searchNearbyPizzaPlaces, PlaceResult } from '@/utils/placesApi';
 import { filterPizzaPlaces } from '@/utils/filterUtils';
 import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
-import { getAllBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
+import { getAllBrooklynPizzaPlaces, getNearbyBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS = {
@@ -27,6 +27,8 @@ const BROOKLYN_COORDS = {
   longitudeDelta: 0.1,
 };
 
+// We're using userInterfaceStyle="dark" instead of custom styling
+
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;
@@ -43,6 +45,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false);
+  
+
+  const [showSearchThisArea, setShowSearchThisArea] = useState(false);
+  const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
+  const mapRef = useRef<MapView | null>(null);
 
   // Apply filters whenever filter options or pizza places change
   useEffect(() => {
@@ -75,6 +82,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           // If permission denied, show NYC
           setRegion(NEW_YORK_COORDS);
           setIsLoading(false);
+          // Search within the visible area even if location permission is denied
+          setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 500);
           return;
         }
 
@@ -93,14 +102,16 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           setRegion(newRegion);
           console.log('Centered map on current location:', newRegion);
           
-          // Automatically search for pizza places within 5 miles
-          await findNearbyPizzaPlaces(currentLocation.coords.latitude, currentLocation.coords.longitude);
+          // Automatically search within the visible area
+          setTimeout(() => searchWithinVisibleArea(newRegion), 500);
         }
       } catch (error) {
         console.error('Error getting location:', error);
         setErrorMsg('Could not determine your location');
         // Fall back to NYC if there's an error
         setRegion(NEW_YORK_COORDS);
+        // Search within the visible area even if there's an error
+        setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 500);
       } finally {
         setIsLoading(false);
       }
@@ -110,31 +121,237 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   // Function to find nearby pizza places
   const findNearbyPizzaPlaces = async (lat: number, lng: number) => {
     try {
-      // Stop any Brooklyn animation in progress
+      // Stop any animation in progress
       animationInProgress.current = false;
       
       setIsSearchingPlaces(true);
-      setIsBrooklynMode(false);
+      setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
+      
+      // Reset animated places
+      setAnimatedPizzaPlaces([]);
       
       // Update the region to center on the provided location
-      setRegion({
+      const newRegion = {
         latitude: lat,
         longitude: lng,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
+      };
+      setRegion(newRegion);
+      
+      // Search for Brooklyn pizza places within 5 miles (8047 meters)
+      const places = await getNearbyBrooklynPizzaPlaces(lat, lng, 8047);
+      
+      // Sort places by distance from the center
+      const sortedPlaces = places.sort((a, b) => {
+        const distanceA = calculateDistanceInMiles(
+          lat, 
+          lng, 
+          a.geometry.location.lat, 
+          a.geometry.location.lng
+        );
+        const distanceB = calculateDistanceInMiles(
+          lat, 
+          lng, 
+          b.geometry.location.lat, 
+          b.geometry.location.lng
+        );
+        return distanceA - distanceB; // Sort from closest to farthest
       });
       
-      // Search for pizza places within 5 miles (8047 meters)
-      const places = await searchNearbyPizzaPlaces(lat, lng, 8047);
-      setAllPizzaPlaces(places);
-      setAnimatedPizzaPlaces(places); // Show all places immediately for nearby search
+      // Limit to 100 places maximum
+      const limitedPlaces = sortedPlaces.slice(0, 100);
       
-      console.log(`Found ${places.length} pizza places within 5 miles`);
+      // Set all pizza places to the filtered list
+      setAllPizzaPlaces(limitedPlaces);
+      setLastSearchRegion(newRegion);
+      setShowSearchThisArea(false);
+      
+      console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within 5 miles (sorted by distance from center)`);
+      
+      // Start the animation sequence
+      animationInProgress.current = true;
+      
+      const MAX_ANIMATED_PLACES = 50;
+      const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
+      
+      // Animate the first 50 places one by one
+      for (let i = 0; i < animationLimit; i++) {
+        // Skip animation if user switched to nearby mode
+        if (!animationInProgress.current) break;
+        
+        // Add haptic feedback for each new place
+        Haptics.impactAsync(
+          i % 3 === 0 
+            ? Haptics.ImpactFeedbackStyle.Light 
+            : i % 3 === 1 
+              ? Haptics.ImpactFeedbackStyle.Medium 
+              : Haptics.ImpactFeedbackStyle.Heavy
+        );
+        
+        // Add this place to the animated places
+        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
+        
+        // Wait a short time before showing the next place
+        await new Promise(resolve => setTimeout(resolve, 2));
+      }
+      
+      // If there are more than 50 places, add the rest after exactly 1 second
+      if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
+        // Schedule the remaining places to appear exactly 1 second after the 50th place
+        await new Promise(resolve => setTimeout(resolve, 10));
+        
+        // Make sure animation is still in progress (user hasn't switched modes)
+        if (animationInProgress.current) {
+          // First set the remaining places to ensure rendering starts
+          setAnimatedPizzaPlaces(limitedPlaces);
+          
+          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
+          // Use a notification instead of just impact for a more noticeable feedback
+          setTimeout(() => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            
+            // Follow with a heavy impact for an even more pronounced effect
+            setTimeout(() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            }, 100);
+          }, 10);
+        }
+      }
+      
     } catch (error) {
       console.error('Error finding nearby pizza places:', error);
       console.log('Failed to find nearby pizza places');
     } finally {
       setIsSearchingPlaces(false);
+      animationInProgress.current = false;
+    }
+  };
+  
+  // Function to search for pizza places within the visible map area
+  const searchWithinVisibleArea = async (searchRegion: Region) => {
+    try {
+      // Stop any animation in progress
+      animationInProgress.current = false;
+      
+      setIsSearchingPlaces(true);
+      setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
+      
+      // Reset animated places
+      setAnimatedPizzaPlaces([]);
+      
+      // Calculate the corners of the visible area
+      const northEast = {
+        latitude: searchRegion.latitude + searchRegion.latitudeDelta / 2,
+        longitude: searchRegion.longitude + searchRegion.longitudeDelta / 2
+      };
+      
+      const southWest = {
+        latitude: searchRegion.latitude - searchRegion.latitudeDelta / 2,
+        longitude: searchRegion.longitude - searchRegion.longitudeDelta / 2
+      };
+      
+      // Calculate the center point and approximate radius to cover the visible area
+      const centerLat = searchRegion.latitude;
+      const centerLng = searchRegion.longitude;
+      
+      // Calculate approximate radius in meters to cover the visible area
+      // This uses the Haversine formula to get distance from center to corner
+      const radiusInMeters = calculateDistanceInMiles(
+        centerLat, 
+        centerLng, 
+        northEast.latitude, 
+        northEast.longitude
+      ) * 1609.34; // Convert miles to meters
+      
+      console.log(`Searching within visible area with radius: ${radiusInMeters.toFixed(0)} meters`);
+      
+      // Search for Brooklyn pizza places within the calculated radius
+      const places = await getNearbyBrooklynPizzaPlaces(centerLat, centerLng, radiusInMeters);
+      
+      // Sort places by distance from the center of the screen
+      const sortedPlaces = places.sort((a, b) => {
+        const distanceA = calculateDistanceInMiles(
+          centerLat, 
+          centerLng, 
+          a.geometry.location.lat, 
+          a.geometry.location.lng
+        );
+        const distanceB = calculateDistanceInMiles(
+          centerLat, 
+          centerLng, 
+          b.geometry.location.lat, 
+          b.geometry.location.lng
+        );
+        return distanceA - distanceB; // Sort from closest to farthest
+      });
+      
+      // Limit to 100 places maximum
+      const limitedPlaces = sortedPlaces.slice(0, 100);
+      
+      // Set all pizza places to the filtered list
+      setAllPizzaPlaces(limitedPlaces);
+      setLastSearchRegion(searchRegion);
+      setShowSearchThisArea(false);
+      
+      console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within visible area (sorted by distance from center)`);
+      
+      // Start the animation sequence
+      animationInProgress.current = true;
+      
+      const MAX_ANIMATED_PLACES = 50;
+      const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
+      
+      // Animate the first 50 places one by one
+      for (let i = 0; i < animationLimit; i++) {
+        // Skip animation if user switched to nearby mode
+        if (!animationInProgress.current) break;
+        
+        // Add haptic feedback for each new place
+        Haptics.impactAsync(
+          i % 3 === 0 
+            ? Haptics.ImpactFeedbackStyle.Light 
+            : i % 3 === 1 
+              ? Haptics.ImpactFeedbackStyle.Medium 
+              : Haptics.ImpactFeedbackStyle.Heavy
+        );
+        
+        // Add this place to the animated places
+        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
+        
+        // Wait a short time before showing the next place
+        await new Promise(resolve => setTimeout(resolve, 2));
+      }
+      
+      // If there are more than 50 places, add the rest after exactly 1 second
+      if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
+        // Schedule the remaining places to appear exactly 1 second after the 50th place
+        await new Promise(resolve => setTimeout(resolve, 10));
+        
+        // Make sure animation is still in progress (user hasn't switched modes)
+        if (animationInProgress.current) {
+          // First set the remaining places to ensure rendering starts
+          setAnimatedPizzaPlaces(limitedPlaces);
+          
+          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
+          // Use a notification instead of just impact for a more noticeable feedback
+          setTimeout(() => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            
+            // Follow with a heavy impact for an even more pronounced effect
+            setTimeout(() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            }, 100);
+          }, 10);
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error finding pizza places in visible area:', error);
+      console.log('Failed to find pizza places in visible area');
+    } finally {
+      setIsSearchingPlaces(false);
+      animationInProgress.current = false;
     }
   };
   
@@ -260,6 +477,20 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion);
+    
+    // If the map has moved significantly from the last search position, show the "Search this area" button
+    if (lastSearchRegion) {
+      const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
+      const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
+      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
+      
+      // Show button if the map has moved more than 25% of the visible area
+      if (latChange > lastSearchRegion.latitudeDelta * 0.25 || 
+          lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
+          deltaChange > lastSearchRegion.latitudeDelta * 0.25) {
+        setShowSearchThisArea(true);
+      }
+    }
   };
 
   if (isLoading) {
@@ -282,32 +513,24 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
   return (
     <View style={styles.container}>
-      {/* Brooklyn mode toggle button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={[styles.button, isBrooklynMode ? styles.activeButton : {}]}
-          onPress={loadAllBrooklynPizzaPlaces}
-        >
-          <Text style={[styles.buttonText, isBrooklynMode ? styles.activeButtonText : {}]}>Brooklyn Pizza</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.button, !isBrooklynMode ? styles.activeButton : {}]}
-          onPress={() => location ? findNearbyPizzaPlaces(location.coords.latitude, location.coords.longitude) : null}
-          disabled={!location}
-        >
-          <Text style={[styles.buttonText, !isBrooklynMode ? styles.activeButtonText : {}]}>Nearby Pizza</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Buttons removed */}
       
-      {/* Pizza count indicator */}
-      <View style={styles.countContainer}>
-        <Text style={styles.countText}>
-          {isSearchingPlaces ? 'Loading...' : `${filteredPizzaPlaces.length} Pizza Restaurants`}
-        </Text>
-      </View>
+      {/* Search this area button */}
+      {showSearchThisArea && !isSearchingPlaces && (
+        <View style={styles.searchThisAreaContainer}>
+          <TouchableOpacity 
+            style={styles.searchThisAreaButton}
+            onPress={() => searchWithinVisibleArea(region)}
+          >
+            <Text style={styles.searchThisAreaText}>Search this area</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
+      {/* Pizza count indicator removed */}
       
       <MapView
+        ref={mapRef}
         style={styles.map}
         initialRegion={region}
         onRegionChangeComplete={onRegionChange}
@@ -316,37 +539,25 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         rotateEnabled={true}
         pitchEnabled={true}
         zoomControlEnabled={true}
+        userInterfaceStyle="dark"
       >
-        {/* User's current location marker and 5-mile radius circle */}
+        {/* User's current location marker */}
         {location && (
-          <>
-            <Circle 
-              center={{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }}
-              radius={8047} // 5 miles in meters
-              strokeWidth={2}
-              strokeColor="rgba(65, 105, 225, 0.5)"
-              fillColor="rgba(65, 105, 225, 0.1)"
-            />
-            <Marker
-              coordinate={{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }}
-              title="You are here"
-              description="Your current location"
-              pinColor="blue"
-            >
-              <Callout tooltip>
-                <View style={tw`bg-white p-2 rounded-lg shadow-md w-40`}>
-                  <Text style={tw`font-bold text-sm text-blue-600`}>Your Location</Text>
-                  <Text style={tw`text-xs mt-1`}>The circle shows a 5-mile radius</Text>
-                </View>
-              </Callout>
-            </Marker>
-          </>
+          <Marker
+            coordinate={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            }}
+            title="You are here"
+            description="Your current location"
+            pinColor="blue"
+          >
+            <Callout tooltip>
+              <View style={tw`bg-white p-2 rounded-lg shadow-md w-40`}>
+                <Text style={tw`font-bold text-sm text-blue-600`}>Your Location</Text>
+              </View>
+            </Callout>
+          </Marker>
         )}
         
         {/* Pizza place markers - use animatedPizzaPlaces for Brooklyn mode, filteredPizzaPlaces for normal mode */}
@@ -363,13 +574,14 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             onPress={() => {
               // Trigger haptic feedback when a pizza place is selected
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              
               setSelectedPlace(place);
               setBottomSheetVisible(true);
             }}
           >
             <PizzaMarker 
               size={30} 
-              color="#FF5252" 
+              color="#000" 
               animated={isBrooklynMode} 
             />
           </Marker>
@@ -384,17 +596,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         </View>
       )}
       
-      {/* Display count of found pizza places */}
-      {filteredPizzaPlaces.length > 0 && (
-        <View style={tw`absolute top-4 left-4 bg-white p-2 rounded-lg shadow-md`}>
-          <Text style={tw`text-sm font-bold`}>
-            Found {filteredPizzaPlaces.length} pizza places
-          </Text>
-          <Text style={tw`text-xs text-gray-600`}>
-            Blue circle: 1-mile radius
-          </Text>
-        </View>
-      )}
+      {/* Pizza place count display removed */}
       
       {/* Bottom sheet for pizza place details */}
       <PizzaPlaceBottomSheet 
@@ -418,52 +620,28 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  buttonContainer: {
+  /* Button styles removed */
+  /* Count container styles removed */
+  searchThisAreaContainer: {
     position: 'absolute',
-    top: 10,
-    left: 10,
-    right: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    zIndex: 1,
+    top: 70,
+    alignSelf: 'center',
+    zIndex: 2,
   },
-  button: {
-    backgroundColor: 'white',
+  searchThisAreaButton: {
+    backgroundColor: '#111',
     paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     borderRadius: 20,
-    elevation: 3,
+    elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    marginHorizontal: 5,
-    flex: 1,
-    alignItems: 'center',
+    shadowOpacity: 0.45,
+    shadowRadius: 3.84,
   },
-  activeButton: {
-    backgroundColor: '#FF5A5F',
-  },
-  buttonText: {
-    color: '#333',
-    fontWeight: 'bold',
-  },
-  activeButtonText: {
-    color: 'white',
-  },
-  countContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    zIndex: 1,
-  },
-  countText: {
-    color: 'white',
-    fontWeight: 'bold',
+  searchThisAreaText: {
+    color: '#FF5A5F',
+    // fontWeight: 'bold',
     fontSize: 14,
   },
 });

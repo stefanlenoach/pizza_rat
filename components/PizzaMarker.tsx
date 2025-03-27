@@ -13,7 +13,7 @@ interface PizzaMarkerProps {
 const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   size = 30,
   color = '#FF6B6B',
-  backgroundColor = '#FFFFFF',
+  backgroundColor = '#222',
   animated = false
 }) => {
   // Animation values

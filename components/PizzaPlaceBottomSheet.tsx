@@ -139,13 +139,13 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           <View style={tw`flex-row items-center mb-2`}>
             {renderRatingScore(place.rating || 0)}
             <Text style={tw`ml-2 text-gray-600`}>
-              ({place.user_ratings_total || 0} reviews)
+              (<Text>{place.user_ratings_total || 0}</Text> reviews)
             </Text>
           </View>
           
           {place.price_level && (
             <Text style={tw`text-sm mb-2`}>
-              Price: {"$".repeat(place.price_level)}
+              Price: <Text>{"$".repeat(place.price_level)}</Text>
             </Text>
           )}
           
@@ -182,7 +182,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           
           <View style={tw`flex-row justify-between items-center mb-4 px-4`}>
             <Text style={tw`text-lg font-bold`}>Reviews</Text>
-            <Text style={tw`text-gray-500`}>{reviews.length} reviews</Text>
+            <Text style={tw`text-gray-500`}><Text>{reviews.length}</Text> reviews</Text>
           </View>
           
           {/* Reviews List */}
