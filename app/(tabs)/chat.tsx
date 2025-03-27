@@ -305,9 +305,9 @@ export default function ChatScreen() {
         </View>
       )}
       <View style={tw`flex-1`}>
-        <View style={tw`flex-row justify-between`}>
-          <Subheading style={tw`text-sm`}>{renderPlaceName(item.placeId)}</Subheading>
-          <Caption>{moment(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</Caption>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Subheading style={tw`text-sm flex-1 mr-2`}>{renderPlaceName(item.placeId)}</Subheading>
+          <Caption style={tw`text-xs flex-shrink-0`}>{moment(item.created_at).format('MM/DD HH:mm')}</Caption>
         </View>
         <Paragraph 
           style={tw`text-gray-600 mt-1`} 
