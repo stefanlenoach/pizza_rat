@@ -27,6 +27,8 @@ const BROOKLYN_COORDS = {
   longitudeDelta: 0.1,
 };
 
+// We're using userInterfaceStyle="dark" instead of custom styling
+
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;
@@ -43,6 +45,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false);
+  
+
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
@@ -535,6 +539,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         rotateEnabled={true}
         pitchEnabled={true}
         zoomControlEnabled={true}
+        userInterfaceStyle="dark"
       >
         {/* User's current location marker */}
         {location && (
@@ -569,13 +574,14 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             onPress={() => {
               // Trigger haptic feedback when a pizza place is selected
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              
               setSelectedPlace(place);
               setBottomSheetVisible(true);
             }}
           >
             <PizzaMarker 
               size={30} 
-              color="#FF5252" 
+              color="#000" 
               animated={isBrooklynMode} 
             />
           </Marker>
@@ -623,19 +629,19 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   searchThisAreaButton: {
-    backgroundColor: 'white',
+    backgroundColor: '#111',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.45,
     shadowRadius: 3.84,
   },
   searchThisAreaText: {
     color: '#FF5A5F',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 14,
   },
 });
