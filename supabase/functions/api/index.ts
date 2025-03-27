@@ -8,26 +8,30 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 import process from "node:process"; 
 
 const app = express()
- 
+
+// Add middleware to parse JSON bodies
+app.use(express.json())
  
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseSecret = process.env.EXPO_PUBLIC_SUPABASE_SECRET_KEY
-const spotifyKey = process.env.SPOTIFY_API_KEY
 
 const supabase = createClient(supabaseUrl, supabaseSecret);
 
 app.post('/api/delete-user', async (req:any, res:any) => {
   try{ 
+    if (!req.body || !req.body.userId) {
+      return res.status(400).json({ status: 'Error', message: 'userId is required' });
+    }
     const { data, error } = await supabase.auth.admin.deleteUser(req.body.userId)
- 
-    res.json({ status: 'Process Done',data  }) 
+    
+    if (error) {
+      return res.status(400).json({ status: 'Error', message: error.message });
+    }
+    res.json({ status: 'Process Done', data  }) 
   } catch (ex:any) {
     console.log("delete-user",ex.message)
-    res.json({ status: 'Error', message: ex.message })
-  } finally {
-    return
+    res.status(500).json({ status: 'Error', message: ex.message })
   }
-  
 })
 
  
