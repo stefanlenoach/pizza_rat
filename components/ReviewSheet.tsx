@@ -22,16 +22,22 @@ interface ReviewSheetProps {
   onClose: () => void;
   onSubmit: (rating: number, comment: string) => void;
   placeName: string;
+  initialRating?: number;
+  initialComment?: string;
+  isEditMode?: boolean;
 }
 
 const ReviewSheet: React.FC<ReviewSheetProps> = ({
   visible,
   onClose,
   onSubmit,
-  placeName
+  placeName,
+  initialRating = 7.0,
+  initialComment = '',
+  isEditMode = false
 }) => {
-  const [rating, setRating] = useState(7.0);
-  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(initialRating);
+  const [comment, setComment] = useState(initialComment);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').height)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -88,6 +94,14 @@ const ReviewSheet: React.FC<ReviewSheetProps> = ({
     }
   }, [visible, slideAnim, fadeAnim]);
 
+  // Reset form when sheet becomes visible
+  useEffect(() => {
+    if (visible) {
+      setRating(initialRating);
+      setComment(initialComment);
+    }
+  }, [visible, initialRating, initialComment]);
+
   // Increment rating by 0.1 with haptic feedback
   const incrementRating = () => {
     if (rating < 10.0) {
@@ -124,12 +138,14 @@ const ReviewSheet: React.FC<ReviewSheetProps> = ({
 
   // Handle review submission with haptic feedback
   const handleSubmit = () => {
+    if (!isEditMode && !comment.trim()) {
+      // Only require comment for new reviews
+      return;
+    }
     // Provide success haptic feedback
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     
     onSubmit(rating, comment);
-    setRating(7.0);
-    setComment('');
     onClose();
   };
 
@@ -240,6 +256,7 @@ const ReviewSheet: React.FC<ReviewSheetProps> = ({
                 returnKeyType="done"
                 blurOnSubmit={true}
                 onSubmitEditing={dismissKeyboard}
+                editable={!isEditMode} // Disable editing if in edit mode
               />
               <Text style={tw`text-xs text-gray-500 mt-1 text-right mr-2`}>Tap outside to dismiss keyboard</Text>
             </View>
@@ -250,7 +267,9 @@ const ReviewSheet: React.FC<ReviewSheetProps> = ({
                 style={tw`bg-red-600 py-4 rounded-xl items-center justify-center`}
                 onPress={handleSubmit}
               >
-                <Text style={tw`text-white font-bold text-lg`}>Submit Review</Text>
+                <Text style={tw`text-white font-bold text-lg`}>
+                  {isEditMode ? 'Update Rating' : 'Submit Review'}
+                </Text>
               </TouchableOpacity>
             </View>
 

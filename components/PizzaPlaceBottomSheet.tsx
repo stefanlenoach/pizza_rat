@@ -1,18 +1,30 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Text, Heading, Subheading, Paragraph, Caption } from '@/components/CustomText';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import tw from '@/utils/tw';
 import { PlaceResult } from '@/utils/placesApi';
-import { Review, getReviewsForPlace, addReview } from '@/utils/mockReviewsData';
+import { getReviewsForPlace } from '@/utils/mockReviewsData';
 import { AntDesign } from '@expo/vector-icons';
 import ReviewSheet from './ReviewSheet';
 import { router } from 'expo-router';
+import { supabase } from '@/lib/supabase';
 
 interface PizzaPlaceBottomSheetProps {
   place: PlaceResult | null;
   isVisible: boolean;
   onClose: () => void;
+}
+
+interface Review {
+  id: string;
+  placeId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  userProfilePic: string;
+  date: string;
 }
 
 const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
@@ -23,16 +35,70 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewSheetVisible, setReviewSheetVisible] = useState(false);
+  const [userReview, setUserReview] = useState<Review | null>(null);
 
   // Snappoints for the bottom sheet (percentage of screen height)
   const snapPoints = useMemo(() => ['25%', '50%', '85%'], []);
 
-  // Load reviews when place changes
-  React.useEffect(() => {
-    if (place) {
-      const placeReviews = getReviewsForPlace(place.place_id);
-      setReviews(placeReviews);
-    }
+  // Load initial reviews
+  useEffect(() => {
+    const loadReviews = async () => {
+      if (!place) return;
+      
+      // Clear previous user review when place changes
+      setUserReview(null);
+      
+      try {
+        // Get current user's session
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        // Fetch reviews from Supabase
+        const { data: reviewData, error } = await supabase
+          .from('Review')
+          .select(`
+            *,
+            Users!userId (
+              name,
+              email
+            )
+          `)
+          .eq('placeId', place.place_id)
+          .order('createdAt', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching reviews:', error);
+          return;
+        }
+
+        // Transform the data to match our Review interface
+        const transformedReviews: Review[] = (reviewData || []).map(review => {
+          const user = Array.isArray(review.Users) ? review.Users[0] : review.Users;
+          const transformedReview = {
+            id: review.id,
+            placeId: review.placeId,
+            userId: review.userId,
+            userName: user?.name || user?.email || 'Anonymous',
+            rating: review.rate,
+            comment: review.content,
+            userProfilePic: user?.avatar || '',
+            date: review.createdAt
+          };
+
+          // Store user's review if found
+          if (session?.user && review.userId === session.user.id) {
+            setUserReview(transformedReview);
+          }
+
+          return transformedReview;
+        });
+
+        setReviews(transformedReviews);
+      } catch (error) {
+        console.error('Error loading reviews:', error);
+      }
+    };
+
+    loadReviews();
   }, [place]);
 
   // Handle sheet changes
@@ -54,23 +120,82 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
     []
   );
 
-  // Submit a new review
-  const handleSubmitReview = (rating: number, comment: string) => {
+  // Submit or update a review
+  const handleSubmitReview = async (rating: number, comment: string) => {
     if (!place) return;
     
-    // In a real app, we would get the user's name from their profile
-    // For now, we'll use a placeholder name
-    const userName = "Pizzarat User"; // This would come from user profile in a real app
-    
-    const newReview = addReview({
-      placeId: place.place_id,
-      userName,
-      rating: rating / 2, // Convert from 10-point scale to 5-point scale for consistency with existing data
-      comment,
-      userProfilePic: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 50)}.jpg`
-    });
-    
-    setReviews([newReview, ...reviews]);
+    try {
+      // Get the current user's session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        console.error('User must be logged in to submit a review');
+        return;
+      }
+
+      if (userReview) {
+        // Update existing review's rating
+        const { data: updatedReview, error } = await supabase
+          .from('Review')
+          .update({
+            rate: rating / 2, // Convert from 10-point scale to 5-point scale
+            updatedAt: new Date().toISOString()
+          })
+          .eq('id', userReview.id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating review:', error);
+          return;
+        }
+
+        // Update the reviews list with the updated rating
+        setReviews(reviews.map(review => 
+          review.id === userReview.id 
+            ? { ...review, rating: rating / 2 }
+            : review
+        ));
+
+        setUserReview(prev => prev ? { ...prev, rating: rating / 2 } : null);
+      } else {
+        // Insert new review
+        const { data: newReview, error } = await supabase
+          .from('Review')
+          .insert({
+            id: new Date().getTime(),
+            rate: rating / 2,
+            content: comment,
+            placeId: place.place_id,
+            userId: session.user.id,
+            updatedAt: new Date().toISOString()
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error submitting review:', error);
+          return;
+        }
+
+        // Add the new review to the list
+        if (newReview) {
+          const reviewWithUser = {
+            id: newReview.id,
+            placeId: newReview.placeId,
+            userId: session.user.id,
+            userName: session.user.email || 'Anonymous',
+            rating: rating / 2,
+            comment,
+            userProfilePic: '',
+            date: newReview.createdAt
+          };
+          setReviews([reviewWithUser, ...reviews]);
+          setUserReview(reviewWithUser);
+        }
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
   };
 
   // Render rating score
@@ -92,28 +217,71 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
     );
   };
 
-  // No longer needed as we're using the ReviewSheet component
+  // Get initials from email or name
+  const getInitials = (name: string) => {
+    if (!name || name === 'Anonymous') return 'A';
+    return name
+      .split('@')[0] // Get part before @ in email
+      .split(/\s+/) // Split by whitespace
+      .map(word => word[0]?.toUpperCase() || '') // Get first letter of each word
+      .slice(0, 2) // Take first two initials
+      .join(''); // Join them together
+  };
+
+  // Render a circular profile with initials
+  const ProfileCircle = ({ name, size = 40 }: { name: string; size?: number }) => {
+    const initials = getInitials(name);
+    const bgColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
+    // Use a hash of the name to consistently pick a color
+    const colorIndex = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % bgColors.length;
+    const bgColor = bgColors[colorIndex];
+
+    return (
+      <View
+        style={[
+          tw`rounded-full items-center justify-center`,
+          {
+            width: size,
+            height: size,
+            backgroundColor: bgColor
+          }
+        ]}
+      >
+        <Text style={tw`text-white font-bold text-base`}>{initials}</Text>
+      </View>
+    );
+  };
 
   // Render a review item
   const renderReviewItem = ({ item }: { item: Review }) => (
     <View style={tw`p-4 border-b border-gray-200`}>
       <View style={tw`flex-row items-center mb-2`}>
-        {item.userProfilePic && (
-          <Image
-            source={{ uri: item.userProfilePic }}
-            style={tw`w-10 h-10 rounded-full mr-3`}
-          />
-        )}
-        <View>
-          <Text style={tw`font-bold text-base`}>{item.userName}</Text>
-          <View style={tw`flex-row items-center`}>
-            {renderRatingScore(item.rating)}
-            <Text style={tw`text-xs text-gray-500 ml-2`}>{item.date}</Text>
-          </View>
+        <ProfileCircle name={item.userName} size={40} />
+        <View style={tw`ml-3 flex-1`}>
+          <Text style={tw`font-bold text-base text-gray-800`}>{item.userName}</Text>
+          <Text style={tw`text-sm text-gray-500`}>
+            {new Date(item.date).toLocaleDateString()}
+          </Text>
         </View>
+        {renderRatingScore(item.rating)}
       </View>
-      <Text style={tw`text-sm text-gray-700`}>{item.comment}</Text>
+      <Text style={tw`text-gray-700 mt-1`}>{item.comment}</Text>
     </View>
+  );
+
+  // Render review button or edit rating based on whether user has already reviewed
+  const renderReviewButton = () => (
+    <TouchableOpacity 
+      style={tw`bg-red-600 py-3 px-6 rounded-xl w-4/5 mb-3`}
+      onPress={() => setReviewSheetVisible(true)}
+    >
+      <View style={tw`flex-row items-center justify-center`}>
+        <AntDesign name={userReview ? "edit" : "star"} size={20} color="#FFFFFF" style={tw`mr-2`} />
+        <Text style={tw`text-white font-bold text-lg`}>
+          {userReview ? "EDIT RATING" : "WRITE REVIEW"}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
   // If no place is selected, don't render anything
@@ -159,14 +327,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         {/* Review Section */}
         <View style={tw`p-4 border-b border-gray-200`}>
           <View style={tw`items-center mb-6 mt-2`}>
-            <TouchableOpacity 
-              style={tw`bg-red-600 py-3 px-6 rounded-xl w-4/5 mb-3`}
-              onPress={() => setReviewSheetVisible(true)}
-            >
-              <Text style={tw`text-white font-bold text-center text-lg`}>
-                LEAVE A REVIEW
-              </Text>
-            </TouchableOpacity>
+            {renderReviewButton()}
             <TouchableOpacity 
               style={tw`bg-blue-600 py-3 px-6 rounded-xl w-4/5`}
               onPress={() => router.push({
@@ -206,7 +367,10 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         visible={reviewSheetVisible}
         onClose={() => setReviewSheetVisible(false)}
         onSubmit={handleSubmitReview}
-        placeName={place?.name || ''}
+        placeName={place.name}
+        initialRating={userReview ? userReview.rating * 2 : 7.0} 
+        initialComment={userReview?.comment || ''}
+        isEditMode={!!userReview}
       />
     </BottomSheet>
   );
