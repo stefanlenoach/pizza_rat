@@ -58,10 +58,62 @@ export default function ChatScreen() {
   }, [activeChat]);
   
   // Load chat groups when component mounts
-  useEffect(() => {  
+  useEffect(() => {
     loadChatGroups();
-  }, [placeId]);
- 
+  }, []);
+
+  // Real-time subscription for chat groups
+  useEffect(() => {
+    const chatGroupsSubscription = supabase
+      .channel('chat-groups')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'Chats'
+      }, (payload) => {
+        // Reload chat groups when there's any change
+        loadChatGroups();
+      })
+      .subscribe();
+
+    return () => {
+      chatGroupsSubscription.unsubscribe();
+    };
+  }, []);
+
+  // Real-time subscription for messages in active chat
+  useEffect(() => {
+    if (!activeChat?.placeId) return;
+
+    const messagesSubscription = supabase
+      .channel(`messages-${activeChat.placeId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'ChatMessages',
+        filter: `placeId=eq.${activeChat.placeId}`
+      }, (payload) => {
+        if (payload.eventType === 'INSERT') {
+          const newMessage = {
+            ...payload.new,
+            timestamp: moment(payload.new.created_at).format('YYYY-MM-DD HH:mm:ss'),
+            isCurrentUser: payload.new.senderId === userDetails?.user_id
+          };
+          setMessages(prevMessages => [...prevMessages, newMessage]);
+          
+          // Scroll to bottom for new messages
+          requestAnimationFrame(() => {
+            flatListRef.current?.scrollToEnd({ animated: true });
+          });
+        }
+      })
+      .subscribe();
+
+    return () => {
+      messagesSubscription.unsubscribe();
+    };
+  }, [activeChat?.placeId]);
+
   const loadChatGroups = async () => {
     try {
       setIsLoading(true);
@@ -88,9 +140,6 @@ export default function ChatScreen() {
           setActiveChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || '' });
           openChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || ''  });
         } 
-        
-       
-        
       } else {
         const { data: groups } = await supabase.from('Chats').select('*').order('timestamp', { ascending: false });
         setChatGroups(groups || []);
@@ -159,29 +208,9 @@ export default function ChatScreen() {
     setInputText(''); // Clear input immediately for better UX
     
     try {
-      // Optimistically add message to UI
-      const id = Date.now().toString()
-      const optimisticMessage: ChatMessage = {
-        id,
-        text: messageText,
-        sender: userDetails?.name || '',
-        senderId: userDetails?.user_id || '', // Current user ID
-        timestamp: 'Sending...',
-        avatar: userDetails?.avatar || '',
-        isCurrentUser: true
-      };
-      
-      setMessages(prevMessages => [...prevMessages, optimisticMessage]);
-      
-      // Scroll to the bottom immediately
-      requestAnimationFrame(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      });
-      
       // Send message to the API
       const timestamp = new Date().toISOString();
       const { error } = await supabase.from('ChatMessages').insert({
-        id, 
         text: messageText,
         senderId: userDetails?.user_id || '',
         sender: userDetails?.name || '',
@@ -190,62 +219,36 @@ export default function ChatScreen() {
         placeId: activeChat.placeId
       });
 
+      if (error) throw error;
 
+      // Update the chat's last message
       await supabase.from('Chats').upsert({
         placeId: activeChat.placeId,
         lastMessage: messageText, 
         timestamp: new Date().toISOString()
-      },{
+      }, {
         onConflict: 'placeId'
       });
- 
-      if (!error) {
-        // Update message with actual timestamp
-        setMessages(prevMessages => {
-          return prevMessages.map(msg => {
-            if(msg.id === optimisticMessage.id) {
-              return {
-                ...msg,
-                timestamp: moment(timestamp).format('YYYY-MM-DD HH:mm:ss'),
-                isCurrentUser: true
-              }
-            }
-            return msg 
-          })
-        });
-        
-        // Update the chat group's last message
-        const updatedGroups = chatGroups.map(group => {
-          if (group.id === activeChat.id) {
-            return {
-              ...group,
-              lastMessage: messageText,
-              timestamp: 'Just now'
-            };
-          }
-          return group;
-        });
-        
-        setChatGroups(updatedGroups);
-      }
     } catch (error) {
       console.error('Error sending message:', error);
       // Show error state or retry option
-      // Remove the optimistic message if it failed
     } finally {
       setIsSending(false);
     }
   };
 
   const openChat = async (chatGroup: ChatGroup) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    
-    // Start transition animation immediately
     setActiveChat(chatGroup);
+    
+    // Update URL params
+    router.push({
+      pathname: '/(tabs)/chat',
+      params: { placeId: chatGroup.placeId }
+    });
     
     // Mark as read
     const updatedGroups = chatGroups.map(group => {
-      if (group.id === chatGroup.id) {
+      if (group.placeId === chatGroup.placeId) {
         return { ...group, unread: 0 };
       }
       return group;
@@ -435,11 +438,6 @@ export default function ChatScreen() {
     opacity: slideAnim
   };
 
-  // console.log('chatGroups',chatGroups)
-  // console.log('activeChat',activeChat)
-  // console.log('messages',messages)
-  // console.log('placeId',placeId)
-  // console.log('keyboardVisible',keyboardVisible)
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <StatusBar style="dark" />
