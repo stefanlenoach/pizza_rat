@@ -509,7 +509,7 @@ export default function ChatScreen() {
                 <View style={tw`flex-1`}>
                   <Subheading>{renderPlaceName(activeChat.placeId)}</Subheading>
                   <Caption>
-                    {chatGroups.length} members
+                    {new Set(messages.map(msg => msg.senderId)).size}{" "} member/s
                   </Caption>
                 </View>
                 <TouchableOpacity style={tw`ml-2 mr-4`}>
