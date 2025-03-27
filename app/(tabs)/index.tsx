@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Platform, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HelloWave } from '@/components/HelloWave';
 import PizzaRatHeader from '@/components/PizzaRatHeader';
@@ -14,9 +15,33 @@ import tw from '@/utils/tw';
 export default function HomeScreen() {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      try {
+        const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
+        if (!hasSeenOnboarding) {
+          setShowOnboarding(true);
+        }
+      } catch (error) {
+        console.error('Error checking onboarding status:', error);
+      }
+    };
+    
+    checkOnboarding();
+  }, []);
+
   const handleOpenOnboarding = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setShowOnboarding(true);
+  };
+
+  const handleCloseOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+      setShowOnboarding(false);
+    } catch (error) {
+      console.error('Error saving onboarding status:', error);
+    }
   };
 
   return (
@@ -42,7 +67,7 @@ export default function HomeScreen() {
       {/* Onboarding Flow */}
       <OnboardingFlow 
         visible={showOnboarding} 
-        onClose={() => setShowOnboarding(false)} 
+        onClose={handleCloseOnboarding} 
       />
     </View>
   );
