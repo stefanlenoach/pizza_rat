@@ -25,6 +25,7 @@ import { supabase } from '@/lib/supabase';
 import { mockPizzaPlaces } from '@/utils/mockPizzaData'; 
 import moment from 'moment'
 import { useUser } from '@/contexts/UserContext';
+import { loadBrooklynPizzaData } from '@/utils/brooklynPizzaData';  
 
  
 export default function ChatScreen() {
@@ -40,6 +41,7 @@ export default function ChatScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const inputRef = useRef<TextInput>(null);
+  const [brooklynPizzaData, setBrooklynPizzaData] = useState([]);
   
   const flatListRef = useRef<any>(null);
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -63,6 +65,8 @@ export default function ChatScreen() {
   const loadChatGroups = async () => {
     try {
       setIsLoading(true);
+      let brooklynPizzaData = await loadBrooklynPizzaData();  
+      setBrooklynPizzaData(brooklynPizzaData.places);
       // If placeId is provided, load specific chat group
       if (placeId) {
         setMessages([]);
@@ -78,11 +82,11 @@ export default function ChatScreen() {
             useNativeDriver: true,
             easing: Easing.inOut(Easing.ease)
           }).start();
-        } else {
-          const placeGroup = mockPizzaPlaces.find(place => place.id === placeId); 
+        } else { 
+          const placeGroup = mockPizzaPlaces.concat(brooklynPizzaData.places).find(place => place.id === placeId); 
           setChatGroups(groups || []);
-          setActiveChat({ placeId, name: placeGroup?.name || '' });
-          openChat({ placeId, name: placeGroup?.name || ''  });
+          setActiveChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || '' });
+          openChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || ''  });
         } 
         
        
@@ -277,6 +281,11 @@ export default function ChatScreen() {
     router.replace('/(tabs)/chat');
   };
 
+  const renderPlaceName = (placeId: string) => {
+    const place = mockPizzaPlaces.concat(brooklynPizzaData).find(p => p.id === placeId);
+    return place?.name || place?.displayName?.text || "(Deleted Place)";
+  };
+ 
   const renderChatGroup = ({ item }: { item: ChatGroup }) => (
     <TouchableOpacity 
       style={tw`flex-row items-center p-4 border-b border-gray-200`}
@@ -290,14 +299,14 @@ export default function ChatScreen() {
       ) : (
         <View style={tw`mr-3`}>
           <AvatarCircle 
-            name={mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name } 
+            name={renderPlaceName(item.placeId)} 
             size={48} 
           />
         </View>
       )}
       <View style={tw`flex-1`}>
         <View style={tw`flex-row justify-between`}>
-          <Subheading style={tw`text-sm`}>{ mockPizzaPlaces.find(p => p.id === item.placeId)?.name || item.name || "(Deleted Place)"}</Subheading>
+          <Subheading style={tw`text-sm`}>{renderPlaceName(item.placeId)}</Subheading>
           <Caption>{moment(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</Caption>
         </View>
         <Paragraph 
@@ -494,11 +503,11 @@ export default function ChatScreen() {
                   />
                 ) : (
                   <View style={tw`mr-3`}>
-                    <AvatarCircle name={mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name} />
+                    <AvatarCircle name={renderPlaceName(activeChat.placeId)} />
                   </View>
                 )}
                 <View style={tw`flex-1`}>
-                  <Subheading>{mockPizzaPlaces.find(p => p.id === activeChat.placeId)?.name || activeChat.name|| "(Deleted Place)"}</Subheading>
+                  <Subheading>{renderPlaceName(activeChat.placeId)}</Subheading>
                   <Caption>
                     {chatGroups.length} members
                   </Caption>
