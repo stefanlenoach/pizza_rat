@@ -21,7 +21,7 @@ interface Review {
   placeId: string;
   userId: string;
   userName: string;
-  rating: number;
+  rate: number;
   comment: string;
   userProfilePic: string;
   date: string;
@@ -36,70 +36,90 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewSheetVisible, setReviewSheetVisible] = useState(false);
   const [userReview, setUserReview] = useState<Review | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Snappoints for the bottom sheet (percentage of screen height)
   const snapPoints = useMemo(() => ['25%', '50%', '85%'], []);
 
-  // Load initial reviews
-  useEffect(() => {
-    const loadReviews = async () => {
-      if (!place) return;
+  // Fetch reviews for the current place
+  const fetchReviews = async () => {
+    if (!place?.place_id) return;
+    
+    setIsLoading(true);
+    try {
+      // Get current user's session
+      const { data: { session } } = await supabase.auth.getSession();
       
-      // Clear previous user review when place changes
-      setUserReview(null);
-      
-      try {
-        // Get current user's session
-        const { data: { session } } = await supabase.auth.getSession();
+      const { data: reviewsData, error } = await supabase
+        .from('Review')
+        .select(`
+          *,
+          Users (
+            id,
+            email,
+            name,
+            avatar
+          )
+        `)
+        .eq('placeId', place.place_id)
+        .order('createdAt', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching reviews:', error);
+        return;
+      }
+
+      // Transform the data to match our Review type
+      const transformedReviews = await Promise.all((reviewsData || []).map(async (review) => {
+        const user = review.Users;
         
-        // Fetch reviews from Supabase
-        const { data: reviewData, error } = await supabase
-          .from('Review')
-          .select(`
-            *,
-            Users!userId (
-              name,
-              email
-            )
-          `)
-          .eq('placeId', place.place_id)
-          .order('createdAt', { ascending: false });
-
-        if (error) {
-          console.error('Error fetching reviews:', error);
-          return;
-        }
-
-        // Transform the data to match our Review interface
-        const transformedReviews: Review[] = (reviewData || []).map(review => {
-          const user = Array.isArray(review.Users) ? review.Users[0] : review.Users;
-          const transformedReview = {
+        // Find the user's review
+        if (session?.user?.id === review.userId) {
+          setUserReview({
             id: review.id,
             placeId: review.placeId,
             userId: review.userId,
             userName: user?.name || user?.email || 'Anonymous',
-            rating: review.rate,
+            rate: review.rate,
             comment: review.content,
             userProfilePic: user?.avatar || '',
             date: review.createdAt
-          };
+          });
+        }
 
-          // Store user's review if found
-          if (session?.user && review.userId === session.user.id) {
-            setUserReview(transformedReview);
-          }
+        return {
+          id: review.id,
+          placeId: review.placeId,
+          userId: review.userId,
+          userName: user?.name || user?.email || 'Anonymous',
+          rate: review.rate,
+          comment: review.content,
+          userProfilePic: user?.avatar || '',
+          date: review.createdAt
+        };
+      }));
 
-          return transformedReview;
-        });
+      setReviews(transformedReviews);
+    } catch (error) {
+      console.error('Error in fetchReviews:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        setReviews(transformedReviews);
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-      }
+  // Fetch reviews when place changes
+  useEffect(() => {
+    if (place?.place_id) {
+      fetchReviews();
+    }
+    
+    // Cleanup function to clear reviews when component unmounts or place changes
+    return () => {
+      setReviews([]);
+      setUserReview(null);
+      setIsLoading(false);
     };
-
-    loadReviews();
-  }, [place]);
+  }, [place?.place_id]);
 
   // Handle sheet changes
   const handleSheetChanges = useCallback((index: number) => {
@@ -152,11 +172,11 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         // Update the reviews list with the updated rating
         setReviews(reviews.map(review => 
           review.id === userReview.id 
-            ? { ...review, rating: rating / 2 }
+            ? { ...review, rate: rating / 2 }
             : review
         ));
 
-        setUserReview(prev => prev ? { ...prev, rating: rating / 2 } : null);
+        setUserReview(prev => prev ? { ...prev, rate: rating / 2 } : null);
       } else {
         // Insert new review
         const { data: newReview, error } = await supabase
@@ -184,7 +204,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
             placeId: newReview.placeId,
             userId: session.user.id,
             userName: session.user.email || 'Anonymous',
-            rating: rating / 2,
+            rate: rating / 2,
             comment,
             userProfilePic: '',
             date: newReview.createdAt
@@ -215,6 +235,13 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         <Text style={tw`text-gray-500 text-sm`}>/ 10.0</Text>
       </View>
     );
+  };
+
+  // Calculate average rating from fetched reviews
+  const calculateAverageRating = (reviews: any[]) => {
+    if (!reviews || reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc, review) => acc + review.rate, 0);
+    return Number((sum / reviews.length).toFixed(1)); // Round to 1 decimal place
   };
 
   // Get initials from email or name
@@ -263,7 +290,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
             {new Date(item.date).toLocaleDateString()}
           </Text>
         </View>
-        {renderRatingScore(item.rating)}
+        {renderRatingScore(item.rate)}
       </View>
       <Text style={tw`text-gray-700 mt-1`}>{item.comment}</Text>
     </View>
@@ -289,6 +316,8 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
     return null;
   }
 
+  const averageRating = calculateAverageRating(reviews);
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -305,9 +334,9 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
           
           <View style={tw`flex-row items-center mb-2`}>
-            {renderRatingScore(place.rating || 0)}
+            {renderRatingScore(averageRating)}
             <Text style={tw`ml-2 text-gray-600`}>
-              (<Text>{place.user_ratings_total || 0}</Text> reviews)
+              (<Text>{reviews?.length || 0}</Text> reviews)
             </Text>
           </View>
           
@@ -368,7 +397,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         onClose={() => setReviewSheetVisible(false)}
         onSubmit={handleSubmitReview}
         placeName={place.name}
-        initialRating={userReview ? userReview.rating * 2 : 7.0} 
+        initialRating={userReview ? userReview.rate * 2 : 7.0} 
         initialComment={userReview?.comment || ''}
         isEditMode={!!userReview}
       />
