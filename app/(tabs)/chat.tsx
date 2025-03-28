@@ -60,7 +60,7 @@ export default function ChatScreen() {
   // Load chat groups when component mounts
   useEffect(() => {
     loadChatGroups();
-  }, []);
+  }, [placeId]);
 
   // Real-time subscription for chat groups
   useEffect(() => {
