@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated } from 'react-native';
 import { Text } from '@/components/CustomText';
 import MapView, { Marker, Region, Callout, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -10,6 +10,7 @@ import { filterPizzaPlaces } from '@/utils/filterUtils';
 import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
 import { getAllBrooklynPizzaPlaces, getNearbyBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
+import { supabase } from '@/lib/supabase';
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS = {
@@ -50,6 +51,46 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
+
+  const [userReviewedPlaces, setUserReviewedPlaces] = useState<Set<string>>(new Set());
+
+  // Load user's reviewed places
+  useEffect(() => {
+    const loadUserReviews = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return;
+
+        const { data: reviewData } = await supabase
+          .from('Review')
+          .select('placeId')
+          .eq('userId', session.user.id);
+
+        if (reviewData) {
+          setUserReviewedPlaces(new Set(reviewData.map((review: { placeId: string }) => review.placeId)));
+        }
+      } catch (error) {
+        console.error('Error loading user reviews:', error);
+      }
+    };
+
+    loadUserReviews();
+  }, []);
+
+  // Refresh user reviews when a new review is added
+  const refreshUserReviews = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const { data: reviewData } = await supabase
+      .from('Review')
+      .select('placeId')
+      .eq('userId', session.user.id);
+
+    if (reviewData) {
+      setUserReviewedPlaces(new Set(reviewData.map((review: { placeId: string }) => review.placeId)));
+    }
+  };
 
   // Apply filters whenever filter options or pizza places change
   useEffect(() => {
@@ -580,8 +621,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             }}
           >
             <PizzaMarker 
-              size={30} 
-              color="#000" 
+              size={30}  
+              color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#000"}
               animated={isBrooklynMode} 
             />
           </Marker>
@@ -605,6 +646,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         onClose={() => {
           setBottomSheetVisible(false);
           setSelectedPlace(null);
+          refreshUserReviews(); // Refresh user reviews when bottom sheet closes
         }}
       />
     </View>
