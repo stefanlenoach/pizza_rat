@@ -1,4 +1,5 @@
 import { PlaceResult } from './placesApi';
+import { loadManhattanPizzaData } from './manhattanPizzaData';
 
 // Define the structure of our Brooklyn pizza data
 export interface BrooklynPizzaPlace {
@@ -35,7 +36,10 @@ export const loadBrooklynPizzaData = async (): Promise<BrooklynPizzaData> => {
     // In a real app, we would use require() or import(), but for React Native
     // we'll use fetch to load the JSON file from the assets
     const data = require('../brooklyn_pizza_places.json');
-    return data as BrooklynPizzaData;
+
+    const manhattanData = await loadManhattanPizzaData();
+ 
+    return manhattanData as BrooklynPizzaData;
   } catch (error) {
     console.error('Error loading Brooklyn pizza data:', error);
     throw error;
