@@ -1,0 +1,839 @@
+{
+    "metadata": {
+        "total_places": 1,
+        "borough": "Staten Island",
+        "neighborhoods": [],
+        "file_number": 1,
+        "total_files": 1,
+        "places_in_file": 1
+      }, 
+    "places": [
+        {
+            "restaurant_id": "1059623",
+            "merchant_id": "TLsHAA6sEemV4QUlkundcA",
+            "restaurant_hash": "28db7ddb503be172f7ef06c7c8665f1a",
+            "name": "My Family Pizza & Chicken",
+            "logo": "https://media-cdn.grubhub.com/image/upload/v1546447760/pmrmi3k2yy9e8hthex39.jpg",
+            "description": null,
+            "billing_comment": "Castleton Ave",
+            "pickup": false,
+            "delivery": true,
+            "ratings": {
+                "rating_count": 57,
+                "rating_value": "4",
+                "rating_bayesian_half_point": 4,
+                "rating_bayesian10_point": 4.2,
+                "actual_rating_value": 4.170508731952187,
+                "hidden": false,
+                "isTooFew": false,
+                "too_few": false
+            },
+            "delivery_fee": {
+                "price": 699,
+                "currency": "USD"
+            },
+            "service_fee": null,
+            "delivery_minimum": {
+                "price": 0,
+                "currency": "USD"
+            },
+            "menu_items": [
+                {
+                    "id": "19164369079",
+                    "name": "BREAKFAST PIZZA!",
+                    "description": "EGGS (SCRAMBLED OR FRIED) FRENCH FRIED POTATO HAM OR BACON TOPPINGS",
+                    "available": true,
+                    "price": 2500,
+                    "price_display": {
+                        "amount": {
+                            "price": 2500,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$25.00",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737142",
+                    "category_name": "Pizza Pie",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 0,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "ADD_TO_BAG"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "1496616490",
+                    "name": "Sausage Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 350,
+                    "price_display": {
+                        "amount": {
+                            "price": 350,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$3.50",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 1,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870544",
+                    "name": "Margarita Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 300,
+                    "price_display": {
+                        "amount": {
+                            "price": 300,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$3.00",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 2,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870541",
+                    "name": "Marsala Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 450,
+                    "price_display": {
+                        "amount": {
+                            "price": 450,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$4.50",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 3,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870543",
+                    "name": "Chicken Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 400,
+                    "price_display": {
+                        "amount": {
+                            "price": 400,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$4.00",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 4,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870540",
+                    "name": "Francese Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 450,
+                    "price_display": {
+                        "amount": {
+                            "price": 450,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$4.50",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 5,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "1499928629",
+                    "name": "Vodka Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 375,
+                    "price_display": {
+                        "amount": {
+                            "price": 375,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$3.75",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 6,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870539",
+                    "name": "Alfredo Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 450,
+                    "price_display": {
+                        "amount": {
+                            "price": 450,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$4.50",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 7,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "40870536",
+                    "name": "Mushroom Pizza by the Slice",
+                    "description": "",
+                    "available": true,
+                    "price": 350,
+                    "price_display": {
+                        "amount": {
+                            "price": 350,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": false,
+                        "styled_text": {
+                            "text": "$3.50",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737141",
+                    "category_name": "Pizza by the Slice",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 8,
+                    "minimum_price_variation": 0,
+                    "media_image": null,
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "ENABLED",
+                    "quick_add_available": true,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                },
+                {
+                    "id": "1497193301",
+                    "name": "Pizza Burger",
+                    "description": "3 PATTIES MOZZARELLA CHEESE MARINARA KITCHEN SAUCE PTTA BREAD OR GARLIC KNOT BUN (SUBJ TO AVAILABILITY)\nDELUXE COMES WITH FRENCH FRIES",
+                    "available": true,
+                    "price": 1795,
+                    "price_display": {
+                        "amount": {
+                            "price": 1795,
+                            "currency": "USD"
+                        },
+                        "has_costing_required_options": true,
+                        "styled_text": {
+                            "text": "$17.95+",
+                            "text_style": "DEFAULT"
+                        },
+                        "measured_price": null,
+                        "weighted_item_details": null
+                    },
+                    "category_id": "4737148",
+                    "category_name": "Burgers",
+                    "highlighting_info": null,
+                    "score": null,
+                    "rank_in_model": 0,
+                    "rank_in_restaurant": 9,
+                    "minimum_price_variation": 0,
+                    "media_image": {
+                        "base_url": "https://media-cdn.grubhub.com/image/upload/",
+                        "public_id": "qvh6wj6ev1b2yivrtoe7",
+                        "format": "jpg",
+                        "tag": "food",
+                        "source": "STATIC",
+                        "scale_mode": "FILL"
+                    },
+                    "dishes": null,
+                    "dishes_v2": null,
+                    "features_v2": {},
+                    "badge_list": null,
+                    "tag_list": [],
+                    "quick_add_state": "DISABLED",
+                    "quick_add_available": false,
+                    "quick_add_configuration": {
+                        "state": "ENABLED",
+                        "action": "OPEN_MENU_ITEM_MODAL"
+                    },
+                    "menu_item_features": [],
+                    "popular": false
+                }
+            ],
+            "curated_topic_ids": [],
+            "total_menu_items": 10,
+            "cuisines": [
+                "Pizza",
+                "Chicken",
+                "Pasta"
+            ],
+            "phone_only": false,
+            "phone_number": {
+                "country_code": "1",
+                "phone_number": "6468700383"
+            },
+            "routing_number": {
+                "country_code": "1",
+                "phone_number": null
+            },
+            "coupons_available": false,
+            "coupons_count": 0,
+            "first_coupon": null,
+            "track_your_grub": true,
+            "accepts_credit": false,
+            "accepts_cash": false,
+            "address": {
+                "address_country": null,
+                "address_locality": "Staten Island",
+                "address_region": "NY",
+                "postal_code": "10310",
+                "street_address": "1211 Castleton Ave",
+                "latitude": "40.63426971",
+                "longitude": "-74.12283326"
+            },
+            "highlighting_info": [],
+            "time_zone": "America/New_York",
+            "price_rating": 2,
+            "distance_from_location": "4.05",
+            "delivery_time_estimate": 50,
+            "delivery_time_estimate_lower_bound": 50,
+            "delivery_time_estimate_upper_bound": 60,
+            "delivery_estimate_range": null,
+            "real_time_eta": false,
+            "pickup_time_estimate": 50,
+            "min_delivery_fee": {
+                "price": 299,
+                "currency": "USD"
+            },
+            "delivery_fee_without_discounts": {
+                "price": 1000,
+                "currency": "USD"
+            },
+            "delivery_fee_percent": 0,
+            "restaurant_cdn_image_url": "http://s1.seamless.com/-/ri/gh/1059623",
+            "media_image": {
+                "base_url": "https://res.cloudinary.com/grubhub/image/upload/",
+                "public_id": "esgelfs7xq15ezbx7jqy",
+                "format": "jpg",
+                "tag": "search",
+                "source": "STATIC",
+                "scale_mode": "FILL"
+            },
+            "restaurant_tags": [
+                "PRICING_ELIGIBLE_FOR_STANDARD_ORDER"
+            ],
+            "custom_search_tags": [
+                "LATE_NIGHT",
+                "OPEN_LATE_NIGHT",
+                "THURSDAY_NIGHT_FOOTBALL"
+            ],
+            "recommended": false,
+            "rank": 0,
+            "winning_ads_rank": 0,
+            "faceted_rating_data": {
+                "review_data": {
+                    "total_count": 0,
+                    "valid_count": 0,
+                    "top_review": null
+                },
+                "faceted_rating_list": [
+                    {
+                        "facet_name": "Delivery Speed",
+                        "facet_type": "delivery_speed",
+                        "response_count": 39,
+                        "positive_response_count": 27,
+                        "positive_response_percentage": 0.6923076923076923,
+                        "too_few": false
+                    },
+                    {
+                        "facet_name": "Order Accuracy",
+                        "facet_type": "order_accuracy",
+                        "response_count": 56,
+                        "positive_response_count": 52,
+                        "positive_response_percentage": 0.9285714285714286,
+                        "too_few": false
+                    },
+                    {
+                        "facet_name": "Food Quality",
+                        "facet_type": "food_quality",
+                        "response_count": 55,
+                        "positive_response_count": 47,
+                        "positive_response_percentage": 0.8545454545454545,
+                        "too_few": false
+                    }
+                ]
+            },
+            "open": true,
+            "next_open_at": null,
+            "next_open_at_pickup": null,
+            "next_delivery_time": null,
+            "next_pickup_time": null,
+            "next_closed_at": "2025-04-02T05:45:00.000Z",
+            "next_closed_at_pickup": null,
+            "inundated": false,
+            "soft_blackouted": false,
+            "badge_list": [
+                {
+                    "name": "relevant_hit",
+                    "display_name": "Relevant Hit",
+                    "type": "BASIC",
+                    "badge_data": "taxonomy:cuisine:cuisines",
+                    "metadata": null
+                },
+                {
+                    "name": "relevant_match",
+                    "display_name": "Relevant Match",
+                    "type": "BASIC",
+                    "badge_data": "taxonomy:cuisine:cuisines",
+                    "metadata": null
+                },
+                {
+                    "name": "coupons_available",
+                    "display_name": "",
+                    "type": "Restaurant Indicator",
+                    "badge_data": "false",
+                    "metadata": null
+                },
+                {
+                    "name": "new_restaurant",
+                    "display_name": "",
+                    "type": "Restaurant Indicator",
+                    "badge_data": "false",
+                    "metadata": null
+                },
+                {
+                    "name": "go_to",
+                    "display_name": "",
+                    "type": "Restaurant Indicator",
+                    "badge_data": "false",
+                    "metadata": null
+                },
+                {
+                    "name": "percentage_ad_fee",
+                    "display_name": "",
+                    "type": "Restaurant Indicator",
+                    "badge_data": "0.0",
+                    "metadata": null
+                }
+            ],
+            "additional_media_images": {
+                "LOGO_HOME_PAGE": {
+                    "base_url": "https://res.cloudinary.com/grubhub/image/upload/",
+                    "public_id": "pmrmi3k2yy9e8hthex39",
+                    "format": "jpg",
+                    "tag": "logo",
+                    "source": "STATIC",
+                    "scale_mode": "FILL"
+                },
+                "SEARCH_HOME_PAGE": {
+                    "base_url": "https://res.cloudinary.com/grubhub/image/upload/",
+                    "public_id": "esgelfs7xq15ezbx7jqy",
+                    "format": "jpg",
+                    "tag": "search",
+                    "source": "STATIC",
+                    "scale_mode": "FILL"
+                },
+                "HEADER_BACKGROUND": {
+                    "base_url": "https://res.cloudinary.com/grubhub/image/upload/",
+                    "public_id": "qv3kp4vzkkz47r7m9xww",
+                    "format": "jpg",
+                    "tag": "header_background",
+                    "source": "STATIC",
+                    "scale_mode": "FILL"
+                }
+            },
+            "available_hours": null,
+            "override_hours": null,
+            "catering": false,
+            "percentage_ad_fee": 0,
+            "go_to": false,
+            "popular_at_your_company": false,
+            "just_in_time_orders": false,
+            "uid": "searchRestaurantLight#1059623",
+            "available_promo_codes": null,
+            "available_offers": null,
+            "total_offers_count": null,
+            "available_progress_campaigns": null,
+            "chain_id": null,
+            "chain_name": null,
+            "brand_id": null,
+            "brand_name": null,
+            "sales_force_group": null,
+            "pickup_estimate_info": null,
+            "merchant_url_path": "my-family-pizza--chicken-1211-castleton-ave-staten-island",
+            "score": 0.5825605392456055,
+            "tie_breaking_score": null,
+            "offers_background_color": null,
+            "brand_color": null,
+            "venue": null,
+            "matching_brand_restaurants": null,
+            "participants_max": null,
+            "price_response": {
+                "is_subscription": false,
+                "delivery_response": {
+                    "delivery_fee": {
+                        "flat_cents": 699,
+                        "percent_charge": 0,
+                        "attribution": "RESTAURANT"
+                    },
+                    "service_fee": {
+                        "flat_cents": 0,
+                        "basis_points": 1000,
+                        "maximum_flat_amount": 900,
+                        "minimum_flat_amount": null,
+                        "attribution": "GRUBHUB",
+                        "zero": false,
+                        "flat": false,
+                        "percent": true
+                    },
+                    "small_order_fee": {
+                        "flat_cents": null,
+                        "threshold_cents": null,
+                        "attribution": "GRUBHUB"
+                    },
+                    "service_toll_fee": {
+                        "flat_cents": 0,
+                        "basis_points": 0,
+                        "attribution": "GRUBHUB",
+                        "zero": true,
+                        "flat": false,
+                        "percent": false
+                    },
+                    "pricing_fees": [
+                        {
+                            "fee_name": "DELIVERY",
+                            "type": "DELIVERY",
+                            "operand": "FLAT",
+                            "amount": 699,
+                            "non_adjusted_amount": null,
+                            "adjustment": null,
+                            "threshold": null,
+                            "potential_adjustment": null,
+                            "non_adjusted_values": null,
+                            "potential_adjustment_values": null,
+                            "applicable_hours": null,
+                            "applicable_days_of_the_week": null,
+                            "attribution": "RESTAURANT",
+                            "fee_adjustment_category": "NONE",
+                            "has_campus_subscription_specific_requirements": false
+                        },
+                        {
+                            "fee_name": "SERVICE",
+                            "type": "SERVICE",
+                            "operand": "PERCENT",
+                            "amount": 1000,
+                            "non_adjusted_amount": null,
+                            "adjustment": null,
+                            "threshold": {
+                                "maximum_amount_for_percentage": 900
+                            },
+                            "potential_adjustment": null,
+                            "non_adjusted_values": null,
+                            "potential_adjustment_values": null,
+                            "applicable_hours": null,
+                            "applicable_days_of_the_week": null,
+                            "attribution": "GRUBHUB",
+                            "fee_adjustment_category": "NONE",
+                            "has_campus_subscription_specific_requirements": false
+                        },
+                        {
+                            "fee_name": "SMALL",
+                            "type": "SMALL",
+                            "operand": "FLAT",
+                            "amount": 0,
+                            "non_adjusted_amount": null,
+                            "adjustment": null,
+                            "threshold": {
+                                "threshold": 0
+                            },
+                            "potential_adjustment": null,
+                            "non_adjusted_values": null,
+                            "potential_adjustment_values": null,
+                            "applicable_hours": null,
+                            "applicable_days_of_the_week": null,
+                            "attribution": "GRUBHUB",
+                            "fee_adjustment_category": "NONE",
+                            "has_campus_subscription_specific_requirements": false
+                        }
+                    ]
+                },
+                "pickup_response": {
+                    "service_fee": {
+                        "flat_cents": 0,
+                        "basis_points": 0,
+                        "maximum_flat_amount": null,
+                        "minimum_flat_amount": null,
+                        "attribution": "GRUBHUB",
+                        "zero": true,
+                        "flat": false,
+                        "percent": false
+                    },
+                    "small_order_fee": null,
+                    "pricing_fees": []
+                },
+                "restaurant_dmp_config": null,
+                "fee_display_setting": {
+                    "search_display_setting": {
+                        "styled_text": {
+                            "text": "$6.99 delivery",
+                            "text_style": "DEFAULT"
+                        },
+                        "id": "UniversalControl"
+                    },
+                    "menu_display_setting": null
+                }
+            },
+            "delivery_mode": "OFF",
+            "delivery_type": "SELF",
+            "restaurant_groups": [
+                "1059623",
+                "71ba188f-e632-4e6c-8710-fa1b6b7a303e:polygon:GENERIC_GROUP_IDS"
+            ],
+            "non_supplemental_delivery": true,
+            "non_supplemental_open_closed_container": {
+                "open": true,
+                "open_pickup": false,
+                "next_open_at": null,
+                "next_open_at_pickup": null,
+                "next_delivery_time": null,
+                "next_pickup_time": null,
+                "next_closed_at": "2025-04-02T05:45:00.000Z",
+                "next_closed_at_pickup": null,
+                "inundated": false,
+                "soft_blackouted": false
+            },
+            "supplemental_delivery": false,
+            "supplemental_open_closed_container": null,
+            "pickup_travel_time_estimate": null,
+            "pickup_drive_time_distance_in_miles": null,
+            "pickup_travel_time_estimate_range": null,
+            "pickup_offered": true,
+            "merchant_types": [],
+            "merchant_labels": [],
+            "hit_tags": {
+                "sort_keys": "default",
+                "model_sort_score": "0.0",
+                "response_hits_mapper": "DefaultElasticSearchResponseHitsMapper",
+                "query_name": "truffleBaseESQuery",
+                "sort_scores": "script.SharedKitchenSortScriptBuilder.asc=100000.0,script.CandidatesSortScriptBuilder.desc=0.0,distance.locationPoint_point.asc=4.045247051246347"
+            },
+            "special_instructions_disabled": false,
+            "price_helper_text": {
+                "text": "",
+                "text_style": "DEFAULT"
+            },
+            "restaurant_aggregation_info": {
+                "merchant_id": "1059623",
+                "menu_items_count": 241,
+                "menu_items_image_count": 62,
+                "menu_items_image_coverage": 25,
+                "categories_count": 21,
+                "categories_image_count": 0,
+                "categories_image_coverage": 0
+            },
+            "new_restaurant": false,
+            "vendor_location_id": null,
+            "curbside_pickup_instructions": {
+                "offers_curbside_pickup": true,
+                "contact_phone": "6463215018",
+                "curbside_instructions": "BACK DOOR (TAYLOR STREET)\nBACK DOOR ONLY\n(FRONT DOOR CLOSED SHUT)\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nBACK DOOR\nFOLLOW INSTRUCTIONS\nREAD CAREFULLY\nBUSINESS IS OPEN AT BACK DOOR ONLY!"
+            }
+        }
+    ] 
+}
