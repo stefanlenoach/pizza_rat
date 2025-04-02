@@ -80,8 +80,8 @@ const convertToPlaceResult = (place: ManhattanPizzaPlace): PlaceResult => {
 // Function to load the Manhattan pizza data
 export const loadManhattanPizzaData = async () => {
   try {
-    const data1 = require('../manhattan_pizzas/manhattan_pizzas_part_001.json');
-    const data2 = require('../manhattan_pizzas/manhattan_pizzas_part_002.json');
+    const data1 = require('../manhattan_pizzas_grubhub/manhattan_pizzas_part_001.json');
+    const data2 = require('../manhattan_pizzas_grubhub/manhattan_pizzas_part_002.json');
     
     const places = [...data1.places, ...data2.places];
     const convertedPlaces = places.map(convertToPlaceResult);
