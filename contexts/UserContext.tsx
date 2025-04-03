@@ -21,6 +21,7 @@ interface UserContextType {
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  signInWithApple: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -176,6 +177,55 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithApple = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo: 'pizzarat://login',
+          skipBrowserRedirect: true,
+        }
+      });
+
+      if (error) throw error;
+      if (!data?.url) throw new Error('No URL returned from Supabase');
+
+      const response = await WebBrowser.openAuthSessionAsync(
+        data.url,
+        'pizzarat://login'
+      );
+
+      if (response.type === 'success') {
+        const { url } = response;
+        await supabase.auth.setSession({
+          access_token: url.split('access_token=')[1].split('&')[0],
+          refresh_token: url.split('refresh_token=')[1].split('&')[0]
+        });
+
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        // Create or update user profile
+        await supabase
+          .from('Users')
+          .upsert([
+            {
+              user_id: session?.user?.id,
+              email: session?.user?.email,
+              name: session?.user?.user_metadata.name || session?.user?.email?.split('@')[0],
+            }
+          ], {
+            onConflict: 'user_id'
+          });
+
+        return { error: null };
+      }
+
+      return { error: new Error('Browser session failed') };
+    } catch (error) {
+      return { error: error as Error };
+    }
+  };
+
   const signUp = async (email: string, password: string, name: string) => {
     try {
       // 1. Sign up the user with Supabase Auth
@@ -242,6 +292,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signUp,
     signInWithGoogle,
+    signInWithApple,
     signOut,
   };
 

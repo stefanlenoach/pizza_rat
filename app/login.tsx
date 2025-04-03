@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { signIn, signInWithGoogle } = useUser();
+  const { signIn, signInWithGoogle, signInWithApple } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,6 +44,20 @@ export default function LoginScreen() {
       if (signInError) throw signInError;
     } catch (error: any) {
       setError(error.message || 'An error occurred during Google login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAppleLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      const { error: signInError } = await signInWithApple();
+      if (signInError) throw signInError;
+    } catch (error: any) {
+      setError(error.message || 'An error occurred during Apple login');
     } finally {
       setLoading(false);
     }
@@ -103,13 +117,24 @@ export default function LoginScreen() {
 
         <TouchableOpacity
           onPress={handleGoogleLogin}
-          style={[styles.googleButton, loading && styles.buttonDisabled]}
+          style={[styles.socialButton, styles.googleButton, loading && styles.buttonDisabled]}
           disabled={loading}
         >
-          <Ionicons name="logo-google" size={20} color="#000" style={styles.googleIcon} />
+          <Ionicons name="logo-google" size={20} color="#000" style={styles.socialIcon} />
           <Text style={styles.googleButtonText}>Continue with Google</Text>
         </TouchableOpacity>
 
+        {Platform.OS === 'ios' && (
+          <TouchableOpacity
+            onPress={handleAppleLogin}
+            style={[styles.socialButton, styles.appleButton, loading && styles.buttonDisabled]}
+            disabled={loading}
+          >
+            <Ionicons name="logo-apple" size={20} color="#fff" style={styles.socialIcon} />
+            <Text style={styles.appleButtonText}>Continue with Apple</Text>
+          </TouchableOpacity>
+        )}
+        
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
           <Text style={{ color: '#4B5563' }}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/signup')}>
@@ -178,22 +203,33 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     color: '#6b7280'
   },
-  googleButton: {
+  socialButton: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#e5e7eb'
+    marginBottom: 12,
   },
-  googleIcon: {
-    marginRight: 8
+  googleButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  appleButton: {
+    backgroundColor: '#000',
+  },
+  socialIcon: {
+    marginRight: 8,
   },
   googleButtonText: {
     color: '#000',
     fontWeight: '600',
-    fontSize: 16
+    fontSize: 16,
+  },
+  appleButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
   }
 });

@@ -13,6 +13,9 @@
       "bundleIdentifier": "com.pizzarat.app",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "PizzaRat needs your location to show you nearby pizza places"
+      },
+      "config": {
+        "usesAppleSignIn": true
       }
     },
     "android": {
