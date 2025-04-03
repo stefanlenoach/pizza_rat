@@ -2,6 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { registerForPushNotifications } from '../lib/notifications';
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri } from 'expo-auth-session';
+import { Platform } from 'react-native';
 
 interface UserDetails {
   user_id: string;
@@ -17,6 +20,7 @@ interface UserContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
+  signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -123,6 +127,55 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'pizzarat://login',
+          skipBrowserRedirect: true,
+        }
+      });
+
+      if (error) throw error;
+      if (!data?.url) throw new Error('No URL returned from Supabase');
+
+      const response = await WebBrowser.openAuthSessionAsync(
+        data.url,
+        'pizzarat://login'
+      );
+
+      if (response.type === 'success') {
+        const { url } = response;
+        await supabase.auth.setSession({
+          access_token: url.split('access_token=')[1].split('&')[0],
+          refresh_token: url.split('refresh_token=')[1].split('&')[0]
+        });
+
+        const { data: { session } } = await supabase.auth.getSession();
+        
+ 
+        await supabase
+          .from('Users')
+          .upsert([
+            {
+              user_id: session?.user?.id,
+              email: session?.user?.email,
+              name: session?.user?.user_metadata.name,
+            }
+          ],{
+            onConflict:'user_id'
+          });
+ 
+        return { error: null };
+      }
+
+      return { error: new Error('Browser session failed') };
+    } catch (error) {
+      return { error: error as Error };
+    }
+  };
+
   const signUp = async (email: string, password: string, name: string) => {
     try {
       // 1. Sign up the user with Supabase Auth
@@ -188,6 +241,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     loading,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut,
   };
 

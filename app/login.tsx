@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Image, Platform, KeyboardAvoidingView, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Image, Platform, KeyboardAvoidingView, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useUser } from '../contexts/UserContext';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { signIn } = useUser();
+  const { signIn, signInWithGoogle } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,82 +35,165 @@ export default function LoginScreen() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      const { error: signInError } = await signInWithGoogle();
+      if (signInError) throw signInError;
+    } catch (error: any) {
+      setError(error.message || 'An error occurred during Google login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: 'white' }}
+      style={styles.container}
     >
       <StatusBar style="dark" />
-      <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 24 }}>
-        <View style={{ alignItems: 'center', marginBottom: 32 }}>
+      <View style={styles.content}>
+        <View style={styles.logoContainer}>
           <Image
             source={require('../assets/images/icon.png')}
-            style={{ width: 128, height: 128 }}
-            resizeMode="contain"
+            style={styles.logo}
           />
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16, marginBottom: 32 }}>Welcome To Pizza Rat!</Text>
         </View>
 
-        {error ? (
-          <Text style={{ color: '#EF4444', marginBottom: 16, textAlign: 'center' }}>{error}</Text>
-        ) : null}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-        <View style={{ gap: 16 }}>
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#3B82F6',
-              borderRadius: 8,
-              paddingVertical: 12,
-              alignItems: 'center',
-              opacity: loading ? 0.7 : 1
-            }}
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            <Text style={{ color: 'white', fontWeight: '600', fontSize: 18 }}>
-              {loading ? 'Logging in...' : 'Log In'}
-            </Text>
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={[styles.button, loading && styles.buttonDisabled]}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? 'Logging in...' : 'Login'}
+          </Text>
+        </TouchableOpacity>
+
+        <View style={styles.divider}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>OR</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        <TouchableOpacity
+          onPress={handleGoogleLogin}
+          style={[styles.googleButton, loading && styles.buttonDisabled]}
+          disabled={loading}
+        >
+          <Ionicons name="logo-google" size={20} color="#000" style={styles.googleIcon} />
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
+        </TouchableOpacity>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
+          <Text style={{ color: '#4B5563' }}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => router.push('/signup')}>
+            <Text style={{ color: '#3B82F6', fontWeight: '600' }}>Sign Up</Text>
           </TouchableOpacity>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
-            <Text style={{ color: '#4B5563' }}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/signup')}>
-              <Text style={{ color: '#3B82F6', fontWeight: '600' }}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 24
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 32
+  },
+  logo: {
+    width: 128,
+    height: 128
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
+    textAlign: 'center'
+  },
+  input: {
+    backgroundColor: '#f3f4f6',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16
+  },
+  button: {
+    backgroundColor: '#000',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center'
+  },
+  buttonDisabled: {
+    opacity: 0.7
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 16
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#e5e7eb'
+  },
+  dividerText: {
+    marginHorizontal: 10,
+    color: '#6b7280'
+  },
+  googleButton: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#e5e7eb'
+  },
+  googleIcon: {
+    marginRight: 8
+  },
+  googleButtonText: {
+    color: '#000',
+    fontWeight: '600',
+    fontSize: 16
+  }
+});
