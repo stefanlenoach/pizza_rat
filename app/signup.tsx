@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Image, Platform, KeyboardAvoidingView, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Image, Platform, KeyboardAvoidingView, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useUser } from '../contexts/UserContext';
@@ -32,8 +32,6 @@ export default function SignupScreen() {
       const { error: signUpError } = await signUp(email, password, name);
       if (signUpError) throw signUpError;
 
-      // On successful signup, show success message and redirect to login
-      // alert('Please check your email to verify your account');
       router.replace('/login');
     } catch (error: any) {
       setError(error.message || 'An error occurred during signup');
@@ -45,109 +43,138 @@ export default function SignupScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: 'white' }}
+      style={styles.container}
     >
       <StatusBar style="dark" />
-      <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 24 }}>
-        <View style={{ alignItems: 'center', marginBottom: 32 }}>
+      <View style={styles.content}>
+        <View style={styles.logoContainer}>
           <Image
             source={require('../assets/images/icon.png')}
-            style={{ width: 128, height: 128 }}
-            resizeMode="contain"
+            style={styles.logo}
           />
-          <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16, marginBottom: 32 }}>Create Account</Text>
+          <Text style={styles.title}>Create Account</Text>
         </View>
 
-        {error ? (
-          <Text style={{ color: '#EF4444', marginBottom: 16, textAlign: 'center' }}>{error}</Text>
-        ) : null}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-        <View style={{ gap: 16 }}>
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
-            autoCapitalize="words"
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+          autoCapitalize="words"
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TextInput
-            style={{
-              backgroundColor: '#F3F4F6',
-              borderRadius: 8,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16
-            }}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            editable={!loading}
-          />
+        <TextInput
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
+          style={styles.input}
+          editable={!loading}
+        />
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#3B82F6',
-              borderRadius: 8,
-              paddingVertical: 12,
-              alignItems: 'center',
-              opacity: loading ? 0.7 : 1
-            }}
-            onPress={handleSignup}
-            disabled={loading}
-          >
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
-              {loading ? 'Creating Account...' : 'Sign Up'}
-            </Text>
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleSignup}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? 'Creating Account...' : 'Sign Up'}
+          </Text>
+        </TouchableOpacity>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => router.push('/login')}>
+            <Text style={styles.footerLink}>Log In</Text>
           </TouchableOpacity>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 16 }}>
-            <Text style={{ color: '#4B5563' }}>Already have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/login')}>
-              <Text style={{ color: '#3B82F6', fontWeight: '600' }}>Log In</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 24
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 32
+  },
+  logo: {
+    width: 128,
+    height: 128
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 32
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
+    textAlign: 'center'
+  },
+  input: {
+    backgroundColor: '#f3f4f6',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    fontSize: 16
+  },
+  button: {
+    backgroundColor: '#000',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center'
+  },
+  buttonDisabled: {
+    opacity: 0.7
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 16
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 16
+  },
+  footerText: {
+    color: '#4B5563'
+  },
+  footerLink: {
+    color: '#000',
+    fontWeight: '600'
+  }
+});
