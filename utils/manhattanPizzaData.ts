@@ -87,8 +87,39 @@ export const loadManhattanPizzaData = async () => {
     const data5 = require('../pizza_data/queens/queens_pizzas.json');
     const data6 = require('../pizza_data/staten_island/state_island.json');
     
-    const places = [...data1.places, ...data2.places, ...data3.places, ...data4.places, ...data5.places, ...data6.places];
-    const convertedPlaces = places.map(convertToPlaceResult);
+    const places = [...data1.places, ...data2.places, ...data3.places, ...data4.places, ...data5.places, ...data6.places]
+    .filter((place:any) => {
+      if (place.cuisines.includes('Deli')) { 
+        return false;
+      }
+      return true;
+    });
+
+    const oldBrooklyn = require('../brooklyn_pizza_places.json');
+
+    const brooklynData = oldBrooklyn.places.filter((place:any) => {
+      if (!place.types.includes('pizza_restaurant')) {
+        return false;
+      }
+      return true;
+    })
+ 
+    // Convert all places and filter out duplicates based on coordinates
+    const allPlaces = places.map(convertToPlaceResult).concat(brooklynData);
+    
+    // Create a Map to store unique places using lat/lng as key
+    const uniquePlaces = new Map();
+ 
+    
+    allPlaces.forEach(place => {
+      const key = `${place.location.latitude},${place.location.longitude}`;
+      // Only keep the first occurrence of a place at each coordinate
+      if (!uniquePlaces.has(key)) {
+        uniquePlaces.set(key, place);
+      }
+    });
+
+    const convertedPlaces = Array.from(uniquePlaces.values());
 
     return { metadata: data1.metadata, places: convertedPlaces };
   } catch (error) {

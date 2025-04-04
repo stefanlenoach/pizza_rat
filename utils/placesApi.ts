@@ -46,6 +46,11 @@ export interface PlaceResult {
     open_now: boolean;
   };
   types?: string[];
+  formattedAddress?: string;
+  location?: any
+  priceLevel?:string,
+  userRatingCount?:any,
+  displayName?:any
 }
 
 export interface PlacesResponse {
