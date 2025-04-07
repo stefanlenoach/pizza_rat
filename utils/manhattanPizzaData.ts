@@ -80,32 +80,22 @@ const convertToPlaceResult = (place: ManhattanPizzaPlace): PlaceResult => {
 // Function to load the Manhattan pizza data
 export const loadManhattanPizzaData = async () => {
   try {
-    const data1 = require('../pizza_data/manhattan/manhattan_pizzas_part_001.json');
-    const data2 = require('../pizza_data/manhattan/manhattan_pizzas_part_002.json');
-    const data3 = require('../pizza_data/bronx/bronx_pizzas.json'); 
-    const data4 = require('../pizza_data/brooklyn/brooklyn_pizzas.json');
-    const data5 = require('../pizza_data/queens/queens_pizzas.json');
-    const data6 = require('../pizza_data/staten_island/state_island.json');
-    
-    const places = [...data1.places, ...data2.places, ...data3.places, ...data4.places, ...data5.places, ...data6.places]
+    const manhattan = require('../boroughs/manhattan_pizza_places.json');
+    const brooklyn = require('../boroughs/brooklyn_pizza_places.json');
+    const queens = require('../boroughs/queens_pizza_places.json');
+    const bronx = require('../boroughs/bronx_pizza_places.json');
+    const statenIsland = require('../boroughs/staten_island_pizza_places.json');
+ 
+    const places = [...manhattan?.places || [], ...brooklyn?.places || [], ...queens?.places || [], ...bronx?.places || [],...statenIsland?.places || []]
     .filter((place:any) => {
-      if (place.cuisines.includes('Deli')) { 
+      if (place.cuisines && place.cuisines.includes('Deli')) { 
         return false;
       }
       return true;
     });
-
-    const oldBrooklyn = require('../brooklyn_pizza_places.json');
-
-    const brooklynData = oldBrooklyn.places.filter((place:any) => {
-      if (!place.types.includes('pizza_restaurant')) {
-        return false;
-      }
-      return true;
-    })
- 
+    
     // Convert all places and filter out duplicates based on coordinates
-    const allPlaces = places.map(convertToPlaceResult).concat(brooklynData);
+    const allPlaces = places
     
     // Create a Map to store unique places using lat/lng as key
     const uniquePlaces = new Map();
@@ -121,7 +111,7 @@ export const loadManhattanPizzaData = async () => {
 
     const convertedPlaces = Array.from(uniquePlaces.values());
 
-    return { metadata: data1.metadata, places: convertedPlaces };
+    return { metadata: manhattan.metadata, places: convertedPlaces };
   } catch (error) {
     console.error('Error loading Manhattan pizza data:', error);
     throw error;
