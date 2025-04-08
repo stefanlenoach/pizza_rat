@@ -75,10 +75,10 @@ export const filterPizzaPlaces = async (
   places: PlaceResult[],
   sortFilter: string,
   locationFilter: string,
-  userLocation: Location.LocationObject | null
+  userLocation: Location.LocationObject | null 
 ): Promise<PlaceResult[]> => {
   let filteredPlaces = [...places];
-  
+ 
   // Apply location filter
   if (locationFilter !== 'all_nyc') {
     if (locationFilter === 'near_me') {
@@ -94,25 +94,26 @@ export const filterPizzaPlaces = async (
   // Apply sort filter
   switch (sortFilter) {
     case 'best':
-      filteredPlaces.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      filteredPlaces.sort((a, b) => (a.rating || 0) - (a.rating || 0));
+      const best = filteredPlaces?.[0]
+  
+      if(best){
+        filteredPlaces = [best]
+      } 
       break;
     case 'worst':
       filteredPlaces.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+      const worst = filteredPlaces?.[filteredPlaces.length - 1]
+  
+      if(worst){
+        filteredPlaces = [worst]
+      } 
+      break; 
+    case 'cheap': 
+      filteredPlaces = filteredPlaces.filter(a => (a.price_level || 0) <= 3)
       break;
-    case 'new':
-      // Since we don't have "created_at" data, we'll use the ID as a proxy for newness
-      // In a real app, you would sort by creation date
-      filteredPlaces.sort((a, b) => parseInt(b.id) - parseInt(a.id));
-      break;
-    case 'old':
-      // Same as above, but reversed
-      filteredPlaces.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-      break;
-    case 'cheap':
-      filteredPlaces.sort((a, b) => (a.price_level || 0) - (b.price_level || 0));
-      break;
-    case 'expensive':
-      filteredPlaces.sort((a, b) => (b.price_level || 0) - (a.price_level || 0));
+    case 'popular':
+      filteredPlaces = filteredPlaces.filter(a => (a.totalReviews || 0)> 5)
       break;
     default:
       break;

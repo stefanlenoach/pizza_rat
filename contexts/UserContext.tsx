@@ -31,6 +31,7 @@ interface PlaceReviews {
     reviews: Review[];
     averageRating: number;
     totalReviews: number;
+    rating: number;
   };
 }
 
@@ -138,18 +139,18 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           reviewsByPlace[review.placeId] = {
             reviews: [],
             averageRating: 0,
-            totalReviews: 0
+            totalReviews: 0,
+            rating: 0
           };
         }
         reviewsByPlace[review.placeId].reviews.push(review);
-      });
-
-      // Calculate average rating and total reviews for each place
-      Object.keys(reviewsByPlace).forEach(placeId => {
-        const placeData = reviewsByPlace[placeId];
-        const totalRating = placeData.reviews.reduce((sum, review) => sum + review.rate, 0);
-        placeData.averageRating = totalRating / placeData.reviews.length;
-        placeData.totalReviews = placeData.reviews.length;
+        
+        // Calculate average rating
+        const totalRating = reviewsByPlace[review.placeId].reviews.reduce((sum, r) => sum + r.rate, 0);
+        const numReviews = reviewsByPlace[review.placeId].reviews.length;
+        reviewsByPlace[review.placeId].rating = totalRating / numReviews;
+        reviewsByPlace[review.placeId].averageRating = totalRating / numReviews;
+        reviewsByPlace[review.placeId].totalReviews = numReviews;
       });
 
       setPlaceReviews(reviewsByPlace);

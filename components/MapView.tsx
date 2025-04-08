@@ -11,6 +11,7 @@ import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
 import { getAllBrooklynPizzaPlaces, getNearbyBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
 import { supabase } from '@/lib/supabase';
+import { useUser } from "@/contexts/UserContext"
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS = {
@@ -86,6 +87,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false);
+  const { placeReviews } = useUser();
+ 
   
 
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
@@ -152,10 +155,15 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     const applyFilters = async () => {
       if (location) {
         const filtered = await filterPizzaPlaces(
-          allPizzaPlaces,
+          allPizzaPlaces.map(a => {
+            return {
+              ...a,
+              ...placeReviews[a.place_id]
+            }
+          }),
           sortFilter,
           locationFilter,
-          location
+          location, 
         );
         setFilteredPizzaPlaces([...filtered]);
         console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
@@ -169,7 +177,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     };
     
     applyFilters();
-  }, [allPizzaPlaces, sortFilter, locationFilter, location]);
+  }, [allPizzaPlaces, sortFilter, locationFilter, location , placeReviews]);
 
   useEffect(() => {
     (async () => {
