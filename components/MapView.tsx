@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
   /* Count container styles removed */
   searchThisAreaContainer: {
     position: 'absolute',
-    top: 150,
+    top: 175,
     alignSelf: 'center',
     zIndex: 5,
   },

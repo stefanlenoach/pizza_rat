@@ -16,31 +16,29 @@ interface PizzaRatHeaderProps {
 const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({ 
   showFilters = false,
   onFilterChange = () => {},
-  sortFilter = "best",
-  locationFilter = "near_me",
+  sortFilter = "all",
+  locationFilter = "all_nyc",
   rightIcon
 }) => {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
 
   // Sort filter options
   const sortOptions = [
-    { label: 'Best Rated', value: 'best' },
-    { label: 'Worst Rated', value: 'worst' },
-    { label: 'Newest', value: 'new' },
-    { label: 'Oldest', value: 'old' },
-    { label: 'Cheapest', value: 'cheap' },
-    { label: 'Most Expensive', value: 'expensive' }
+    { label: 'All', value: 'all' },
+    { label: 'Best', value: 'best' },
+    { label: 'Worst', value: 'worst' }, 
+    { label: 'Cheap', value: 'cheap' },
+    { label: 'Popular', value: 'popular' }
   ];
 
   // Location filter options
   const locationOptions = [
-    { label: 'Near Me', value: 'near_me' },
+    { label: 'All NYC', value: 'all_nyc' },
     { label: 'Brooklyn', value: 'brooklyn' },
     { label: 'Bronx', value: 'bronx' },
     { label: 'Staten Island', value: 'staten_island' },
     { label: 'Queens', value: 'queens' },
-    { label: 'Manhattan', value: 'manhattan' },
-    { label: 'All NYC', value: 'all_nyc' }
+    { label: 'Manhattan', value: 'manhattan' }, 
   ];
   
   return (
