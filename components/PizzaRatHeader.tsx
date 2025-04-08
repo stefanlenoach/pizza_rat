@@ -4,10 +4,11 @@ import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import tw from '@/utils/tw';
 import FilterDropdown from './FilterDropdown';
+import { FilterType } from '@/app/(tabs)/_layout';
 
 interface PizzaRatHeaderProps {
   showFilters?: boolean;
-  onFilterChange?: (filterType: string, value: string) => void;
+  onFilterChange?: (filterType: keyof FilterType, value: string) => void;
   sortFilter?: string;
   locationFilter?: string;
   rightIcon?: React.ReactNode;

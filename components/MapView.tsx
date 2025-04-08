@@ -28,6 +28,46 @@ const BROOKLYN_COORDS = {
   longitudeDelta: 0.1,
 };
 
+// Predefined regions for each borough
+const BOROUGH_REGIONS = {
+  all_nyc: {
+    latitude: 40.7128,
+    longitude: -74.0060,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
+  },
+  brooklyn: {
+    latitude: 40.6782,
+    longitude: -73.9442,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  },
+  manhattan: {
+    latitude: 40.7831,
+    longitude: -73.9712,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  },
+  queens: {
+    latitude: 40.7282,
+    longitude: -73.7949,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  },
+  bronx: {
+    latitude: 40.8448,
+    longitude: -73.8648,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  },
+  staten_island: {
+    latitude: 40.5795,
+    longitude: -74.1502,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  }
+};
+
 // We're using userInterfaceStyle="dark" instead of custom styling
 
 interface PizzaMapViewProps {
@@ -92,18 +132,39 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     }
   };
 
+  // Update map region when location filter changes
+  useEffect(() => {
+    if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS]) {
+      const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
+      setRegion(newRegion);
+      mapRef.current?.animateToRegion(newRegion, 1000);
+
+      setTimeout(()=>{
+        searchWithinVisibleArea(newRegion);
+        setLastSearchRegion(newRegion);
+        setShowSearchThisArea(false);
+      },500)
+    }
+  }, [locationFilter]);
+
   // Apply filters whenever filter options or pizza places change
   useEffect(() => {
     const applyFilters = async () => {
-      if (allPizzaPlaces.length > 0) {
+      if (location) {
         const filtered = await filterPizzaPlaces(
           allPizzaPlaces,
           sortFilter,
           locationFilter,
           location
         );
-        setFilteredPizzaPlaces(filtered);
+        setFilteredPizzaPlaces([...filtered]);
         console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+
+        // Animate to the appropriate region if it's a location filter
+        if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS]) {
+          const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
+          mapRef.current?.animateToRegion(newRegion, 1000);
+        }
       }
     };
     
@@ -412,108 +473,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c; // Distance in miles
-  };
-  
-  // Function to load Brooklyn pizza places within 2 miles with animation
-  const loadAllBrooklynPizzaPlaces = async () => {
-    try {
-      setIsSearchingPlaces(true);
-      setIsBrooklynMode(true);
-      
-      // Reset animated places
-      setAnimatedPizzaPlaces([]);
-      
-      // Update the region to center on Brooklyn
-      setRegion(BROOKLYN_COORDS);
-      
-      // Get current location coordinates
-      let userLat = BROOKLYN_COORDS.latitude;
-      let userLng = BROOKLYN_COORDS.longitude;
-      
-      // If user location is available, use it instead
-      if (location) {
-        const { coords } = location;
-        userLat = coords.latitude;
-        userLng = coords.longitude;
-      }
-      
-      // Load all Brooklyn pizza places from our dataset
-      const allPlaces = await getAllBrooklynPizzaPlaces();
-      
-      // Filter places to only those within 2 miles of current location
-      const nearbyPlaces = allPlaces.filter(place => {
-        const distance = calculateDistanceInMiles(
-          userLat,
-          userLng,
-          place.geometry.location.lat,
-          place.geometry.location.lng
-        );
-        return distance <= 2; // 2 mile radius
-      });
-      
-      console.log(`Filtered from ${allPlaces.length} to ${nearbyPlaces.length} places within 2 miles`);
-      
-      // Set all pizza places to the filtered list
-      setAllPizzaPlaces(nearbyPlaces);
-      
-      // Start the animation sequence
-      animationInProgress.current = true;
-      
-      const MAX_ANIMATED_PLACES = 50;
-      const animationLimit = Math.min(MAX_ANIMATED_PLACES, nearbyPlaces.length);
-      
-      // Animate the first 50 places one by one
-      for (let i = 0; i < animationLimit; i++) {
-        // Skip animation if user switched to nearby mode
-        if (!animationInProgress.current) break;
-        
-        // Add haptic feedback for each new place
-        Haptics.impactAsync(
-          i % 3 === 0 
-            ? Haptics.ImpactFeedbackStyle.Light 
-            : i % 3 === 1 
-              ? Haptics.ImpactFeedbackStyle.Medium 
-              : Haptics.ImpactFeedbackStyle.Heavy
-        );
-        
-        // Add this place to the animated places
-        setAnimatedPizzaPlaces(prev => [...prev, nearbyPlaces[i]]);
-        
-        // Wait a short time before showing the next place
-        await new Promise(resolve => setTimeout(resolve, 2));
-      }
-      
-      // If there are more than 50 places, add the rest after exactly 1 second
-      if (nearbyPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
-        // Schedule the remaining places to appear exactly 1 second after the 50th place
-        await new Promise(resolve => setTimeout(resolve, 10));
-        
-        // Make sure animation is still in progress (user hasn't switched modes)
-        if (animationInProgress.current) {
-          // First set the remaining places to ensure rendering starts
-          setAnimatedPizzaPlaces(nearbyPlaces);
-          
-          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
-          // Use a notification instead of just impact for a more noticeable feedback
-          setTimeout(() => {
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            
-            // Follow with a heavy impact for an even more pronounced effect
-            setTimeout(() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-            }, 100);
-          }, 10);
-        }
-      }
-      
-      console.log(`Loaded ${nearbyPlaces.length} Brooklyn pizza places within 2 miles`);
-    } catch (error) {
-      console.error('Error loading Brooklyn pizza places:', error);
-      console.log('Failed to load Brooklyn pizza places');
-    } finally {
-      setIsSearchingPlaces(false);
-      animationInProgress.current = false;
-    }
   };
 
   const onRegionChange = (newRegion: Region) => {

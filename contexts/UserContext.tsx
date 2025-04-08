@@ -13,11 +13,34 @@ interface UserDetails {
   push_token?: string;
 }
 
+interface Review {
+  id: string;
+  rate: number;
+  content: string;
+  placeId: string;
+  userId: string;
+  created_at: string;
+  user?: {
+    email: string;
+    avatar_url?: string;
+  };
+}
+
+interface PlaceReviews {
+  [placeId: string]: {
+    reviews: Review[];
+    averageRating: number;
+    totalReviews: number;
+  };
+}
+
 interface UserContextType {
   user: User | null;
   session: Session | null;
   userDetails: UserDetails | null;
   loading: boolean;
+  placeReviews: PlaceReviews;
+  refreshReviews: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
@@ -32,6 +55,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [placeReviews, setPlaceReviews] = useState<PlaceReviews>({});
 
   const loadUserDetails = async (userId: string) => {
     try {
@@ -90,6 +114,50 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const loadReviews = async () => {
+    try {
+      const { data: reviews, error } = await supabase
+        .from('Review')
+        .select(`
+          *,
+          user:userId (
+            email
+          )
+        `)
+        .order('createdAt', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching reviews:', error);
+        return;
+      }
+
+      // Organize reviews by placeId
+      const reviewsByPlace: PlaceReviews = {};
+      reviews.forEach((review: Review) => {
+        if (!reviewsByPlace[review.placeId]) {
+          reviewsByPlace[review.placeId] = {
+            reviews: [],
+            averageRating: 0,
+            totalReviews: 0
+          };
+        }
+        reviewsByPlace[review.placeId].reviews.push(review);
+      });
+
+      // Calculate average rating and total reviews for each place
+      Object.keys(reviewsByPlace).forEach(placeId => {
+        const placeData = reviewsByPlace[placeId];
+        const totalRating = placeData.reviews.reduce((sum, review) => sum + review.rate, 0);
+        placeData.averageRating = totalRating / placeData.reviews.length;
+        placeData.totalReviews = placeData.reviews.length;
+      });
+
+      setPlaceReviews(reviewsByPlace);
+    } catch (error) {
+      console.error('Error in loadReviews:', error);
+    }
+  };
+
   useEffect(() => {
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -112,6 +180,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
       setLoading(false);
     });
+
+    // Load initial reviews
+    loadReviews();
 
     return () => subscription.unsubscribe();
   }, []);
@@ -284,11 +355,18 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshReviews = async () => {
+    await loadReviews();
+  };
+ 
+
   const value = {
     user,
     session,
     userDetails,
     loading,
+    placeReviews,
+    refreshReviews,
     signIn,
     signUp,
     signInWithGoogle,
