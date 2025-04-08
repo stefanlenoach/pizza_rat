@@ -666,9 +666,9 @@ const styles = StyleSheet.create({
   /* Count container styles removed */
   searchThisAreaContainer: {
     position: 'absolute',
-    top: 70,
+    top: 150,
     alignSelf: 'center',
-    zIndex: 2,
+    zIndex: 5,
   },
   searchThisAreaButton: {
     backgroundColor: '#111',

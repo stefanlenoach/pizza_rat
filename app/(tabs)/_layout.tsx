@@ -1,51 +1,44 @@
-import { Tabs } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
+import PizzaRatHeader from '@/components/PizzaRatHeader';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const shouldShowHeader = !pathname.includes('/account');
 
   return (
-    <Tabs
+    <Stack
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarInactiveTintColor: '#6B7280',
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarLabelStyle: {
-          fontFamily: 'ClashDisplay',
-        },
+        headerShown: shouldShowHeader,
+        header: () => (
+          <PizzaRatHeader
+            showFilters={true}
+            onFilterChange={(filterType, value) => {
+              // Handle filter change
+            }}
+            rightIcon={
+              <Ionicons
+                name="settings"
+                size={24}
+                color={Colors[colorScheme ?? 'light'].tint}
+                onPress={() => router.push('/account')}
+                style={{ padding: 8 }}
+              />
+            }
+          />
+        ),
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="map"
-        options={{
-          title: 'Pizza Map',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="map.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="account"
-        options={{
-          title: 'Account',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="map" />
+    </Stack>
   );
 }

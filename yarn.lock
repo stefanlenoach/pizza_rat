@@ -3865,9 +3865,9 @@ expo-av@^15.0.2:
   resolved "https://registry.npmjs.org/expo-av/-/expo-av-15.0.2.tgz"
   integrity sha512-AHIHXdqLgK1dfHZF0JzX3YSVySGMrWn9QtPzaVjw54FAzvXfMt4sIoq4qRL/9XWCP9+ICcCs/u3EcvmxQjrfcA==
 
-expo-blur@~14.0.3:
+expo-blur@^14.0.3:
   version "14.0.3"
-  resolved "https://registry.npmjs.org/expo-blur/-/expo-blur-14.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-14.0.3.tgz#656d6b2442bfbbfb2a6608c6bc1151b29bce6698"
   integrity sha512-BL3xnqBJbYm3Hg9t/HjNjdeY7N/q8eK5tsLYxswWG1yElISWZmMvrXYekl7XaVCPfyFyz8vQeaxd7q74ZY3Wrw==
 
 expo-constants@~17.0.5, expo-constants@~17.0.7, expo-constants@~17.0.8:

@@ -1,23 +1,27 @@
-import React from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { Ionicons } from '@expo/vector-icons';
 import tw from '@/utils/tw';
 import FilterDropdown from './FilterDropdown';
 
 interface PizzaRatHeaderProps {
-  title?: string;
   showFilters?: boolean;
   onFilterChange?: (filterType: string, value: string) => void;
   sortFilter?: string;
   locationFilter?: string;
+  rightIcon?: React.ReactNode;
 }
 
 const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({ 
-  title = "PizzaRat NYC", 
   showFilters = false,
   onFilterChange = () => {},
   sortFilter = "best",
-  locationFilter = "near_me"
+  locationFilter = "near_me",
+  rightIcon
 }) => {
+  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+
   // Sort filter options
   const sortOptions = [
     { label: 'Best Rated', value: 'best' },
@@ -40,11 +44,28 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
   ];
   
   return (
-    <SafeAreaView style={tw`bg-[#0E1010]`}>
+    <SafeAreaView style={[tw`absolute top-0 left-0 right-0 z-50`, styles.container]}>
+      <BlurView intensity={80} tint="light" style={StyleSheet.absoluteFill} />
       <View style={tw`justify-center px-4 pt-2 pb-2`}>
-        <Text style={tw`text-pink-300 text-xl font-bold mb-1`}>{title}</Text>
+        <View style={tw`flex-row justify-between items-center mb-1`}>
+          <View style={tw`flex-row items-center`}>
+            {showFilters && (
+              <TouchableOpacity 
+                onPress={() => setIsFiltersVisible(!isFiltersVisible)}
+                style={tw`p-2 -ml-2`}
+              >
+                <Ionicons 
+                  name={isFiltersVisible ? "funnel" : "funnel-outline"} 
+                  size={20} 
+                  color="#EC4899"
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+          {rightIcon}
+        </View>
         
-        {showFilters && (
+        {showFilters && isFiltersVisible && (
           <View style={tw`flex-row justify-between mt-2`}>
             <FilterDropdown 
               options={sortOptions}
@@ -64,5 +85,11 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  }
+});
 
 export default PizzaRatHeader;
