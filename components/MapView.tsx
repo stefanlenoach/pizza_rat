@@ -138,15 +138,13 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   // Update map region when location filter changes
   useEffect(() => {
     if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS]) {
+      // Only update the search area without moving the map
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
-      setRegion(newRegion);
-      mapRef.current?.animateToRegion(newRegion, 1000);
-
-      setTimeout(()=>{
+      setTimeout(() => {
         searchWithinVisibleArea(newRegion);
         setLastSearchRegion(newRegion);
         setShowSearchThisArea(false);
-      },500)
+      }, 500);
     }
   }, [locationFilter]);
 
@@ -167,17 +165,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         );
         setFilteredPizzaPlaces([...filtered]);
         console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
-
-        // Animate to the appropriate region if it's a location filter
-        if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS]) {
-          const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
-          mapRef.current?.animateToRegion(newRegion, 1000);
-        }
       }
     };
     
     applyFilters();
-  }, [allPizzaPlaces, sortFilter, locationFilter, location , placeReviews]);
+  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews]);
 
   useEffect(() => {
     (async () => {
