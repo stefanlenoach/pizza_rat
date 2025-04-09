@@ -1,4 +1,5 @@
-import { View, TouchableOpacity, Alert, Linking, Text, ScrollView, Platform } from 'react-native';
+import { View, TouchableOpacity, Alert, Linking, ScrollView, Platform } from 'react-native';
+import { Text } from '@/components/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -13,6 +14,11 @@ export default function SettingsScreen() {
       title: 'Account',
       icon: 'person-outline' as const,
       onPress: () => router.push('/account')
+    },
+    {
+      title: 'Quiz',
+      icon: 'document-text-outline' as const,
+      onPress: () => router.push('/others/quiz')
     },
     {
       title: 'Send feedback',
