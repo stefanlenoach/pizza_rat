@@ -574,8 +574,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
               latitude: place.geometry.location.lat,
               longitude: place.geometry.location.lng,
             }}
-            title={place.name}
-            description={place.vicinity}
             tracksViewChanges={false}
             onPress={() => {
               // Trigger haptic feedback when a pizza place is selected
