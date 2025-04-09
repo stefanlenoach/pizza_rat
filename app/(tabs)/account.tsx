@@ -77,16 +77,16 @@ export default function AccountScreen() {
       icon: 'notifications',
       onPress: () => Alert.alert('Coming Soon', 'Notification settings will be available soon!'),
     },
-    {
-      title: 'Privacy',
-      icon: 'lock-closed',
-      onPress: () => Alert.alert('Coming Soon', 'Privacy settings will be available soon!'),
-    },
-    {
-      title: 'Help & Support',
-      icon: 'help-circle',
-      onPress: () => Alert.alert('Coming Soon', 'Help & support will be available soon!'),
-    },
+    // {
+    //   title: 'Privacy',
+    //   icon: 'lock-closed',
+    //   onPress: () => Alert.alert('Coming Soon', 'Privacy settings will be available soon!'),
+    // },
+    // {
+    //   title: 'Help & Support',
+    //   icon: 'help-circle',
+    //   onPress: () => Alert.alert('Coming Soon', 'Help & support will be available soon!'),
+    // },
   ];
 
   return (

@@ -53,7 +53,7 @@ export default function TabLayout() {
                 name="settings"
                 size={24}
                 color={Colors[colorScheme ?? 'light'].tint}
-                onPress={() => router.push('/account')}
+                onPress={() => router.push('/others/settings')}
                 style={{ padding: 8 }}
               />
             }
