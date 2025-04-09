@@ -1,8 +1,9 @@
-import { StyleSheet, Image, Platform, View, TouchableOpacity, Modal, Dimensions, Text } from 'react-native';
+import { StyleSheet, Image, Platform, View, TouchableOpacity, Modal, Dimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState, useRef } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, Easing } from 'react-native-reanimated';
 
+import { Text } from '@/components/CustomText';
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
 import PizzaRatHeader from '@/components/PizzaRatHeader';

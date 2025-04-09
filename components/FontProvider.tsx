@@ -4,7 +4,7 @@ import { StyleSheet, Platform } from 'react-native';
 /**
  * FontProvider component that wraps the entire application.
  * 
- * This component ensures that the ClashDisplay font is applied globally.
+ * This component ensures that the Aujournuit font is applied globally.
  * The actual font application is done through:
  * 1. Tailwind configuration (tailwind.config.js)
  * 2. Global CSS (global.css)
@@ -23,6 +23,6 @@ export function FontProvider({ children }: { children: React.ReactNode }) {
 // Export styles for use throughout the app
 export const fontStyles = StyleSheet.create({
   defaultText: {
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
   },
 });

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Platform, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Platform, View, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { Text } from '@/components/CustomText';
 import { HelloWave } from '@/components/HelloWave';
 import PizzaRatHeader from '@/components/PizzaRatHeader';
 import { ThemedText } from '@/components/ThemedText';

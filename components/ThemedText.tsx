@@ -37,29 +37,29 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     lineHeight: 32,
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
   },
   subtitle: {
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
     fontSize: 20,
     fontWeight: 'bold',
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
-    fontFamily: 'ClashDisplay',
+    fontFamily: 'Aujournuit',
     color: '#0a7ea4',
   },
 });

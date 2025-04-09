@@ -2,19 +2,19 @@
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    // Override the entire theme's fontFamily to use ClashDisplay by default
+    // Override the entire theme's fontFamily to use Aujournuit by default
     fontFamily: {
-      sans: ['ClashDisplay'],
-      serif: ['ClashDisplay'],
+      sans: ['Aujournuit'],
+      serif: ['Aujournuit'],
       mono: ['SpaceMono'],
       // Add a base key to ensure it's applied everywhere
-      base: ['ClashDisplay'],
+      base: ['Aujournuit'],
     },
     extend: {
       // Additional font configurations
       fontFamily: {
-        // Ensure all text uses ClashDisplay by default
-        DEFAULT: ['ClashDisplay'],
+        // Ensure all text uses Aujournuit by default
+        DEFAULT: ['Aujournuit'],
       },
     },
   },

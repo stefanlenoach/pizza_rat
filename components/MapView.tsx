@@ -567,9 +567,9 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         )}
         
         {/* Pizza place markers - use animatedPizzaPlaces for Brooklyn mode, filteredPizzaPlaces for normal mode */}
-        {(isBrooklynMode ? animatedPizzaPlaces : filteredPizzaPlaces).map((place) => (
+        {(isBrooklynMode ? animatedPizzaPlaces : filteredPizzaPlaces).map((place, index) => (
           <Marker
-            key={place.id}
+            key={`${place.id}-${index}`}
             coordinate={{
               latitude: place.geometry.location.lat,
               longitude: place.geometry.location.lng,
