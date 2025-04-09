@@ -72,7 +72,8 @@ export const convertToPlaceResult = (place: BrooklynPizzaPlace): PlaceResult => 
     rating: place.rating,
     user_ratings_total: place.userRatingCount || 0,
     price_level: priceLevelMap[place.priceLevel] || 0,
-    photos: []
+    photos: [],
+    regularOpeningHours: place.regularOpeningHours
   };
   
   // Add custom properties using type assertion

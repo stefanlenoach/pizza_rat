@@ -315,6 +315,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   if (!place || !isVisible) {
     return null;
   }
+ 
 
   const averageRating = calculateAverageRating(reviews);
 
@@ -346,10 +347,19 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
             </Text>
           )}
           
-          {place.opening_hours && (
-            <Text style={[tw`text-sm`, place.opening_hours.open_now ? tw`text-green-600` : tw`text-red-600`]}>
-              {place.opening_hours.open_now ? 'Open Now' : 'Closed'}
-            </Text>
+          {place.regularOpeningHours && (
+            <> 
+              {place.regularOpeningHours?.weekdayDescriptions && (
+                <View style={tw`mt-2 bg-gray-50 p-3 rounded-lg`}>
+                  <Text style={tw`text-sm font-semibold mb-2`}>Opening Hours:</Text>
+                  {place.regularOpeningHours.weekdayDescriptions.map((day: string, index: number) => (
+                    <Text key={index} style={tw`text-sm text-gray-600 mb-1`}>
+                      {day}
+                    </Text>
+                  ))}
+                </View>
+              )}
+            </>
           )}
         </View>
         

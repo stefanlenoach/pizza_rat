@@ -45,6 +45,9 @@ export interface PlaceResult {
   opening_hours?: {
     open_now: boolean;
   };
+  regularOpeningHours?: {
+    weekdayDescriptions: string[];
+  };
   types?: string[];
   formattedAddress?: string;
   location?: any

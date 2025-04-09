@@ -14,7 +14,7 @@ def fetch_pizza_places(neighborhood, borough, api_key):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.priceLevel,places.location,places.rating,places.userRatingCount,places.types,nextPageToken"
+             "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.priceLevel,places.regularOpeningHours,places.location,places.rating,places.userRatingCount,places.types,nextPageToken"
         }
         # Create request data - specify the neighborhood and borough for precision
         data = {
