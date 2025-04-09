@@ -201,33 +201,39 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation(currentLocation);
         
-        // Center map on user's current location
-        if (currentLocation) {
-          const newRegion = {
-            latitude: currentLocation.coords.latitude,
-            longitude: currentLocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          };
-          setRegion(newRegion);
-          console.log('Centered map on current location:', newRegion);
-          
-          // Automatically search within the visible area
-          setTimeout(() => searchWithinVisibleArea(newRegion), 500);
-        }
+        // Check if user is in NYC area (using a rough bounding box)
+        const isInNYC = currentLocation.coords.latitude >= 40.4774 && 
+                       currentLocation.coords.latitude <= 40.9176 && 
+                       currentLocation.coords.longitude >= -74.2589 && 
+                       currentLocation.coords.longitude <= -73.7004;
+        
+        // Set region based on location
+        const newRegion = isInNYC ? {
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        } : NEW_YORK_COORDS;
+        
+        setRegion(newRegion);
+        console.log(isInNYC ? '------Centered map on user location in NYC------' : '----User outside NYC, showing full NYC view-----');
+        
+        // Search for places in the visible area
+        setTimeout(() => searchWithinVisibleArea(newRegion), 500);
+        setLastSearchRegion(newRegion);
+        setShowSearchThisArea(false);
+        
       } catch (error) {
         console.error('Error getting location:', error);
-        setErrorMsg('Could not determine your location');
-        // Fall back to NYC if there's an error
+        // On error, default to showing all of NYC
         setRegion(NEW_YORK_COORDS);
-        // Search within the visible area even if there's an error
         setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 500);
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
-  
+
   // Function to find nearby pizza places
   const findNearbyPizzaPlaces = async (lat: number, lng: number) => {
     try {
