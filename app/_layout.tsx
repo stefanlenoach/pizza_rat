@@ -63,6 +63,13 @@ export default function RootLayout() {
                   }} 
                 />
                 <Stack.Screen name="+not-found" />
+                <Stack.Screen 
+                  name="others/quiz" 
+                  options={{ 
+                    headerShown: false,
+                    animation: 'slide_from_right'
+                  }} 
+                />
               </Stack>
               <StatusBar style="auto" />
             </ThemeProvider>
