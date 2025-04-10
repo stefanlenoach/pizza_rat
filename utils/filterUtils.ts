@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { PlaceResult } from './placesApi';
 import * as Location from 'expo-location';
 
@@ -77,7 +78,7 @@ export const filterPizzaPlaces = async (
   locationFilter: string,
   userLocation: Location.LocationObject | null 
 ): Promise<PlaceResult[]> => {
-  let filteredPlaces = [...places];
+  let filteredPlaces = cloneDeep([...places]);
  
   // Apply location filter
   if (locationFilter !== 'all_nyc') {
@@ -94,26 +95,25 @@ export const filterPizzaPlaces = async (
   // Apply sort filter
   switch (sortFilter) {
     case 'best':
-      filteredPlaces.sort((a, b) => (a.rating || 0) - (a.rating || 0));
-      const best = filteredPlaces?.[0]
-  
-      if(best){
-        filteredPlaces = [best]
-      } 
+      const withRatings = filteredPlaces.filter(a => (a.rating || 0) > 0)
+      withRatings.sort((a, b) => (b.rating || 0) - (a.rating || 0)); // Sort descending
+      filteredPlaces = withRatings
       break;
     case 'worst':
-      filteredPlaces.sort((a, b) => (a.rating || 0) - (b.rating || 0));
-      const worst = filteredPlaces?.[filteredPlaces.length - 1]
-  
-      if(worst){
-        filteredPlaces = [worst]
-      } 
+      const withRatings2 = filteredPlaces.filter(a => (a.rating || 0) > 0)
+      withRatings2.sort((a, b) => (a.rating || 0) - (b.rating || 0)); // Sort descending 
+      if(withRatings2.length == 1){
+        filteredPlaces = []
+      } else {
+        filteredPlaces = withRatings2 
+      }
       break; 
     case 'cheap': 
       filteredPlaces = filteredPlaces.filter(a => (a.price_level || 0) <= 3)
       break;
     case 'popular':
-      filteredPlaces = filteredPlaces.filter(a => (a.totalReviews || 0)> 5)
+      const withRatings3 = filteredPlaces.filter(a => (a.rating || 0) > 0) 
+      filteredPlaces = withRatings3.filter(a => (a.totalReviews || 0) > 0).sort((a, b) => (b.rating || 0) - (a.rating || 0))
       break;
     default:
       break;

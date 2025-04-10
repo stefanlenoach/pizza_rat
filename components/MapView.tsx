@@ -147,24 +147,39 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       }, 500);
     }
   }, [locationFilter]);
-
+ 
   // Apply filters whenever filter options or pizza places change
   useEffect(() => {
     const applyFilters = async () => {
-      if (location) {
-        const filtered = await filterPizzaPlaces(
-          allPizzaPlaces.map(a => {
-            return {
-              ...a,
-              ...placeReviews[a.place_id]
-            }
-          }),
-          sortFilter,
-          locationFilter,
-          location, 
-        );
-        setFilteredPizzaPlaces([...filtered]);
-        console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+      if (location && allPizzaPlaces.length > 0) {
+        setIsSearchingPlaces(true);
+        try {
+          const filtered = await filterPizzaPlaces(
+            allPizzaPlaces.map(a => {
+
+              let rating = a.rating
+              if(placeReviews[a.place_id]){
+                rating = placeReviews[a.place_id].rating
+              }
+
+              return {
+                ...a,
+                ...placeReviews[a.place_id],
+                rating
+              }
+            }),
+            sortFilter,
+            locationFilter,
+            location, 
+          );
+          setFilteredPizzaPlaces([...filtered]);
+          console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+         
+        } catch (error) {
+          console.error('Error applying filters:', error);
+        } finally {
+          setIsSearchingPlaces(false);
+        }
       }
     };
     
@@ -517,6 +532,24 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     );
   }
 
+  const renderPlaces = () => {
+    if(sortFilter !== 'all'){
+      return filteredPizzaPlaces
+    }
+ 
+    if(isBrooklynMode){
+      return animatedPizzaPlaces
+    } 
+
+    return filteredPizzaPlaces
+  }
+
+  console.log('isBrooklynMode',isBrooklynMode)
+  console.log('filteredPizzaPlaces',filteredPizzaPlaces.length)
+  console.log('animatedPizzaPlaces',animatedPizzaPlaces.length) 
+  console.log('sortFilter',sortFilter)
+  
+
   return (
     <View style={styles.container}>
       {/* Buttons removed */}
@@ -567,7 +600,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         )}
         
         {/* Pizza place markers - use animatedPizzaPlaces for Brooklyn mode, filteredPizzaPlaces for normal mode */}
-        {(isBrooklynMode ? animatedPizzaPlaces : filteredPizzaPlaces).map((place, index) => (
+        {renderPlaces().map((place, index) => (
           <Marker
             key={`${place.id}-${index}`}
             coordinate={{
