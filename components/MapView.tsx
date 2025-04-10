@@ -145,7 +145,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       setIsSearchingPlaces(true);
       
       // Keep current places visible during the transition
-      const currentPlaces = isBrooklynMode ? animatedPizzaPlaces : filteredPizzaPlaces;
+      const currentPlaces = isBrooklynMode ? allPizzaPlaces : filteredPizzaPlaces;
       
       setTimeout(() => {
         searchWithinVisibleArea(newRegion);
@@ -269,14 +269,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   // Function to search for pizza places within the visible map area
   const searchWithinVisibleArea = async (searchRegion: Region) => {
     try {
-      // Stop any animation in progress
-      animationInProgress.current = false;
-      
       setIsSearchingPlaces(true);
-      // setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
-      
-      // Reset animated places
-      setAnimatedPizzaPlaces([]);
       
       // Calculate the corners of the visible area
       const northEast = {
@@ -293,7 +286,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       const centerLat = searchRegion.latitude;
       const centerLng = searchRegion.longitude;
       
-      // Calculate approximate radius in meters to cover the visible area
+      // Calculate approximate radius in miles to cover the visible area
       // This uses the Haversine formula to get distance from center to corner
       const radiusInMeters = calculateDistanceInMiles(
         centerLat, 
@@ -334,69 +327,34 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       
       console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within visible area (sorted by distance from center)`);
       
-      // Start the animation sequence
-      animationInProgress.current = true;
-      
-      const MAX_ANIMATED_PLACES = 50;
-      const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
-      
-      // Animate the first 50 places one by one
-      for (let i = 0; i < animationLimit; i++) {
-        // Skip animation if user switched to nearby mode
-        if (!animationInProgress.current) break;
-        
-        // Add haptic feedback for each new place
-        Haptics.impactAsync(
-          i % 3 === 0 
-            ? Haptics.ImpactFeedbackStyle.Light 
-            : i % 3 === 1 
-              ? Haptics.ImpactFeedbackStyle.Medium 
-              : Haptics.ImpactFeedbackStyle.Heavy
-        );
-        
-        // Add this place to the animated places
-        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
-        
-        // Wait a short time before showing the next place
-        await new Promise(resolve => setTimeout(resolve, 2));
-      }
-      
-      // If there are more than 50 places, add the rest after exactly 1 second
-      if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
-        // Schedule the remaining places to appear exactly 1 second after the 50th place
-        await new Promise(resolve => setTimeout(resolve, 10));
-        
-        // Make sure animation is still in progress (user hasn't switched modes)
-        if (animationInProgress.current) {
-          // First set the remaining places to ensure rendering starts
-          setAnimatedPizzaPlaces(limitedPlaces);
-          
-          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
-          // Use a notification instead of just impact for a more noticeable feedback
-          setTimeout(() => {
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            
-            // Follow with a heavy impact for an even more pronounced effect
-            setTimeout(() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-            }, 100);
-          }, 10);
-        }
-      }
+      // Add haptic feedback when places are loaded
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       
     } catch (error) {
       console.error('Error finding pizza places in visible area:', error);
       console.log('Failed to find pizza places in visible area');
     } finally {
       setIsSearchingPlaces(false);
-      animationInProgress.current = false;
     }
   };
   
-  // Animation state for Brooklyn pizza places
-  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
-  const animationInProgress = useRef(false);
-  
+  const onRegionChange = (newRegion: Region) => {
+    setRegion(newRegion);
+    
+    // Check if we should show the "Search This Area" button
+    if (lastSearchRegion) {
+      const distance = calculateDistanceInMiles(
+        lastSearchRegion.latitude,
+        lastSearchRegion.longitude,
+        newRegion.latitude,
+        newRegion.longitude
+      );
+      
+      // Show button if moved more than 0.5 miles from last search
+      setShowSearchThisArea(distance > 0.5);
+    }
+  };
+
   // Helper function to calculate distance between two coordinates in miles
   const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     // Haversine formula to calculate distance between two points on Earth
@@ -409,24 +367,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c; // Distance in miles
-  };
-
-  const onRegionChange = (newRegion: Region) => {
-    setRegion(newRegion);
-    
-    // If the map has moved significantly from the last search position, show the "Search this area" button
-    if (lastSearchRegion) {
-      const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
-      const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
-      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
-      
-      // Show button if the map has moved more than 25% of the visible area
-      if (latChange > lastSearchRegion.latitudeDelta * 0.25 || 
-          lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
-          deltaChange > lastSearchRegion.latitudeDelta * 0.25) {
-        setShowSearchThisArea(true);
-      }
-    }
   };
 
   if (isLoading) {
@@ -496,8 +436,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           </Marker>
         )}
         
-        {/* Pizza place markers - use animatedPizzaPlaces for Brooklyn mode, filteredPizzaPlaces for normal mode */}
-        {(isBrooklynMode ? animatedPizzaPlaces : filteredPizzaPlaces).map((place, index) => (
+        {/* Pizza place markers - use allPizzaPlaces for Brooklyn mode, filteredPizzaPlaces for normal mode */}
+        {(isBrooklynMode ? allPizzaPlaces : filteredPizzaPlaces).map((place, index) => (
           <Marker
             key={`${place.id}-${index}`}
             coordinate={{
@@ -506,9 +446,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             }}
             tracksViewChanges={false}
             onPress={() => {
-              // Trigger haptic feedback when a pizza place is selected
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              
               setSelectedPlace(place);
               setBottomSheetVisible(true);
             }}
