@@ -69,7 +69,7 @@ export const convertToPlaceResult = (place: BrooklynPizzaPlace): PlaceResult => 
         lng: place.location.longitude
       }
     },
-    rating: place.rating,
+    rating:0,
     user_ratings_total: place.userRatingCount || 0,
     price_level: priceLevelMap[place.priceLevel] || 0,
     photos: [],

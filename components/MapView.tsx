@@ -154,6 +154,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       }, 1000); // Increased delay to ensure stable transition
     }
   }, [locationFilter]);
+ 
 
   // Apply filters whenever filter options or pizza places change
   useEffect(() => {
@@ -163,9 +164,16 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         try {
           const filtered = await filterPizzaPlaces(
             allPizzaPlaces.map(a => {
+
+              let rating = a.rating
+              if(placeReviews[a.place_id]){
+                rating = placeReviews[a.place_id].rating
+              }
+
               return {
                 ...a,
-                ...placeReviews[a.place_id]
+                ...placeReviews[a.place_id],
+                rating
               }
             }),
             sortFilter,
@@ -173,11 +181,10 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             location, 
           );
           
-          // Only update if we have results
-          if (filtered.length > 0) {
-            setFilteredPizzaPlaces([...filtered]);
-            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
-          }
+         
+          setFilteredPizzaPlaces([...filtered]);
+          console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+         
         } catch (error) {
           console.error('Error applying filters:', error);
         } finally {
