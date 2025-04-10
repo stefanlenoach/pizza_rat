@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   searchThisAreaButton: {
-    backgroundColor: '#111',
+    backgroundColor: '#f5f5f5',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
