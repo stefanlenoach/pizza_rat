@@ -545,7 +545,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         rotateEnabled={true}
         pitchEnabled={true}
         zoomControlEnabled={true}
-        userInterfaceStyle="dark"
+        userInterfaceStyle="light"
       >
         {/* User's current location marker */}
         {location && (
@@ -585,7 +585,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           >
             <PizzaMarker 
               size={30}  
-              color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#000"}
+              color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#222"}
               animated={isBrooklynMode} 
             />
           </Marker>
