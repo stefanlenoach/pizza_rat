@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TouchableOpacity, Alert, StyleSheet, Platform, ActivityIndicator } from 'react-native';
+import { View, Alert, StyleSheet, Platform, ActivityIndicator } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';

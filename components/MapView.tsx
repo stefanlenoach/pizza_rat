@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Platform, Animated } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import MapView, { Marker, Region, Callout, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';

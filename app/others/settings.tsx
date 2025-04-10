@@ -1,4 +1,5 @@
-import { View, TouchableOpacity, Alert, Linking, ScrollView, Platform } from 'react-native';
+import { View, Alert, Linking, ScrollView, Platform } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';

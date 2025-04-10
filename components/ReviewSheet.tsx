@@ -3,7 +3,6 @@ import {
   View, 
   StyleSheet, 
   TextInput, 
-  TouchableOpacity, 
   Animated, 
   Modal,
   SafeAreaView,
@@ -12,6 +11,7 @@ import {
   Platform,
   TouchableWithoutFeedback
 } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text, Heading, Subheading, Paragraph, Caption } from '@/components/CustomText';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';

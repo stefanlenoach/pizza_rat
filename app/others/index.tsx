@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Platform, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Platform, View, ScrollView } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { StatusBar } from 'expo-status-bar';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity, ScrollView, Alert, SafeAreaView, Platform } from 'react-native';
+import { View, ScrollView, Alert, SafeAreaView, Platform } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { useUser } from '../../contexts/UserContext';
 import { useRouter } from 'expo-router';

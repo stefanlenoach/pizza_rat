@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Image, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, TextInput, Image, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';

@@ -2,12 +2,12 @@ import React, { useState, useRef } from 'react';
 import { 
   View, 
   StyleSheet, 
-  TouchableOpacity, 
   Image, 
   Dimensions, 
   Animated, 
   FlatList 
 } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';

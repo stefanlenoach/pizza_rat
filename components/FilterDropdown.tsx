@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { View, Modal, FlatList } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { AntDesign } from '@expo/vector-icons';
 import tw from '@/utils/tw';

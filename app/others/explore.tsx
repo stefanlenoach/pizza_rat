@@ -1,4 +1,5 @@
-import { StyleSheet, Image, Platform, View, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import { StyleSheet, Image, Platform, View, Modal, Dimensions } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState, useRef } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, Easing } from 'react-native-reanimated';

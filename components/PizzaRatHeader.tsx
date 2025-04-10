@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text } from '@/components/CustomText';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';

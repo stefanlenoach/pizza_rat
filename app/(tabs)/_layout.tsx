@@ -1,6 +1,7 @@
 import { Stack, usePathname } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { Platform } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -49,13 +50,14 @@ export default function TabLayout() {
             sortFilter={filters.sort}
             locationFilter={filters.location}
             rightIcon={
-              <Ionicons
-                name="settings"
-                size={24}
-                color={Colors[colorScheme ?? 'light'].tint}
-                onPress={() => router.push('/others/settings')}
-                style={{ padding: 8 }}
-              />
+              <TouchableOpacity onPress={() => router.push('/others/settings')}>
+                <Ionicons
+                  name="settings"
+                  size={24}
+                  color={Colors[colorScheme ?? 'light'].tint}
+                  style={{ padding: 8 }}
+                />
+              </TouchableOpacity>
             }
           />
         ),

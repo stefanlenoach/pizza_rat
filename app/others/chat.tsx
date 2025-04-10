@@ -6,7 +6,6 @@ import {
   View, 
   FlatList, 
   TextInput, 
-  TouchableOpacity, 
   KeyboardAvoidingView, 
   Platform,
   Image,
@@ -14,6 +13,7 @@ import {
   Keyboard,
   ActivityIndicator
 } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text, Heading, Subheading, Paragraph, Caption, Label } from '@/components/CustomText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';

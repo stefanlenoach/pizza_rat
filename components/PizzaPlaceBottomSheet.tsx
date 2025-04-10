@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, Image, FlatList } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
 import { Text, Heading, Subheading, Paragraph, Caption } from '@/components/CustomText';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import tw from '@/utils/tw';
