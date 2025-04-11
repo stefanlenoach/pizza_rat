@@ -87,20 +87,14 @@ export const loadManhattanPizzaData = async () => {
     const statenIsland = require('../boroughs/staten_island_pizza_places.json');
  
     const places = [...manhattan?.places || [], ...brooklyn?.places || [], ...queens?.places || [], ...bronx?.places || [],...statenIsland?.places || []]
-    .filter((place:any) => {
-      if (place.cuisines && place.cuisines.includes('Deli')) { 
-        return false;
-      }
-      return true;
-    });
+    
     
     // Convert all places and filter out duplicates based on coordinates
     const allPlaces = places
     
     // Create a Map to store unique places using lat/lng as key
     const uniquePlaces = new Map();
- 
-    
+  
     allPlaces.forEach(place => {
       const key = `${place.location.latitude},${place.location.longitude}`;
       // Only keep the first occurrence of a place at each coordinate
