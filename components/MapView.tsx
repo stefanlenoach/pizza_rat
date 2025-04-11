@@ -321,7 +321,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       // Start the animation sequence
       animationInProgress.current = true;
       
-      const MAX_ANIMATED_PLACES = 50;
+      const MAX_ANIMATED_PLACES = 100;
       const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
       
       // Animate the first 50 places one by one
@@ -346,28 +346,28 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       }
       
       // If there are more than 50 places, add the rest after exactly 1 second
-      if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
-        // Schedule the remaining places to appear exactly 1 second after the 50th place
-        await new Promise(resolve => setTimeout(resolve, 10));
+      // if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
+      //   // Schedule the remaining places to appear exactly 1 second after the 50th place
+      //   await new Promise(resolve => setTimeout(resolve, 10));
         
-        // Make sure animation is still in progress (user hasn't switched modes)
-        if (animationInProgress.current) {
-          // First set the remaining places to ensure rendering starts
-          console.log("------------limitedPlaces",limitedPlaces.length)
-          // setAnimatedPizzaPlaces(prev => [...prev, ...limitedPlaces]);
+      //   // Make sure animation is still in progress (user hasn't switched modes)
+      //   if (animationInProgress.current) {
+      //     // First set the remaining places to ensure rendering starts
+      //     console.log("------------limitedPlaces",limitedPlaces.length)
+      //     // setAnimatedPizzaPlaces(prev => [...prev, ...limitedPlaces]);
           
-          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
-          // Use a notification instead of just impact for a more noticeable feedback
-          setTimeout(() => {
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      //     // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
+      //     // Use a notification instead of just impact for a more noticeable feedback
+      //     setTimeout(() => {
+      //       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
             
-            // Follow with a heavy impact for an even more pronounced effect
-            setTimeout(() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-            }, 100);
-          }, 10);
-        }
-      }
+      //       // Follow with a heavy impact for an even more pronounced effect
+      //       setTimeout(() => {
+      //         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      //       }, 100);
+      //     }, 10);
+      //   }
+      // }
       
     } catch (error) {
       console.error('Error finding pizza places in visible area:', error);
