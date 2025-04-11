@@ -96,6 +96,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const mapRef = useRef<MapView | null>(null);
 
   const [userReviewedPlaces, setUserReviewedPlaces] = useState<Set<string>>(new Set());
+  const initialLoadDone = useRef(false);
 
   // Load user's reviewed places
   useEffect(() => {
@@ -137,7 +138,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
   // Update map region when location filter changes
   useEffect(() => {
-    if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS]) {
+    if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS] && initialLoadDone.current) {
       // Only update the search area without moving the map
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
       setTimeout(() => {
@@ -172,13 +173,20 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             locationFilter,
             location, 
           );
-          setFilteredPizzaPlaces([...filtered]);
-          console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
-         
+          
+          if (filtered && Array.isArray(filtered)) {
+            setFilteredPizzaPlaces(filtered);
+            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+          } else {
+            setFilteredPizzaPlaces([]);
+            console.log('No places found after filtering');
+          }
         } catch (error) {
           console.error('Error applying filters:', error);
+          setFilteredPizzaPlaces([]);
         } finally {
           setIsSearchingPlaces(false);
+          initialLoadDone.current = true;
         }
       }
     };
@@ -240,120 +248,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       }
     })();
   }, []);
-
-  // Function to find nearby pizza places
-  const findNearbyPizzaPlaces = async (lat: number, lng: number) => {
-    try {
-      // Stop any animation in progress
-      animationInProgress.current = false;
-      
-      setIsSearchingPlaces(true);
-      setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
-      
-      // Reset animated places
-      setAnimatedPizzaPlaces([]);
-      
-      // Update the region to center on the provided location
-      const newRegion = {
-        latitude: lat,
-        longitude: lng,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      };
-      setRegion(newRegion);
-      
-      // Search for Brooklyn pizza places within 5 miles (8047 meters)
-      const places = await getNearbyBrooklynPizzaPlaces(lat, lng, 8047);
-      
-      // Sort places by distance from the center
-      const sortedPlaces = places.sort((a, b) => {
-        const distanceA = calculateDistanceInMiles(
-          lat, 
-          lng, 
-          a.geometry.location.lat, 
-          a.geometry.location.lng
-        );
-        const distanceB = calculateDistanceInMiles(
-          lat, 
-          lng, 
-          b.geometry.location.lat, 
-          b.geometry.location.lng
-        );
-        return distanceA - distanceB; // Sort from closest to farthest
-      });
-      
-      // Limit to 100 places maximum
-      const limitedPlaces = sortedPlaces.slice(0, 100);
-      
-      // Set all pizza places to the filtered list
-      setAllPizzaPlaces(limitedPlaces);
-      setLastSearchRegion(newRegion);
-      setShowSearchThisArea(false);
-      
-      console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within 5 miles (sorted by distance from center)`);
-      
-      // Start the animation sequence
-      animationInProgress.current = true;
-      
-      const MAX_ANIMATED_PLACES = 50;
-      const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
-      
-      // Animate the first 50 places one by one
-      for (let i = 0; i < animationLimit; i++) {
-        // Skip animation if user switched to nearby mode
-        if (!animationInProgress.current) break;
-        
-        // Add haptic feedback for each new place
-        Haptics.impactAsync(
-          i % 3 === 0 
-            ? Haptics.ImpactFeedbackStyle.Light 
-            : i % 3 === 1 
-              ? Haptics.ImpactFeedbackStyle.Medium 
-              : Haptics.ImpactFeedbackStyle.Heavy
-        );
-        
-        // Add this place to the animated places
-        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
-        
-        // Wait a short time before showing the next place
-        await new Promise(resolve => setTimeout(resolve, 2));
-      }
-      
-      // If there are more than 50 places, add the rest after exactly 1 second
-      if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
-        // Schedule the remaining places to appear exactly 1 second after the 50th place
-        await new Promise(resolve => setTimeout(resolve, 10));
-        
-        // Make sure animation is still in progress (user hasn't switched modes)
-        if (animationInProgress.current) {
-          // First set the remaining places to ensure rendering starts
-          setAnimatedPizzaPlaces(limitedPlaces);
-          
-          // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
-          // Use a notification instead of just impact for a more noticeable feedback
-          setTimeout(() => {
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            
-            // Follow with a heavy impact for an even more pronounced effect
-            setTimeout(() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-            }, 100);
-          }, 10);
-        }
-      }
-      
-    } catch (error) {
-      console.error('Error finding nearby pizza places:', error);
-      console.log('Failed to find nearby pizza places');
-    } finally {
-      setIsSearchingPlaces(false);
-      animationInProgress.current = false;
-    }
-  };
   
   // Function to search for pizza places within the visible map area
   const searchWithinVisibleArea = async (searchRegion: Region) => {
-    try {
+    try { 
+      console.log("searchWithinVisibleArea--------",searchRegion)
       // Stop any animation in progress
       animationInProgress.current = false;
       
@@ -454,7 +353,8 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         // Make sure animation is still in progress (user hasn't switched modes)
         if (animationInProgress.current) {
           // First set the remaining places to ensure rendering starts
-          setAnimatedPizzaPlaces(limitedPlaces);
+          console.log("------------limitedPlaces",limitedPlaces.length)
+          // setAnimatedPizzaPlaces(prev => [...prev, ...limitedPlaces]);
           
           // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
           // Use a notification instead of just impact for a more noticeable feedback
@@ -533,23 +433,24 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   }
 
   const renderPlaces = () => {
-    if(sortFilter !== 'all'){
-      return filteredPizzaPlaces
+    // Safety check for undefined arrays
+    if (!filteredPizzaPlaces) return [];
+    
+    if (sortFilter !== 'all') {
+      return filteredPizzaPlaces  
     }
  
-    if(isBrooklynMode){
-      return animatedPizzaPlaces
+    if (isBrooklynMode && animatedPizzaPlaces) {
+      return animatedPizzaPlaces;
     } 
 
-    return filteredPizzaPlaces
+    return filteredPizzaPlaces;
   }
 
   console.log('isBrooklynMode',isBrooklynMode)
-  console.log('filteredPizzaPlaces',filteredPizzaPlaces.length)
-  console.log('animatedPizzaPlaces',animatedPizzaPlaces.length) 
-  console.log('sortFilter',sortFilter)
-  
-
+  console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length)
+  console.log('animatedPizzaPlaces',animatedPizzaPlaces?.length) 
+ 
   return (
     <View style={styles.container}>
       {/* Buttons removed */}
@@ -619,7 +520,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             <PizzaMarker 
               size={30}  
               color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#000"}
-              animated={isBrooklynMode} 
+              animated={isBrooklynMode && sortFilter === 'all'} 
             />
           </Marker>
         ))}
