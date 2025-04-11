@@ -309,7 +309,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       });
       
       // Limit to 100 places maximum
-      const limitedPlaces = sortedPlaces.slice(0, 100);
+      const limitedPlaces = sortedPlaces.slice(0, 50);
       
       // Set all pizza places to the filtered list
       setAllPizzaPlaces(limitedPlaces);
@@ -321,7 +321,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       // Start the animation sequence
       animationInProgress.current = true;
       
-      const MAX_ANIMATED_PLACES = 100;
+      const MAX_ANIMATED_PLACES = 50;
       const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
       
       // Animate the first 50 places one by one
@@ -520,7 +520,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             <PizzaMarker 
               size={30}  
               color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#000"}
-              animated={isBrooklynMode && sortFilter === 'all'} 
+              animated={isBrooklynMode && sortFilter === 'all' && index < 100} 
             />
           </Marker>
         ))}
