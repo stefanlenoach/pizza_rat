@@ -461,6 +461,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
               size={30}  
               color={userReviewedPlaces.has(place.place_id) ? "#fff" : "#000"}
               animated={isBrooklynMode} 
+              rating={place.rating || 0}
             />
           </Marker>
         ))}
