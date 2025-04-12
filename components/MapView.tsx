@@ -141,18 +141,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     if (locationFilter && BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS] && initialLoadDone.current) {
       // Only update the search area without moving the map
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
-      
-      // Ensure we're not clearing places during the transition
-      setIsSearchingPlaces(true);
-      
-      // Keep current places visible during the transition
-      const currentPlaces = isBrooklynMode ? allPizzaPlaces : filteredPizzaPlaces;
-      
       setTimeout(() => {
         searchWithinVisibleArea(newRegion);
         setLastSearchRegion(newRegion);
         setShowSearchThisArea(false);
-      }, 1000); // Increased delay to ensure stable transition
+      }, 500);
     }
   }, [locationFilter]);
  
@@ -202,8 +195,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews]);
 
   useEffect(() => {
-    let mounted = true;
-    
     (async () => {
       try {
         setIsLoading(true);
@@ -217,16 +208,12 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           setRegion(NEW_YORK_COORDS);
           setIsLoading(false);
           // Search within the visible area even if location permission is denied
-          if (mounted) {
-            setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 1000);
-          }
+          setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 500);
           return;
         }
 
         // Get current location
         let currentLocation = await Location.getCurrentPositionAsync({});
-        if (!mounted) return;
-        
         setLocation(currentLocation);
         
         // Check if user is in NYC area (using a rough bounding box)
@@ -243,39 +230,23 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
           longitudeDelta: 0.0421,
         } : NEW_YORK_COORDS;
         
-        if (!mounted) return;
-        
         setRegion(newRegion);
         console.log(isInNYC ? '------Centered map on user location in NYC------' : '----User outside NYC, showing full NYC view-----');
         
         // Search for places in the visible area
-        if (mounted) {
-          setTimeout(() => {
-            if (mounted) {
-              searchWithinVisibleArea(newRegion);
-              setLastSearchRegion(newRegion);
-              setShowSearchThisArea(false);
-            }
-          }, 1000);
-        }
+        setTimeout(() => searchWithinVisibleArea(newRegion), 500);
+        setLastSearchRegion(newRegion);
+        setShowSearchThisArea(false);
         
       } catch (error) {
         console.error('Error getting location:', error);
         // On error, default to showing all of NYC
-        if (mounted) {
-          setRegion(NEW_YORK_COORDS);
-          setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 1000);
-        }
+        setRegion(NEW_YORK_COORDS);
+        setTimeout(() => searchWithinVisibleArea(NEW_YORK_COORDS), 500);
       } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     })();
-
-    return () => {
-      mounted = false;
-    };
   }, []);
   
   // Function to search for pizza places within the visible map area
@@ -286,6 +257,10 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       animationInProgress.current = false;
       
       setIsSearchingPlaces(true);
+      setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
+      
+      // Reset animated places
+      setAnimatedPizzaPlaces([]);
       
       // Calculate the corners of the visible area
       const northEast = {
@@ -302,7 +277,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       const centerLat = searchRegion.latitude;
       const centerLng = searchRegion.longitude;
       
-      // Calculate approximate radius in miles to cover the visible area
+      // Calculate approximate radius in meters to cover the visible area
       // This uses the Haversine formula to get distance from center to corner
       const radiusInMeters = calculateDistanceInMiles(
         centerLat, 
@@ -399,26 +374,14 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       console.log('Failed to find pizza places in visible area');
     } finally {
       setIsSearchingPlaces(false);
+      animationInProgress.current = false;
     }
   };
   
-  const onRegionChange = (newRegion: Region) => {
-    setRegion(newRegion);
-    
-    // Check if we should show the "Search This Area" button
-    if (lastSearchRegion) {
-      const distance = calculateDistanceInMiles(
-        lastSearchRegion.latitude,
-        lastSearchRegion.longitude,
-        newRegion.latitude,
-        newRegion.longitude
-      );
-      
-      // Show button if moved more than 0.5 miles from last search
-      setShowSearchThisArea(distance > 0.5);
-    }
-  };
-
+  // Animation state for Brooklyn pizza places
+  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
+  const animationInProgress = useRef(false);
+  
   // Helper function to calculate distance between two coordinates in miles
   const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     // Haversine formula to calculate distance between two points on Earth
@@ -431,6 +394,24 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c; // Distance in miles
+  };
+
+  const onRegionChange = (newRegion: Region) => {
+    setRegion(newRegion);
+    
+    // If the map has moved significantly from the last search position, show the "Search this area" button
+    if (lastSearchRegion) {
+      const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
+      const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
+      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
+      
+      // Show button if the map has moved more than 25% of the visible area
+      if (latChange > lastSearchRegion.latitudeDelta * 0.25 || 
+          lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
+          deltaChange > lastSearchRegion.latitudeDelta * 0.25) {
+        setShowSearchThisArea(true);
+      }
+    }
   };
 
   if (isLoading) {
@@ -529,6 +510,9 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             }}
             tracksViewChanges={false}
             onPress={() => {
+              // Trigger haptic feedback when a pizza place is selected
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              
               setSelectedPlace(place);
               setBottomSheetVisible(true);
             }}
