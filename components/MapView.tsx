@@ -150,6 +150,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         searchWithinVisibleArea(newRegion);
         setLastSearchRegion(newRegion);
         setShowSearchThisArea(false);
+        mapRef.current?.animateToRegion(newRegion, 1000);
       }, 500);
     }
   }, [locationFilter]);
@@ -242,6 +243,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         setTimeout(() => searchWithinVisibleArea(newRegion), 500);
         setLastSearchRegion(newRegion);
         setShowSearchThisArea(false);
+        setLastKnownRegion(newRegion);
         
       } catch (error) {
         console.error('Error getting location:', error);
@@ -460,7 +462,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     return filteredPizzaPlaces;
   }
 
-  // console.log('selectedSearchPlace',selectedSearchPlace)
+  console.log('lastKnownRegion',lastKnownRegion)
   // console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length) 
  
   return (
@@ -482,8 +484,9 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
               latitudeDelta: 0.01,
               longitudeDelta: 0.01,
             };
+             
             console.log('Animating to region:', region);
-            mapRef.current.animateToRegion(region, 1000);
+            mapRef.current?.animateToRegion(BOROUGH_REGIONS.manhattan, 1000); 
           }
         }}
         onSelectPlace={(place: PlaceResult) => {
