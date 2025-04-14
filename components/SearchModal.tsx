@@ -5,12 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { PlaceResult } from '@/utils/placesApi';
 import debounce from 'lodash/debounce';
 import tw from '@/utils/tw';
+import { useUser } from '@/contexts/UserContext';
 
 interface SearchModalProps {
   isVisible: boolean;
   onClose: () => void;
   places: PlaceResult[];
   onSelectPlace: (place: PlaceResult) => void;
+  onClear: () => void;
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({
@@ -18,8 +20,9 @@ const SearchModal: React.FC<SearchModalProps> = ({
   onClose,
   places,
   onSelectPlace,
+  onClear
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const { searchQuery, setSearchQuery, setSelectedSearchPlace } = useUser();
   const [filteredPlaces, setFilteredPlaces] = useState<PlaceResult[]>([]);
 
   // Debounced search function
@@ -44,12 +47,19 @@ const SearchModal: React.FC<SearchModalProps> = ({
     return () => {
       debouncedSearch.cancel();
     };
-  }, [searchQuery, debouncedSearch]);
+  }, [searchQuery, places]);
 
   const handleSelectPlace = (place: PlaceResult) => {
-    onSelectPlace(place);
-    setSearchQuery('');
+    setSelectedSearchPlace(place);
+    onSelectPlace(place); 
     onClose();
+  };
+
+  const handleClear = () => {
+    setSearchQuery('');
+    setSelectedSearchPlace(null);
+    setFilteredPlaces([]); 
+    onClear();
   };
 
   return (
@@ -62,8 +72,8 @@ const SearchModal: React.FC<SearchModalProps> = ({
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.searchHeader}>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#FF5A5F" />
+            <TouchableOpacity onPress={onClose} style={tw`p-2`}>
+              <Ionicons name="arrow-back" size={24} color="#FF5A5F" />
             </TouchableOpacity>
             <View style={styles.searchInputContainer}>
               <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
@@ -75,6 +85,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
                 autoFocus={true}
                 placeholderTextColor="#666"
               />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={handleClear} style={tw`p-2`}>
+                  <Ionicons name="close-circle" size={20} color="#666" />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           
@@ -113,37 +128,37 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
-    marginTop: 50,
+    backgroundColor: '#1c1c1e',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    marginTop: 50,
   },
   searchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#333',
-  },
-  closeButton: {
-    marginRight: 10,
   },
   searchInputContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#333',
+    backgroundColor: '#2c2c2e',
     borderRadius: 10,
+    marginLeft: 10,
     paddingHorizontal: 10,
-  },
-  searchIcon: {
-    marginRight: 10,
   },
   searchInput: {
     flex: 1,
     height: 40,
     color: '#fff',
     fontSize: 16,
+    marginLeft: 10,
+  },
+  searchIcon: {
+    marginRight: 5,
   },
   resultItem: {
     padding: 15,
@@ -158,18 +173,15 @@ const styles = StyleSheet.create({
   placeAddress: {
     fontSize: 14,
     color: '#999',
-    marginBottom: 4,
-  },
-  rating: {
-    fontSize: 14,
-    color: '#FF5A5F',
   },
   emptyContainer: {
-    padding: 20,
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 40,
   },
   emptyText: {
-    color: '#999',
+    color: '#666',
     fontSize: 16,
   },
 });

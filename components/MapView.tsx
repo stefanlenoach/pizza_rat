@@ -87,9 +87,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [filteredPizzaPlaces, setFilteredPizzaPlaces] = useState<PlaceResult[]>([]);
   const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
+  const [selectedSearchPlace, setSelectedSearchPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false); 
-  const { placeReviews, searchModalVisible, setSearchModalVisible } = useUser();
+  const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
+  const { placeReviews, searchModalVisible, setSearchModalVisible, } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
  
   
@@ -259,6 +261,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       // Stop any animation in progress
       animationInProgress.current = false;
       
+      setSelectedSearchPlace(null);
       setIsSearchingPlaces(true);
       setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
       
@@ -402,6 +405,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion);
+    setLastKnownRegion(newRegion);
     
     // If the map has moved significantly from the last search position, show the "Search this area" button
     if (lastSearchRegion) {
@@ -440,6 +444,11 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     // Safety check for undefined arrays
     if (!filteredPizzaPlaces) return [];
     
+    // If a place is selected through search, only show that place
+    if (selectedSearchPlace) {
+      return [selectedSearchPlace];
+    }
+    
     if (sortFilter !== 'all') {
       return filteredPizzaPlaces  
     }
@@ -451,7 +460,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     return filteredPizzaPlaces;
   }
 
-  // console.log('isBrooklynMode',isBrooklynMode)
+  // console.log('selectedSearchPlace',selectedSearchPlace)
   // console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length) 
  
   return (
@@ -462,16 +471,44 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         isVisible={searchModalVisible}
         onClose={() => setSearchModalVisible(false)}
         places={allPlaces}
+        onClear={()=>{
+          console.log('Clearing search, lastKnownRegion:', lastKnownRegion);
+          setSelectedSearchPlace(null);
+          // Recenter map to last known region
+          if (lastKnownRegion && mapRef.current) {
+            const region = {
+              latitude: lastKnownRegion.latitude,
+              longitude: lastKnownRegion.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            };
+            console.log('Animating to region:', region);
+            mapRef.current.animateToRegion(region, 1000);
+          }
+        }}
         onSelectPlace={(place: PlaceResult) => {
-          setSelectedPlace(place);
+          // Store current region before changing it
+          const currentRegion = {
+            latitude: region.latitude,
+            longitude: region.longitude,
+            latitudeDelta: region.latitudeDelta,
+            longitudeDelta: region.longitudeDelta,
+          };
+          console.log('Storing current region:', currentRegion);
+          setLastKnownRegion(currentRegion);
+          
+          setSelectedSearchPlace(place);
           setBottomSheetVisible(true);
+          
           // Animate to the selected place
-          mapRef.current?.animateToRegion({
+          const newRegion = {
             latitude: place.geometry.location.lat,
             longitude: place.geometry.location.lng,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
-          }, 1000);
+          };
+          console.log('Animating to place:', newRegion);
+          mapRef.current?.animateToRegion(newRegion, 1000);
         }}
       />
       
@@ -559,7 +596,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       
       {/* Bottom sheet for pizza place details */}
       <PizzaPlaceBottomSheet 
-        place={selectedPlace}
+        place={selectedSearchPlace || selectedPlace}
         isVisible={bottomSheetVisible}
         onClose={() => {
           setBottomSheetVisible(false);

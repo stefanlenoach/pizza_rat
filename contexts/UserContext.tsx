@@ -35,6 +35,10 @@ interface PlaceReviews {
   };
 }
 
+interface PlaceResult {
+  // Add properties of PlaceResult here
+}
+
 interface UserContextType {
   user: User | null;
   session: Session | null;
@@ -49,6 +53,10 @@ interface UserContextType {
   signOut: () => Promise<void>;
   searchModalVisible: boolean;
   setSearchModalVisible: (visible: boolean) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  selectedSearchPlace: PlaceResult | null;
+  setSelectedSearchPlace: (place: PlaceResult | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -60,6 +68,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [placeReviews, setPlaceReviews] = useState<PlaceReviews>({});
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSearchPlace, setSelectedSearchPlace] = useState<PlaceResult | null>(null);
 
   const loadUserDetails = async (userId: string) => {
     try {
@@ -378,6 +388,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     signInWithGoogle,
     signInWithApple,
     signOut,
+    searchQuery,
+    setSearchQuery,
+    selectedSearchPlace,
+    setSelectedSearchPlace,
   };
 
   return (
