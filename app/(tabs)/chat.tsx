@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, Stack } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Easing, Dimensions } from 'react-native';
 import { 
@@ -113,6 +113,7 @@ export default function ChatScreen() {
       messagesSubscription.unsubscribe();
     };
   }, [activeChat?.placeId]);
+  
 
   const loadChatGroups = async () => {
     try {
@@ -123,7 +124,7 @@ export default function ChatScreen() {
       if (placeId) {
         setMessages([]);
         const { data: groups } = await supabase.from('Chats').select('*')  
-        const placeGroup = groups?.find(group => group.placeId === placeId);
+        const placeGroup = groups?.find(group => group.placeId === placeId); 
         if (placeGroup) {
           setChatGroups([placeGroup]);
           openChat(placeGroup);
@@ -241,10 +242,10 @@ export default function ChatScreen() {
     setActiveChat(chatGroup);
     
     // Update URL params
-    router.push({
-      pathname: '/(tabs)/chat',
-      params: { placeId: chatGroup.placeId }
-    });
+    // router.replace({
+    //   pathname: "/(tabs)/chat",
+    //   params: { placeId: chatGroup.placeId }
+    // });
     
     // Mark as read
     const updatedGroups = chatGroups.map(group => {
@@ -277,20 +278,20 @@ export default function ChatScreen() {
 
   const goBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setActiveChat(null);
+    // setActiveChat(null);
     setMessages([]);
     // loadChatGroups();
     // Clear placeId from URL params
-    router.replace('/(tabs)/chat');
+    router.back();
   };
 
   const renderPlaceName = (placeId: string) => {
     const place = mockPizzaPlaces.concat(brooklynPizzaData).find(p => p.id === placeId);
     return place?.name || place?.displayName?.text || "(Deleted Place)";
-  };
+  };  
  
-  const renderChatGroup = ({ item }: { item: ChatGroup }) => (
-    <TouchableOpacity 
+  const renderChatGroup = ({ item }: { item: ChatGroup }) => { 
+    return <TouchableOpacity 
       style={tw`flex-row items-center p-4 border-b border-gray-200`}
       onPress={() => openChat(item)}
     >
@@ -325,7 +326,7 @@ export default function ChatScreen() {
         </View>
       )}
     </TouchableOpacity>
-  );
+  };
 
   const renderMessage = ({ item }: { item: ChatMessage }) => (
     <View 
@@ -439,124 +440,130 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white`}>
-      <StatusBar style="dark" />
+    <>
+      <Stack.Screen 
+        options={{ 
+          headerShown: false,
+        }} 
+      />
+      <SafeAreaView style={tw`flex-1 bg-white`}>
+        <StatusBar style="dark" />
       
-      {/* Chat List View */}
-      <Animated.View 
-        style={[
-          tw`absolute top-0 bottom-0 left-0 right-0 bg-white z-10`,
-          chatListTransform
-        ]}
-      >
-        {/* Chat List Header with Safe Area */}
-        <View style={[tw`bg-white border-b border-gray-200`, { paddingTop: insets.top }]}>
-          <View style={tw`p-4`}>
-            <Heading>Chats</Heading>
-          </View>
-        </View>
-        {isLoading ? (
-          <View style={tw`flex-1 justify-center items-center`}>
-            <ActivityIndicator size="large" color="#0000ff" />
-            <Caption style={tw`mt-2`}>Loading chats...</Caption>
-          </View>
-        ) : (
-          <FlatList
-            data={chatGroups}
-            renderItem={renderChatGroup}
-            keyExtractor={item => item.id}
-            ListEmptyComponent={
-              <View style={tw`p-8 items-center justify-center`}>
-                <Text style={tw`text-gray-500 text-center`}>No chat groups found</Text>
-              </View>
-            }
-          />
-        )}
-      </Animated.View>
-      
-      {/* Chat Detail View */}
-      <Animated.View 
-        style={[
-          tw`absolute top-0 bottom-0 left-0 right-0 bg-white`,
-          { width: windowWidth },
-          chatDetailTransform
-        ]}
-      >
-        {activeChat && (
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={[tw`flex-1`, { width: windowWidth }]}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 90 : 10) : 0}
-          >
-            {/* Chat Header with Safe Area */}
-            <View style={[tw`flex-row items-center border-b border-gray-200 bg-white`, { paddingTop: insets.top }]}>
-              <View style={tw`flex-row items-center p-4 w-full`}>
-                <TouchableOpacity onPress={goBack} style={tw`mr-2`}>
-                  <IconSymbol name="chevron.left" size={24} color="#000" />
-                </TouchableOpacity>
-                {activeChat.avatar ? (
-                  <Image 
-                    source={{ uri: activeChat.avatar }} 
-                    style={tw`w-10 h-10 rounded-full mr-3`}
-                  />
-                ) : (
-                  <View style={tw`mr-3`}>
-                    <AvatarCircle name={renderPlaceName(activeChat.placeId)} />
-                  </View>
-                )}
-                <View style={tw`flex-1`}>
-                  <Subheading>{renderPlaceName(activeChat.placeId)}</Subheading>
-                  <Caption>
-                    {new Set(messages.map(msg => msg.senderId)).size}{" "} member/s
-                  </Caption>
-                </View>
-                <TouchableOpacity style={tw`ml-2 mr-4`}>
-                  <IconSymbol name="ellipsis" size={24} color="#000" />
-                </TouchableOpacity>
-              </View>
+        {/* Chat List View */}
+        {/* <Animated.View 
+          style={[
+            tw`absolute top-0 bottom-0 left-0 right-0 bg-white z-10`,
+            chatListTransform
+          ]}
+        > 
+          <View style={[tw`bg-white border-b border-gray-200`, { paddingTop: insets.top }]}>
+            <View style={tw`p-4`}>
+              <Heading>Chats</Heading>
             </View>
-            
-            {/* Messages */}
+          </View>
+          {isLoading ? (
+            <View style={tw`flex-1 justify-center items-center`}>
+              <ActivityIndicator size="large" color="#0000ff" />
+              <Caption style={tw`mt-2`}>Loading chats...</Caption>
+            </View>
+          ) : (
             <FlatList
-              ref={flatListRef}
-              data={messages}
-              renderItem={renderMessage}
+              data={chatGroups}
+              renderItem={renderChatGroup}
               keyExtractor={item => item.id}
-              contentContainerStyle={tw`p-4`}
-              onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
+              ListEmptyComponent={
+                <View style={tw`p-8 items-center justify-center`}>
+                  <Text style={tw`text-gray-500 text-center`}>No chat groups found</Text>
+                </View>
+              }
             />
-            
-            {/* Input Area */}
-            <View style={tw`flex-row items-center p-2 border-t border-gray-200 bg-white`}> 
-              <TextInput
-                ref={inputRef}
-                style={[tw`flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2 text-sm`, { fontFamily: 'ClashDisplay' }]}
-                placeholder="Message"
-                value={inputText}
-                onChangeText={setInputText}
-                multiline
-                maxLength={500}
-                onSubmitEditing={handleSendMessage}
-                returnKeyType="send"
-                blurOnSubmit={false}
-              />
-              <TouchableOpacity 
-                style={[tw`p-2 rounded-full`, inputText.trim() === '' ? tw`bg-blue-300` : tw`bg-blue-500`]}
-                onPress={handleSendMessage}
-                disabled={inputText.trim() === '' || isSending}
-              >
-                {isSending ? (
-                  <View style={tw`h-6 w-6 items-center justify-center`}>
-                    <ActivityIndicator size="small" color="#fff" />
+          )}
+        </Animated.View> */}
+      
+        {/* Chat Detail View */}
+        <Animated.View 
+          style={[
+            tw`absolute top-0 bottom-0 left-0 right-0 bg-white`,
+            { width: windowWidth },
+            chatDetailTransform
+          ]}
+        >
+          {activeChat && (
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={[tw`flex-1`, { width: windowWidth }]}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 90 : 10) : 0}
+            >
+              {/* Chat Header with Safe Area */}
+              <View style={[tw`flex-row items-center border-b border-gray-200 bg-white`, { paddingTop: insets.top }]}>
+                <View style={tw`flex-row items-center p-4 w-full`}>
+                  <TouchableOpacity onPress={goBack} style={tw`mr-2`}>
+                    <IconSymbol name="chevron.left" size={24} color="#000" />
+                  </TouchableOpacity>
+                  {activeChat.avatar ? (
+                    <Image 
+                      source={{ uri: activeChat.avatar }} 
+                      style={tw`w-10 h-10 rounded-full mr-3`}
+                    />
+                  ) : (
+                    <View style={tw`mr-3`}>
+                      <AvatarCircle name={renderPlaceName(activeChat.placeId)} />
+                    </View>
+                  )}
+                  <View style={tw`flex-1`}>
+                    <Subheading>{renderPlaceName(activeChat.placeId)}</Subheading>
+                    <Caption>
+                      {new Set(messages.map(msg => msg.senderId)).size}{" "} member/s
+                    </Caption>
                   </View>
-                ) : (
-                  <IconSymbol name="arrow.up.circle.fill" size={24} color="#fff" />
-                )}
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        )}
-      </Animated.View>
-    </SafeAreaView>
+                  <TouchableOpacity style={tw`ml-2 mr-4`}>
+                    <IconSymbol name="ellipsis" size={24} color="#000" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            
+              {/* Messages */}
+              <FlatList
+                ref={flatListRef}
+                data={messages}
+                renderItem={renderMessage}
+                keyExtractor={item => item.id}
+                contentContainerStyle={tw`p-4`}
+                onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
+              />
+            
+              {/* Input Area */}
+              <View style={tw`flex-row items-center p-2 border-t border-gray-200 bg-white`}> 
+                <TextInput
+                  ref={inputRef}
+                  style={[tw`flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2 text-sm`, { fontFamily: 'ClashDisplay' }]}
+                  placeholder="Message"
+                  value={inputText}
+                  onChangeText={setInputText}
+                  multiline
+                  maxLength={500}
+                  onSubmitEditing={handleSendMessage}
+                  returnKeyType="send"
+                  blurOnSubmit={false}
+                />
+                <TouchableOpacity 
+                  style={[tw`p-2 rounded-full`, inputText.trim() === '' ? tw`bg-blue-300` : tw`bg-blue-500`]}
+                  onPress={handleSendMessage}
+                  disabled={inputText.trim() === '' || isSending}
+                >
+                  {isSending ? (
+                    <View style={tw`h-6 w-6 items-center justify-center`}>
+                      <ActivityIndicator size="small" color="#fff" />
+                    </View>
+                  ) : (
+                    <IconSymbol name="arrow.up.circle.fill" size={24} color="#fff" />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
+          )}
+        </Animated.View>
+      </SafeAreaView>
+    </>
   );
 }

@@ -367,17 +367,17 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
         <View style={tw`p-4 border-b border-gray-200`}>
           <View style={tw`items-center mb-6 mt-2`}>
             {renderReviewButton()}
-            {/* <TouchableOpacity 
-              style={tw`bg-blue-600 py-3 px-6 rounded-xl w-4/5`}
+            <TouchableOpacity 
+              style={tw`bg-blue-600 py-3 px-6 rounded-xl w-4/5 mt-4`}
               onPress={() => router.push({
                 pathname: "/(tabs)/chat",
-                params: { placeId: place?.id || '' }
+                params: { placeId: place?.place_id || '' }
               })}
             >
               <Text style={tw`text-white font-bold text-center text-lg`}>
                 CHAT ROOM
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
           
           <View style={tw`flex-row justify-between items-center mb-4 px-4`}>
