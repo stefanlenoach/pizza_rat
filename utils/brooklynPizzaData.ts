@@ -1,5 +1,6 @@
 import { PlaceResult } from './placesApi';
 import { loadManhattanPizzaData } from './manhattanPizzaData';
+import { NeighborhoodData, parseNeighborhoodData, isPointInPolygon, filterPlacesByNeighborhood } from './neighborhoodUtils';
 
 // Define the structure of our Brooklyn pizza data
 export interface BrooklynPizzaPlace {
@@ -30,11 +31,34 @@ export interface BrooklynPizzaData {
   places: BrooklynPizzaPlace[];
 }
 
+// Load the neighborhood boundaries from the GeoJSON file
+let neighborhoodBoundaries: NeighborhoodData[] = [];
+
+export const loadNeighborhoodBoundaries = async (): Promise<NeighborhoodData[]> => {
+  if (neighborhoodBoundaries.length > 0) {
+    return neighborhoodBoundaries;
+  }
+
+  try {
+    const data = require('../neighborhood_data/nyc_neighborhood.json');
+    neighborhoodBoundaries = parseNeighborhoodData(data);
+    return neighborhoodBoundaries;
+  } catch (error) {
+    console.error('Error loading neighborhood boundaries:', error);
+    return [];
+  }
+};
+
 // Function to load the Brooklyn pizza data
 export const loadBrooklynPizzaData = async (): Promise<BrooklynPizzaData> => {
   try { 
     const manhattanData = await loadManhattanPizzaData();
   
+    // Load neighborhood boundaries if not already loaded
+    if (neighborhoodBoundaries.length === 0) {
+      await loadNeighborhoodBoundaries();
+    }
+    
     return manhattanData as BrooklynPizzaData;
   } catch (error) {
     console.error('Error loading Brooklyn pizza data:', error);
@@ -65,7 +89,7 @@ export const convertToPlaceResult = (place: BrooklynPizzaPlace): PlaceResult => 
         lng: place.location.longitude
       }
     },
-    rating:0,
+    rating: place.rating || 0,
     user_ratings_total: place.userRatingCount || 0,
     price_level: priceLevelMap[place.priceLevel] || 0,
     photos: [],
@@ -98,15 +122,27 @@ export const getAllBrooklynPizzaPlaces = async (): Promise<PlaceResult[]> => {
 };
 
 // Get pizza places in a specific neighborhood
-export const getPizzaPlacesByNeighborhood = async (neighborhood: string): Promise<PlaceResult[]> => {
+export const getPizzaPlacesByNeighborhood = async (neighborhoodName: string): Promise<PlaceResult[]> => {
   try {
-    const data = await loadBrooklynPizzaData();
-    const filteredPlaces = data.places.filter(place => 
-      place.neighborhood.toLowerCase() === neighborhood.toLowerCase()
-    );
-    return filteredPlaces.map(place => convertToPlaceResult(place));
+    // Ensure neighborhood boundaries are loaded
+    if (neighborhoodBoundaries.length === 0) {
+      await loadNeighborhoodBoundaries();
+    }
+    
+    // Find the selected neighborhood
+    const neighborhood = neighborhoodBoundaries.find(n => n.name === neighborhoodName);
+    if (!neighborhood) {
+      console.error(`Neighborhood ${neighborhoodName} not found`);
+      return [];
+    }
+    
+    // Get all pizza places
+    const allPlaces = await getAllBrooklynPizzaPlaces();
+    
+    // Filter places by the selected neighborhood
+    return filterPlacesByNeighborhood(allPlaces, neighborhood);
   } catch (error) {
-    console.error(`Error getting pizza places in ${neighborhood}:`, error);
+    console.error(`Error getting pizza places in ${neighborhoodName}:`, error);
     return [];
   }
 };
@@ -116,14 +152,26 @@ export const getNearbyBrooklynPizzaPlaces = async (
   latitude: number, 
   longitude: number, 
   radius: number = 3218, // Default to 2 miles
-  setAllPlaces?: (places: PlaceResult[]) => void
+  setAllPlaces?: (places: PlaceResult[]) => void,
+  neighborhoodFilter?: string // Add neighborhood filter parameter
 ): Promise<PlaceResult[]> => {
   try {
     const data = await loadBrooklynPizzaData();
+    
+    // Ensure neighborhood boundaries are loaded
+    if (neighborhoodBoundaries.length === 0) {
+      await loadNeighborhoodBoundaries();
+    }
+    
     const pizzaRestaurants = data.places.filter(place => 
       place.types.includes('pizza_restaurant')
     );
-    setAllPlaces?.(pizzaRestaurants.map(place => convertToPlaceResult(place)));
+    
+    let allPlaces = pizzaRestaurants.map(place => convertToPlaceResult(place));
+    
+    if (setAllPlaces) {
+      setAllPlaces(allPlaces);
+    }
     
     // Calculate distance between two points using the Haversine formula
     const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -140,25 +188,28 @@ export const getNearbyBrooklynPizzaPlaces = async (
       return R * c; // Distance in meters
     };
     
-    // Filter places within the radius and only include pizza restaurants
-    const nearbyPlaces = data.places.filter(place => {
-      // Check if it's a pizza restaurant
-      if (!place.types.includes('pizza_restaurant')) {
-        return false;
-      }
-      
-      // Check if it's within the radius
+    // Filter places within the radius
+    let nearbyPlaces = allPlaces.filter(place => {
       const distance = calculateDistance(
         latitude, 
         longitude, 
-        place.location.latitude, 
-        place.location.longitude
+        place.geometry.location.lat, 
+        place.geometry.location.lng
       );
       return distance <= radius;
     });
     
+    // Apply neighborhood filter if provided
+    if (neighborhoodFilter && neighborhoodFilter !== 'all') {
+      const neighborhood = neighborhoodBoundaries.find(n => n.name === neighborhoodFilter);
+      if (neighborhood) {
+        nearbyPlaces = filterPlacesByNeighborhood(nearbyPlaces, neighborhood);
+      }
+    }
+    
     console.log(`Found ${nearbyPlaces.length} pizza restaurants within ${radius/1609.34} miles`);
-    return nearbyPlaces.map(place => convertToPlaceResult(place));
+    
+    return nearbyPlaces;
   } catch (error) {
     console.error('Error getting nearby Brooklyn pizza places:', error);
     return [];
@@ -168,11 +219,31 @@ export const getNearbyBrooklynPizzaPlaces = async (
 // Get all available neighborhoods
 export const getAllNeighborhoods = async (): Promise<string[]> => {
   try {
-    const data = await loadBrooklynPizzaData();
-    return data.metadata.neighborhoods;
+    // Ensure neighborhood boundaries are loaded
+    if (neighborhoodBoundaries.length === 0) {
+      await loadNeighborhoodBoundaries();
+    }
+    
+    return neighborhoodBoundaries.map(n => n.name);
   } catch (error) {
     console.error('Error getting neighborhoods:', error);
     return [];
+  }
+};
+
+// Get neighborhood boundaries for a specific neighborhood
+export const getNeighborhoodBoundary = async (neighborhoodName: string): Promise<NeighborhoodData | null> => {
+  try {
+    // Ensure neighborhood boundaries are loaded
+    if (neighborhoodBoundaries.length === 0) {
+      await loadNeighborhoodBoundaries();
+    }
+    
+    const neighborhood = neighborhoodBoundaries.find(n => n.name === neighborhoodName);
+    return neighborhood || null;
+  } catch (error) {
+    console.error(`Error getting boundary for ${neighborhoodName}:`, error);
+    return null;
   }
 };
 

@@ -11,6 +11,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export type FilterType = {
   sort: string;
   location: string;
+  neighborhood?: string;
 };
 
 export default function TabLayout() {
@@ -19,7 +20,8 @@ export default function TabLayout() {
   const pathname = usePathname();
   const [filters, setFilters] = useState<FilterType>({
     sort: 'all',
-    location: 'all_nyc'
+    location: 'all_nyc',
+    neighborhood: 'all'
   });
 
   const shouldShowHeader = !pathname.includes('/account');
@@ -48,6 +50,7 @@ export default function TabLayout() {
             onFilterChange={handleFilterChange}
             sortFilter={filters.sort}
             locationFilter={filters.location}
+            neighborhoodFilter={filters.neighborhood}
             rightIcon={
               <Ionicons
                 name="settings"

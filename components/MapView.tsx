@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated } from 'react-native';
 import { Text } from '@/components/CustomText';
-import MapView, { Marker, Region, Callout, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Region, Callout, Circle, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Haptics from 'expo-haptics';
 import tw from '@/utils/tw';
@@ -10,7 +10,17 @@ import { filterPizzaPlaces } from '@/utils/filterUtils';
 import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
 import SearchModal from './SearchModal';
-import { getAllBrooklynPizzaPlaces, getNearbyBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
+import { 
+  getAllBrooklynPizzaPlaces, 
+  getNearbyBrooklynPizzaPlaces, 
+  getNeighborhoodBoundary, 
+  getAllNeighborhoods 
+} from '@/utils/brooklynPizzaData';
+import { 
+  NeighborhoodData, 
+  calculateNeighborhoodRegion,
+  isPointInPolygon
+} from '@/utils/neighborhoodUtils';
 import { supabase } from '@/lib/supabase';
 import { useUser } from "@/contexts/UserContext";
 import { Ionicons } from '@expo/vector-icons';
@@ -76,9 +86,10 @@ const BOROUGH_REGIONS = {
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;
+  neighborhoodFilter?: string; // Add neighborhood filter prop
 }
 
-export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapViewProps) {
+export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodFilter }: PizzaMapViewProps) {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setRegion] = useState<Region>(NEW_YORK_COORDS);
@@ -93,7 +104,10 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
   const { placeReviews, searchModalVisible, setSearchModalVisible, } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
- 
+  
+  // Add state for neighborhood data
+  const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodData | null>(null);
   
 
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
@@ -125,6 +139,50 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
     loadUserReviews();
   }, []);
+
+  // Load neighborhoods data
+  useEffect(() => {
+    const loadNeighborhoods = async () => {
+      try {
+        const data = require('../neighborhood_data/nyc_neighborhood.json');
+        
+        if (data && data.features) {
+          const parsedNeighborhoods = data.features.map((feature: any) => {
+            const { properties, geometry, id } = feature;
+            return {
+              id,
+              name: properties.NTAName,
+              borough: properties.BoroName,
+              abbreviation: properties.NTAAbbrev,
+              coordinates: geometry.coordinates[0], // Take the first polygon
+            };
+          });
+          
+          setNeighborhoods(parsedNeighborhoods);
+        }
+      } catch (error) {
+        console.error('Error loading neighborhoods:', error);
+      }
+    };
+    
+    loadNeighborhoods();
+  }, []);
+
+  // Update selected neighborhood when neighborhoodFilter changes
+  useEffect(() => {
+    if (neighborhoodFilter && neighborhoods.length > 0) {
+      const neighborhood = neighborhoods.find(n => n.name === neighborhoodFilter);
+      setSelectedNeighborhood(neighborhood || null);
+      
+      if (neighborhood) {
+        // Calculate and set the region to fit the neighborhood
+        const newRegion = calculateNeighborhoodRegion(neighborhood);
+        mapRef.current?.animateToRegion(newRegion, 1000);
+      }
+    } else {
+      setSelectedNeighborhood(null);
+    }
+  }, [neighborhoodFilter, neighborhoods]);
 
   // Refresh user reviews when a new review is added
   const refreshUserReviews = async () => {
@@ -163,7 +221,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         try {
           const filtered = await filterPizzaPlaces(
             allPizzaPlaces.map(a => {
-
               let rating = a.rating
               if(placeReviews[a.place_id]){
                 rating = placeReviews[a.place_id].rating
@@ -180,9 +237,21 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
             location, 
           );
           
-          if (filtered && Array.isArray(filtered)) {
-            setFilteredPizzaPlaces(filtered);
-            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filtered.length} places shown`);
+          // Apply additional neighborhood filter if selected
+          let finalFiltered = filtered;
+          if (selectedNeighborhood && Array.isArray(filtered)) {
+            finalFiltered = filtered.filter(place => {
+              const point: [number, number] = [
+                place.geometry.location.lng,
+                place.geometry.location.lat
+              ];
+              return isPointInPolygon(point, selectedNeighborhood.coordinates);
+            });
+          }
+          
+          if (finalFiltered && Array.isArray(finalFiltered)) {
+            setFilteredPizzaPlaces(finalFiltered);
+            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${finalFiltered.length} places shown`);
           } else {
             setFilteredPizzaPlaces([]);
             console.log('No places found after filtering');
@@ -198,7 +267,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     };
     
     applyFilters();
-  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews]);
+  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews, selectedNeighborhood]);
 
   useEffect(() => {
     (async () => {
@@ -297,7 +366,13 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       console.log(`Searching within visible area with radius: ${radiusInMeters.toFixed(0)} meters`);
       
       // Search for Brooklyn pizza places within the calculated radius
-      const places = await getNearbyBrooklynPizzaPlaces(centerLat, centerLng, radiusInMeters,setAllPlaces);
+      const places = await getNearbyBrooklynPizzaPlaces(
+        centerLat, 
+        centerLng, 
+        radiusInMeters,
+        setAllPlaces,
+        neighborhoodFilter // Pass the neighborhood filter
+      );
       
       // Sort places by distance from the center of the screen
       const sortedPlaces = places.sort((a, b) => {
@@ -353,30 +428,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         // Wait a short time before showing the next place
         await new Promise(resolve => setTimeout(resolve, 2));
       }
-      
-      // If there are more than 50 places, add the rest after exactly 1 second
-      // if (limitedPlaces.length > MAX_ANIMATED_PLACES && animationInProgress.current) {
-      //   // Schedule the remaining places to appear exactly 1 second after the 50th place
-      //   await new Promise(resolve => setTimeout(resolve, 10));
-        
-      //   // Make sure animation is still in progress (user hasn't switched modes)
-      //   if (animationInProgress.current) {
-      //     // First set the remaining places to ensure rendering starts
-      //     console.log("------------limitedPlaces",limitedPlaces.length)
-      //     // setAnimatedPizzaPlaces(prev => [...prev, ...limitedPlaces]);
-          
-      //     // Then trigger a stronger haptic pattern after a tiny delay to ensure it's felt during rendering
-      //     // Use a notification instead of just impact for a more noticeable feedback
-      //     setTimeout(() => {
-      //       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            
-      //       // Follow with a heavy impact for an even more pronounced effect
-      //       setTimeout(() => {
-      //         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-      //       }, 100);
-      //     }, 10);
-      //   }
-      // }
       
     } catch (error) {
       console.error('Error finding pizza places in visible area:', error);
@@ -452,7 +503,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     }
     
     if (sortFilter !== 'all') {
-      return filteredPizzaPlaces  
+      return filteredPizzaPlaces;
     }
  
     if (isBrooklynMode && animatedPizzaPlaces) {
@@ -461,9 +512,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
 
     return filteredPizzaPlaces;
   }
-
-  console.log('lastKnownRegion',lastKnownRegion)
-  // console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length) 
  
   return (
     <View style={styles.container}> 
@@ -527,8 +575,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         </View>
       )}
       
-      {/* Pizza count indicator removed */}
-      
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -541,6 +587,19 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         zoomControlEnabled={true}
         userInterfaceStyle="dark"
       >
+        {/* Render the selected neighborhood polygon with a pink fill */}
+        {selectedNeighborhood && (
+          <Polygon
+            coordinates={selectedNeighborhood.coordinates.map((coord: any) => ({
+              latitude: coord[1],
+              longitude: coord[0],
+            }))}
+            strokeColor="rgba(255, 141, 161, 1)"
+            fillColor="rgba(255, 141, 161, 0.2)"
+            strokeWidth={2}
+          />
+        )}
+        
         {/* User's current location marker */}
         {location && (
           <Marker
@@ -595,8 +654,6 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         </View>
       )}
       
-      {/* Pizza place count display removed */}
-      
       {/* Bottom sheet for pizza place details */}
       <PizzaPlaceBottomSheet 
         place={selectedSearchPlace || selectedPlace}
@@ -641,7 +698,7 @@ const styles = StyleSheet.create({
   },
   searchThisAreaContainer: {
     position: 'absolute',
-    top: 175,
+    top: 200,
     alignSelf: 'center',
     zIndex: 5,
   },

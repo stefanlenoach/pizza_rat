@@ -4,7 +4,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams } from 'expo-router';
 import PizzaMapView from '@/components/MapView';
 import tw from '@/utils/tw';
-import { FilterType } from './_layout';
+
+export interface FilterType {
+  sort: string;
+  location: string;
+  neighborhood?: string;
+}
 
 export default function MapScreen() {
   const { filters } = useLocalSearchParams<{ filters: string }>();
@@ -20,6 +25,7 @@ export default function MapScreen() {
         <PizzaMapView 
           sortFilter={parsedFilters.sort}
           locationFilter={parsedFilters.location}
+          neighborhoodFilter={parsedFilters.neighborhood}
         />
       </View>
     </View>
