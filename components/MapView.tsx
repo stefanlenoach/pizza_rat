@@ -585,7 +585,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         rotateEnabled={true}
         pitchEnabled={true}
         zoomControlEnabled={true}
-        userInterfaceStyle="dark"
       >
         {/* Render the selected neighborhood polygon with a pink fill */}
         {selectedNeighborhood && (

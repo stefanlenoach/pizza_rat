@@ -299,13 +299,13 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   // Render review button or edit rating based on whether user has already reviewed
   const renderReviewButton = () => (
     <TouchableOpacity 
-      style={tw`bg-red-600 py-3 px-6 rounded-xl w-4/5 mb-3`}
+      style={tw`bg-red-600 py-3 px-6 rounded-xl flex-1`}
       onPress={() => setReviewSheetVisible(true)}
     >
       <View style={tw`flex-row items-center justify-center`}>
         <AntDesign name={userReview ? "edit" : "star"} size={20} color="#FFFFFF" style={tw`mr-2`} />
         <Text style={tw`text-white font-bold text-lg`}>
-          {userReview ? "EDIT RATING" : "WRITE REVIEW"}
+          {userReview ? "EDIT RATING" : "REVIEW"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -331,27 +331,55 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
       <BottomSheetScrollView contentContainerStyle={tw`pb-10`}>
         {/* Pizza Place Header */}
         <View style={tw`p-4 border-b border-gray-200`}>
-          <Text style={tw`text-xl font-bold text-red-600`}>{place.name}</Text>
+          <View style={tw`flex-row items-start mb-1`}>
+            <View style={tw`flex-1 mr-4`}>
+              <Text 
+                style={tw`text-4xl font-bold text-red-600`}
+                numberOfLines={3}
+                ellipsizeMode="tail"
+              >
+                {place.name}
+              </Text>
+            </View>
+            <View style={tw`flex items-center shrink-0 ml-4`}>
+              <Text style={tw`text-6xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
+              <Text style={tw` text-gray-600`}>
+                (<Text>{reviews?.length || 0}</Text> reviews)
+              </Text>
+            </View>
+          </View>
           <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
           
-          <View style={tw`flex-row items-center mb-2`}>
-            {renderRatingScore(averageRating)}
-            <Text style={tw`ml-2 text-gray-600`}>
-              (<Text>{reviews?.length || 0}</Text> reviews)
-            </Text>
-          </View>
           
-          {place.price_level && (
+          {/* {place.price_level && (
             <Text style={tw`text-sm mb-2`}>
               Price: <Text>{"$".repeat(place.price_level)}</Text>
             </Text>
-          )}
+          )} */}
+
+        {/* Buttons Row */}
+        <View style={tw` py-3 border-b border-gray-200 flex-row justify-around`}>
+          {renderReviewButton()}
+          <TouchableOpacity 
+            style={tw`bg-blue-600 py-3 px-6 rounded-xl flex-1 ml-3`}
+            onPress={() => router.push({
+              pathname: "/(tabs)/chat",
+              params: { placeId: place?.place_id || '' }
+            })}
+          >
+            <View style={tw`flex-row items-center justify-center`}>
+              <Text style={tw`text-white font-bold text-center text-lg`}>
+                CHAT
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>          
           
           {place.regularOpeningHours && (
             <> 
               {place.regularOpeningHours?.weekdayDescriptions && (
                 <View style={tw`mt-2 bg-gray-50 p-3 rounded-lg`}>
-                  <Text style={tw`text-sm font-semibold mb-2`}>Opening Hours:</Text>
+                  <Text style={tw`text-lg font-semibold mb-2`}>Opening Hours:</Text>
                   {place.regularOpeningHours.weekdayDescriptions.map((day: string, index: number) => (
                     <Text key={index} style={tw`text-sm text-gray-600 mb-1`}>
                       {day}
@@ -363,22 +391,9 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           )}
         </View>
         
+        
         {/* Review Section */}
         <View style={tw`p-4 border-b border-gray-200`}>
-          <View style={tw`items-center mb-6 mt-2`}>
-            {renderReviewButton()}
-            <TouchableOpacity 
-              style={tw`bg-blue-600 py-3 px-6 rounded-xl w-4/5 mt-4`}
-              onPress={() => router.push({
-                pathname: "/(tabs)/chat",
-                params: { placeId: place?.place_id || '' }
-              })}
-            >
-              <Text style={tw`text-white font-bold text-center text-lg`}>
-                CHAT ROOM
-              </Text>
-            </TouchableOpacity>
-          </View>
           
           <View style={tw`flex-row justify-between items-center mb-4 px-4`}>
             <Text style={tw`text-lg font-bold`}>Reviews</Text>
