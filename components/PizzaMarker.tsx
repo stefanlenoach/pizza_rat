@@ -47,6 +47,18 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   }, []);
 
   const renderImageBasedOnRating = (rating: number) => {
+    if (!rating) {
+      return (
+        <SvgXml 
+          xml={svgContent}
+          width={size * 0.7} 
+          height={size * 0.7}
+        />
+      );
+    }
+    
+    let roundedRating = Math.round(rating);
+
     const pizzaImages = {
       0: require('@/assets/images/pizza-markers/0.png'),
       1: require('@/assets/images/pizza-markers/1.png'),
@@ -62,17 +74,7 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
     } as any;
 
     const actualSize = size * 0.7;
-    const source = pizzaImages[rating] ?? pizzaImages[0];
-
-    if (!rating) {
-      return (
-        <SvgXml 
-          xml={svgContent}
-          width={size * 0.7} 
-          height={size * 0.7}
-        />
-      );
-    }
+    const source = pizzaImages[roundedRating] ?? pizzaImages[0];
 
     return (
       <Image
