@@ -34,7 +34,7 @@ export interface BrooklynPizzaData {
 export const loadBrooklynPizzaData = async (): Promise<BrooklynPizzaData> => {
   try { 
     const manhattanData = await loadManhattanPizzaData();
- 
+  
     return manhattanData as BrooklynPizzaData;
   } catch (error) {
     console.error('Error loading Brooklyn pizza data:', error);
@@ -115,10 +115,15 @@ export const getPizzaPlacesByNeighborhood = async (neighborhood: string): Promis
 export const getNearbyBrooklynPizzaPlaces = async (
   latitude: number, 
   longitude: number, 
-  radius: number = 3218 // Default to 2 miles
+  radius: number = 3218, // Default to 2 miles
+  setAllPlaces?: (places: PlaceResult[]) => void
 ): Promise<PlaceResult[]> => {
   try {
     const data = await loadBrooklynPizzaData();
+    const pizzaRestaurants = data.places.filter(place => 
+      place.types.includes('pizza_restaurant')
+    );
+    setAllPlaces?.(pizzaRestaurants.map(place => convertToPlaceResult(place)));
     
     // Calculate distance between two points using the Haversine formula
     const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/CustomText';
 import { BlurView } from 'expo-blur';
@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import tw from '@/utils/tw';
 import FilterDropdown from './FilterDropdown';
 import { FilterType } from '@/app/(tabs)/_layout';
+import { useUser } from '@/contexts/UserContext';
 
 interface PizzaRatHeaderProps {
   showFilters?: boolean;
@@ -23,6 +24,7 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
   rightIcon
 }) => {
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const { searchModalVisible, setSearchModalVisible } = useUser();
 
   // Sort filter options
   const sortOptions = [
@@ -50,6 +52,7 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
         <View style={tw`flex-row justify-between items-center mb-1`}>
           <View style={tw`flex-row items-center`}>
             {showFilters && (
+              
               <TouchableOpacity 
                 onPress={() => setIsFiltersVisible(!isFiltersVisible)}
                 style={tw`p-2 -ml-2`}
@@ -58,9 +61,16 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
                   name={isFiltersVisible ? "funnel" : "funnel-outline"} 
                   size={20} 
                   color="#EC4899"
-                />
+                />  
               </TouchableOpacity>
             )}
+            <TouchableOpacity 
+                onPress={() => setSearchModalVisible(true)}
+                style={tw`p-2 -ml-2`}
+              >
+                <Ionicons name="search" size={24} color="#EC4899" />
+              </TouchableOpacity>
+            
           </View>
           {rightIcon}
         </View>

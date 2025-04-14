@@ -9,9 +9,11 @@ import { searchNearbyPizzaPlaces, PlaceResult } from '@/utils/placesApi';
 import { filterPizzaPlaces } from '@/utils/filterUtils';
 import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
+import SearchModal from './SearchModal';
 import { getAllBrooklynPizzaPlaces, getNearbyBrooklynPizzaPlaces } from '@/utils/brooklynPizzaData';
 import { supabase } from '@/lib/supabase';
-import { useUser } from "@/contexts/UserContext"
+import { useUser } from "@/contexts/UserContext";
+import { Ionicons } from '@expo/vector-icons';
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS = {
@@ -86,8 +88,9 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
   const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
-  const [isBrooklynMode, setIsBrooklynMode] = useState(false);
-  const { placeReviews } = useUser();
+  const [isBrooklynMode, setIsBrooklynMode] = useState(false); 
+  const { placeReviews, searchModalVisible, setSearchModalVisible } = useUser();
+  const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
  
   
 
@@ -289,7 +292,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
       console.log(`Searching within visible area with radius: ${radiusInMeters.toFixed(0)} meters`);
       
       // Search for Brooklyn pizza places within the calculated radius
-      const places = await getNearbyBrooklynPizzaPlaces(centerLat, centerLng, radiusInMeters);
+      const places = await getNearbyBrooklynPizzaPlaces(centerLat, centerLng, radiusInMeters,setAllPlaces);
       
       // Sort places by distance from the center of the screen
       const sortedPlaces = places.sort((a, b) => {
@@ -307,6 +310,7 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
         );
         return distanceA - distanceB; // Sort from closest to farthest
       });
+ 
       
       // Limit to 100 places maximum
       const limitedPlaces = sortedPlaces.slice(0, 50);
@@ -447,13 +451,29 @@ export default function PizzaMapView({ sortFilter, locationFilter }: PizzaMapVie
     return filteredPizzaPlaces;
   }
 
-  console.log('isBrooklynMode',isBrooklynMode)
-  console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length)
-  console.log('animatedPizzaPlaces',animatedPizzaPlaces?.length) 
+  // console.log('isBrooklynMode',isBrooklynMode)
+  // console.log('filteredPizzaPlaces',filteredPizzaPlaces?.length) 
  
   return (
-    <View style={styles.container}>
-      {/* Buttons removed */}
+    <View style={styles.container}> 
+      
+      {/* Search Modal */}
+      <SearchModal
+        isVisible={searchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
+        places={allPlaces}
+        onSelectPlace={(place: PlaceResult) => {
+          setSelectedPlace(place);
+          setBottomSheetVisible(true);
+          // Animate to the selected place
+          mapRef.current?.animateToRegion({
+            latitude: place.geometry.location.lat,
+            longitude: place.geometry.location.lng,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }, 1000);
+        }}
+      />
       
       {/* Search this area button */}
       {showSearchThisArea && !isSearchingPlaces && (
@@ -560,8 +580,25 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  /* Button styles removed */
-  /* Count container styles removed */
+  iconContainer: {
+    position: 'absolute',
+    top: 100, // Increased to position below header
+    right: 16,
+    zIndex: 51, // Higher than header's z-index
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
+    backgroundColor: '#111',
+    padding: 10, // Increased padding for better touch target
+    borderRadius: 25, // Increased for a more circular button
+    marginLeft: 8,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.45,
+    shadowRadius: 3.84,
+  },
   searchThisAreaContainer: {
     position: 'absolute',
     top: 175,
