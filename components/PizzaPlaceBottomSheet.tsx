@@ -184,7 +184,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           .insert({
             id: new Date().getTime(),
             rate: rating / 2,
-            content: comment,
+            content: comment || "",
             placeId: place.place_id,
             userId: session.user.id,
             updatedAt: new Date().toISOString()
