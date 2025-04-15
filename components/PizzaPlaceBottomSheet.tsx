@@ -9,6 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import ReviewSheet from './ReviewSheet';
 import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import * as Haptics from 'expo-haptics';
 
 interface PizzaPlaceBottomSheetProps {
   place: PlaceResult | null;
@@ -362,10 +363,13 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           {renderReviewButton()}
           <TouchableOpacity 
             style={tw`bg-blue-600 py-3 px-6 rounded-xl flex-1 ml-3`}
-            onPress={() => router.push({
-              pathname: "/(tabs)/chat",
-              params: { placeId: place?.place_id || '' }
-            })}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push({
+                pathname: "/(tabs)/chat",
+                params: { placeId: place?.place_id || '' }
+              })
+            }}
           >
             <View style={tw`flex-row items-center justify-center`}>
               <Text style={tw`text-white font-bold text-center text-lg`}>
