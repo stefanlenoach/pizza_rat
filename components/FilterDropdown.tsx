@@ -1,104 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  View, 
-  TouchableOpacity, 
-  Modal, 
-  FlatList, 
-  TextInput, 
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  FlatList,
   ActivityIndicator,
-  Keyboard,
-  StyleSheet,
-  LayoutChangeEvent,
+  Dimensions,
   LayoutRectangle,
-  Dimensions
+  Platform,
+  StyleSheet,
 } from 'react-native';
-import { Text } from '@/components/CustomText';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import tw from '@/utils/tw';
 
-interface FilterOption {
-  label: string;
-  value: string;
-}
-
 interface FilterDropdownProps {
-  options: FilterOption[];
-  selectedValue: string;
+  options: { label: string; value: string }[];
+  selectedValue?: string;
   onSelect: (value: string) => void;
   placeholder?: string;
   width?: string;
   searchable?: boolean;
   searchPlaceholder?: string;
+  isLoading?: boolean;
 }
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({
+export default function FilterDropdown({
   options,
   selectedValue,
   onSelect,
   placeholder = 'Select an option',
-  width = 'w-40',
+  width = 'w-full',
   searchable = false,
-  searchPlaceholder = 'Search...'
-}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  searchPlaceholder = 'Search...',
+  isLoading = false,
+}: FilterDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState<FilterOption[]>(options);
-  const [isLoading, setIsLoading] = useState(false);
   const [buttonLayout, setButtonLayout] = useState<LayoutRectangle | null>(null);
-  const searchInputRef = useRef<TextInput>(null);
   const buttonRef = useRef<View>(null);
   const windowHeight = Dimensions.get('window').height;
-  
-  const selectedOption = options.find(option => option.value === selectedValue);
-  const displayText = selectedOption ? selectedOption.label : placeholder;
+  const minWidth = 200;
 
-  // Filter options based on search query
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredOptions(options);
-      return;
-    }
+  const selectedOption = options.find((opt) => opt.value === selectedValue);
+  const filteredOptions = options.filter((opt) =>
+    opt.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-    setIsLoading(true);
-
-    const filtered = options.filter(option => 
-      option.label.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-    setIsLoading(false);
-  }, [searchQuery, options]);
-
-  // Focus search input when modal opens
-  useEffect(() => {
-    if (modalVisible && searchable) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    }
-  }, [modalVisible, searchable]);
-
-  // Reset search when modal closes
   const handleCloseModal = () => {
-    setModalVisible(false);
+    setIsOpen(false);
     setSearchQuery('');
-    Keyboard.dismiss();
   };
 
-  // Clear search query
-  const handleClearSearch = () => {
-    setSearchQuery('');
-    searchInputRef.current?.focus();
-  };
-
-  const handleButtonLayout = (event: LayoutChangeEvent) => {
+  const measureButton = () => {
     if (buttonRef.current) {
-      buttonRef.current.measure((x, y, width, height, pageX, pageY) => {
-        setButtonLayout({
-          x: pageX,
-          y: pageY,
-          width,
-          height
-        });
+      buttonRef.current.measureInWindow((x, y, width, height) => {
+        setButtonLayout({ x, y, width, height });
       });
     }
   };
@@ -106,122 +64,106 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   const getDropdownPosition = () => {
     if (!buttonLayout) return {};
 
-    // Always show above the button with consistent positioning
-    const dropdownOffset = 220; // Consistent offset for all dropdowns
-    const adjustedBottom = Math.floor(windowHeight - buttonLayout.y + dropdownOffset);
-    const minWidth = 150; // Minimum width for all dropdowns
+    const spaceBelow = windowHeight - buttonLayout.y - buttonLayout.height;
+    const spaceAbove = buttonLayout.y;
+    const showBelow = spaceBelow >= 200 || spaceBelow >= spaceAbove;
 
     return {
       position: 'absolute' as const,
-      bottom: adjustedBottom,
-      left: Math.floor(buttonLayout.x), // Ensure pixel-perfect alignment
-      width: Math.max(Math.floor(buttonLayout.width), minWidth), // Ensure minimum width
-      maxHeight: Math.min(buttonLayout.y - 4, 300),
-      zIndex: 9999
+      top: showBelow ? buttonLayout.height : undefined,
+      bottom: !showBelow ? buttonLayout.height : undefined,
+      left: 0,
+      right: 0,
+      maxHeight: showBelow ? Math.min(spaceBelow - 10, 300) : Math.min(spaceAbove - 10, 300),
+      backgroundColor: 'white',
+      borderRadius: 8,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 5,
+      zIndex: 1000,
     };
   };
 
   return (
-    <View style={tw`${width} z-10`}>
-      <View
-        ref={buttonRef}
-        onLayout={handleButtonLayout}
+    <View ref={buttonRef} style={tw`${width}`} onLayout={measureButton}>
+      <TouchableOpacity
+        style={tw`flex-row items-center justify-between bg-white rounded-lg border border-gray-200 px-4 py-2`}
+        onPress={() => {
+          measureButton();
+          setIsOpen(true);
+        }}
       >
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-between bg-white rounded-md px-3 py-2 border border-gray-300 min-w-[150px]`}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={tw`text-gray-800 font-medium`} numberOfLines={1}>
-            {displayText}
-          </Text>
-          <AntDesign name="down" size={12} color="#666" />
-        </TouchableOpacity>
-      </View>
+        <Text style={tw`flex-1 text-sm ${selectedValue ? 'text-black' : 'text-gray-500'}`} numberOfLines={1}>
+          {selectedOption?.label || placeholder}
+        </Text>
+        <Ionicons name="chevron-down" size={20} color="#666" style={tw`ml-2`} />
+      </TouchableOpacity>
 
-      <Modal
-        transparent={true}
-        visible={modalVisible}
-        animationType="none"
-        onRequestClose={handleCloseModal}
-      >
-        <TouchableOpacity
-          style={tw`flex-1`}
+      <Modal visible={isOpen} transparent animationType="none">
+        <TouchableOpacity 
+          style={[tw`flex-1`, { backgroundColor: 'rgba(0,0,0,0.1)' }]} 
+          onPress={handleCloseModal} 
           activeOpacity={1}
-          onPress={handleCloseModal}
         >
           {buttonLayout && (
-            <View 
-              style={[
-                tw`absolute bg-white rounded-lg shadow-lg overflow-hidden`,
-                getDropdownPosition()
-              ]}
-            >
-              {searchable && (
-                <View style={tw`px-4 py-2 border-b border-gray-200 flex-row items-center`}>
-                  <View style={tw`flex-1 flex-row items-center bg-gray-100 rounded-md px-2`}>
-                    <Ionicons name="search" size={16} color="#666" />
-                    <TextInput
-                      ref={searchInputRef}
-                      style={{ ...tw`flex-1 py-2 px-2 text-gray-800`, fontFamily: 'Aujournuit' }}
-                      placeholder={searchPlaceholder}
-                      value={searchQuery}
-                      onChangeText={setSearchQuery}
-                      returnKeyType="search"
-                      clearButtonMode="while-editing"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                    />
+            <View style={[tw`absolute`, { top: buttonLayout.y, left: buttonLayout.x, width: buttonLayout.width }]}>
+              <View style={getDropdownPosition()}>
+                {searchable && (
+                  <View style={tw`p-2 border-b border-gray-100`}>
+                    <View style={tw`flex-row items-center bg-gray-50 rounded-lg px-3`}>
+                      <Ionicons name="search" size={16} color="#666" />
+                      <TextInput
+                        style={tw`flex-1 py-2 px-2 text-sm`}
+                        placeholder={searchPlaceholder}
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        autoFocus
+                      />
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
 
-              {isLoading ? (
-                <View style={tw`py-4 items-center`}>
-                  <ActivityIndicator size="small" color="#EC4899" />
-                </View>
-              ) : filteredOptions.length === 0 ? (
-                <View style={tw`py-4 items-center`}>
-                  <Text style={tw`text-gray-500`}>No results found</Text>
-                </View>
-              ) : (
-                <FlatList
-                  data={filteredOptions}
-                  keyExtractor={(item) => item.value}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      style={tw`px-4 py-3 border-b border-gray-100 ${
-                        item.value === selectedValue ? 'bg-red-50' : ''
-                      }`}
-                      onPress={() => {
-                        onSelect(item.value);
-                        handleCloseModal();
-                      }}
-                    >
-                      <Text 
-                        style={tw`${
-                          item.value === selectedValue ? 'text-red-600 font-bold' : 'text-gray-800'
+                {isLoading ? (
+                  <View style={tw`py-4 items-center`}>
+                    <ActivityIndicator size="small" color="#EC4899" />
+                  </View>
+                ) : filteredOptions.length === 0 ? (
+                  <View style={tw`py-4 items-center`}>
+                    <Text style={tw`text-gray-500`}>No results found</Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={filteredOptions}
+                    keyExtractor={(item) => item.value}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        style={tw`px-4 py-3 border-b border-gray-100 ${
+                          item.value === selectedValue ? 'bg-red-50' : ''
                         }`}
-                        numberOfLines={1}
+                        onPress={() => {
+                          onSelect(item.value);
+                          handleCloseModal();
+                        }}
                       >
-                        {item.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                  style={{...styles.flatList,position: 'relative'}}
-                />
-              )}
+                        <Text 
+                          style={tw`${
+                            item.value === selectedValue ? 'text-red-600 font-bold' : 'text-gray-800'
+                          }`}
+                          numberOfLines={1}
+                        >
+                          {item.label}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                )}
+              </View>
             </View>
           )}
         </TouchableOpacity>
       </Modal>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  flatList: {
-    maxHeight: 300
-  }
-});
-
-export default FilterDropdown;
+}
