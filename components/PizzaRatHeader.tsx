@@ -26,17 +26,18 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
   neighborhoodFilter = "all",
   rightIcon
 }) => {
-  const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  // const [isFiltersVisible, setIsFiltersVisible] = useState(false);
   const { searchModalVisible, setSearchModalVisible } = useUser();
   const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
     { label: 'All Neighborhoods', value: 'all' }
   ]);
   const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false);
+  const { filterVisible, setFilterVisible } = useUser();
 
   // Load neighborhoods based on the selected borough
   useEffect(() => {
     const loadNeighborhoods = async () => {
-      try {
+      try { 
         if (locationFilter === 'all_nyc' || locationFilter === 'all') {
           setShowNeighborhoodFilter(false);
           return;
@@ -95,63 +96,25 @@ const PizzaRatHeader: React.FC<PizzaRatHeaderProps> = ({
           <View style={tw`flex-row items-center`}>
             {showFilters && (
               <TouchableOpacity 
-                onPress={() => setIsFiltersVisible(!isFiltersVisible)}
+                onPress={() => setFilterVisible(!filterVisible)}
                 style={tw`p-2 -ml-2`}
               >
                 <Ionicons 
-                  name={isFiltersVisible ? "funnel" : "funnel-outline"} 
+                  name={filterVisible ? "funnel" : "funnel-outline"} 
                   size={20} 
                   color="#EC4899"
                 />  
               </TouchableOpacity>
             )}
-            <TouchableOpacity 
+            {/* <TouchableOpacity 
                 onPress={() => setSearchModalVisible(true)}
                 style={tw`p-2 -ml-2`}
               >
                 <Ionicons name="search" size={24} color="#EC4899" />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
           </View>
           {rightIcon}
         </View>
-        
-        {showFilters && isFiltersVisible && (
-          <View style={tw`flex-col justify-between mt-2`}>
-            <View style={tw`flex-row justify-between mb-2`}>
-              <FilterDropdown 
-                options={sortOptions}
-                selectedValue={sortFilter}
-                onSelect={(value) => onFilterChange('sort', value)}
-                width="w-[48%]"
-              />
-              <FilterDropdown 
-                options={locationOptions}
-                selectedValue={locationFilter}
-                onSelect={(value) => {
-                  onFilterChange('location', value);
-                  // Reset neighborhood when borough changes
-                  onFilterChange('neighborhood', 'all');
-                }}
-                width="w-[48%]"
-              />
-            </View>
-            
-            {/* Neighborhood filter - only shown when a specific borough is selected */}
-            {showNeighborhoodFilter && (
-              <View style={tw`w-full`}>
-                <FilterDropdown 
-                  options={neighborhoodOptions}
-                  selectedValue={neighborhoodFilter}
-                  onSelect={(value) => onFilterChange('neighborhood', value)}
-                  width="w-full"
-                  placeholder="Select Neighborhood"
-                  searchable={true}
-                  searchPlaceholder="Search neighborhoods..."
-                />
-              </View>
-            )}
-          </View>
-        )}
       </View>
     </SafeAreaView>
   );

@@ -138,10 +138,11 @@ const ReviewSheet: React.FC<ReviewSheetProps> = ({
 
   // Handle review submission with haptic feedback
   const handleSubmit = () => {
-    if (!isEditMode && !comment.trim()) {
-      // Only require comment for new reviews
-      return;
-    }
+    // alert("ASD")
+    // if (!isEditMode) {
+    //   // Only require comment for new reviews
+    //   return;
+    // }
     // Provide success haptic feedback
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     

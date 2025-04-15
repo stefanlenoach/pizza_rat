@@ -12,7 +12,8 @@ import {
   Image,
   Animated,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { Text, Heading, Subheading, Paragraph, Caption, Label } from '@/components/CustomText';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -52,7 +53,7 @@ export default function ChatScreen() {
   useEffect(() => {
     if (activeChat) {
       setTimeout(() => {
-        inputRef.current?.focus();
+        // inputRef.current?.focus();
       }, 300); // Wait for animation to complete
     }
   }, [activeChat]);
@@ -236,6 +237,12 @@ export default function ChatScreen() {
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handleTextChange = (text: string) => {
+    setInputText(text);
+    // Light haptic feedback on each keystroke
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   const openChat = async (chatGroup: ChatGroup) => {
@@ -492,7 +499,7 @@ export default function ChatScreen() {
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
               style={[tw`flex-1`, { width: windowWidth }]}
-              keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 90 : 10) : 0}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 0 : 0) : 0}
             >
               {/* Chat Header with Safe Area */}
               <View style={[tw`flex-row items-center border-b border-gray-200 bg-white`, { paddingTop: insets.top }]}>
@@ -500,7 +507,7 @@ export default function ChatScreen() {
                   <TouchableOpacity onPress={goBack} style={tw`mr-2`}>
                     <IconSymbol name="chevron.left" size={24} color="#000" />
                   </TouchableOpacity>
-                  {activeChat.avatar ? (
+                  {/* {activeChat.avatar ? (
                     <Image 
                       source={{ uri: activeChat.avatar }} 
                       style={tw`w-10 h-10 rounded-full mr-3`}
@@ -509,37 +516,49 @@ export default function ChatScreen() {
                     <View style={tw`mr-3`}>
                       <AvatarCircle name={renderPlaceName(activeChat.placeId)} />
                     </View>
-                  )}
-                  <View style={tw`flex-1`}>
-                    <Subheading>{renderPlaceName(activeChat.placeId)}</Subheading>
-                    <Caption>
-                      {new Set(messages.map(msg => msg.senderId)).size}{" "} member/s
-                    </Caption>
+                  )} */}
+                  <View style={tw`flex-1 items-center`}>
+                    <Subheading style={tw`text-center`}>{renderPlaceName(activeChat.placeId)}</Subheading> 
                   </View>
-                  <TouchableOpacity style={tw`ml-2 mr-4`}>
-                    <IconSymbol name="ellipsis" size={24} color="#000" />
-                  </TouchableOpacity>
+                   
                 </View>
               </View>
             
               {/* Messages */}
-              <FlatList
-                ref={flatListRef}
-                data={messages}
-                renderItem={renderMessage}
-                keyExtractor={item => item.id}
-                contentContainerStyle={tw`p-4`}
-                onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
-              />
+              {!isLoading && messages.length === 0 ? (
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={tw`flex-1 items-center justify-center p-4`}>
+                    <Image 
+                      source={require('@/assets/images/pizza-markers/0.png')}
+                      style={tw`w-30 h-30 mb-4`}
+                      resizeMode="contain"
+                    />
+                    <Text style={[tw`text-gray-500 text-center`, { fontFamily: 'Aujournuit' }]}>
+                      Be the first one to say something!
+                    </Text>
+                  </View>
+                </TouchableWithoutFeedback>
+              ) : (
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <FlatList
+                    ref={flatListRef}
+                    data={messages}
+                    renderItem={renderMessage}
+                    keyExtractor={item => item.id}
+                    contentContainerStyle={tw`p-4`}
+                    onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
+                  />
+                </TouchableWithoutFeedback>
+              )}
             
               {/* Input Area */}
-              <View style={tw`flex-row items-center p-2 border-t border-gray-200 bg-white`}> 
+              <View style={tw`flex-row items-center p-2 border-t border-gray-200 bg-white ${keyboardVisible? '' : 'mb-6'}`}> 
                 <TextInput
                   ref={inputRef}
-                  style={[tw`flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2 text-sm`, { fontFamily: 'ClashDisplay' }]}
+                  style={[tw`flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2 text-sm`, { fontFamily: 'Aujournuit' }]}
                   placeholder="Message"
                   value={inputText}
-                  onChangeText={setInputText}
+                  onChangeText={handleTextChange}
                   multiline
                   maxLength={500}
                   onSubmitEditing={handleSendMessage}
@@ -556,7 +575,7 @@ export default function ChatScreen() {
                       <ActivityIndicator size="small" color="#fff" />
                     </View>
                   ) : (
-                    <IconSymbol name="arrow.up.circle.fill" size={24} color="#fff" />
+                    <IconSymbol name="arrow.up" size={24} color="#fff" />
                   )}
                 </TouchableOpacity>
               </View>

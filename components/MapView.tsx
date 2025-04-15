@@ -10,6 +10,7 @@ import { filterPizzaPlaces } from '@/utils/filterUtils';
 import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
 import SearchModal from './SearchModal';
+import FilterBottomSheet from './FilterBottomSheet';
 import { 
   getAllBrooklynPizzaPlaces, 
   getNearbyBrooklynPizzaPlaces, 
@@ -24,6 +25,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { useUser } from "@/contexts/UserContext";
 import { Ionicons } from '@expo/vector-icons';
+import { FilterType } from '@/app/(tabs)/_layout';
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS = {
@@ -86,10 +88,11 @@ const BOROUGH_REGIONS = {
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;
-  neighborhoodFilter?: string; // Add neighborhood filter prop
+  neighborhoodFilter?: string;
+  onFilterChange: (filterType: keyof FilterType, value: string) => void;
 }
 
-export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodFilter }: PizzaMapViewProps) {
+export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodFilter, onFilterChange }: PizzaMapViewProps) {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setRegion] = useState<Region>(NEW_YORK_COORDS);
@@ -102,12 +105,18 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false); 
   const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
-  const { placeReviews, searchModalVisible, setSearchModalVisible, } = useUser();
+  const { placeReviews, searchModalVisible, setSearchModalVisible,filterVisible,setFilterVisible } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
   
   // Add state for neighborhood data
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodData | null>(null);
+
+  //for neighborhood filter
+   const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
+      { label: 'All Neighborhoods', value: 'all' }
+    ]);
+    const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
   
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
@@ -169,6 +178,40 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     
     loadNeighborhoods();
   }, []);
+// Load neighborhoods data on location change
+    useEffect(() => {
+      const loadNeighborhoods = async () => {
+        try { 
+          if (locationFilter === 'all_nyc' || locationFilter === 'all') {
+            setShowNeighborhoodFilter(false);
+            return;
+          }
+          
+          // Get neighborhoods for the selected borough
+          const neighborhoods = await getAllNeighborhoods();
+          
+          // Filter neighborhoods by the selected borough
+          // This will need to be implemented based on how your data is structured
+          // For now, we'll just show all neighborhoods
+          
+          const options = [
+            { label: 'All Neighborhoods', value: 'all' },
+            ...neighborhoods.map(neighborhood => ({
+              label: neighborhood,
+              value: neighborhood
+            }))
+          ];
+          
+          setNeighborhoodOptions(options);
+          setShowNeighborhoodFilter(true);
+        } catch (error) {
+          console.error('Error loading neighborhoods:', error);
+          setShowNeighborhoodFilter(false);
+        }
+      };
+      
+      loadNeighborhoods();
+    }, [locationFilter]);
 
   // Update selected neighborhood when neighborhoodFilter changes
   useEffect(() => {
@@ -530,6 +573,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     return filteredPizzaPlaces;
   }
  
+
   return (
     <View style={styles.container}> 
       
@@ -668,6 +712,19 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           setSelectedPlace(null);
           refreshUserReviews(); // Refresh user reviews when bottom sheet closes
         }}
+      />
+
+      {/* Filter sheet */}
+      <FilterBottomSheet 
+        isVisible={filterVisible}
+        onClose={() => setFilterVisible(false)}
+        sortFilter={sortFilter}
+        locationFilter={locationFilter}
+        neighborhoodFilter={neighborhoodFilter}
+        onFilterChange={onFilterChange}
+        neighborhoodOptions={neighborhoodOptions}
+        showNeighborhoodFilter={locationFilter !== 'all_nyc' && locationFilter !== 'all'}
+        setSearchModalVisible={setSearchModalVisible}
       />
     </View>
   );
