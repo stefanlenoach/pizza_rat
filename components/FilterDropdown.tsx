@@ -7,7 +7,10 @@ import {
   TextInput, 
   ActivityIndicator,
   Keyboard,
-  StyleSheet
+  StyleSheet,
+  LayoutChangeEvent,
+  LayoutRectangle,
+  Dimensions
 } from 'react-native';
 import { Text } from '@/components/CustomText';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -41,7 +44,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<FilterOption[]>(options);
   const [isLoading, setIsLoading] = useState(false);
+  const [buttonLayout, setButtonLayout] = useState<LayoutRectangle | null>(null);
   const searchInputRef = useRef<TextInput>(null);
+  const buttonRef = useRef<View>(null);
+  const windowHeight = Dimensions.get('window').height;
   
   const selectedOption = options.find(option => option.value === selectedValue);
   const displayText = selectedOption ? selectedOption.label : placeholder;
@@ -84,31 +90,72 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     searchInputRef.current?.focus();
   };
 
+  const handleButtonLayout = (event: LayoutChangeEvent) => {
+    if (buttonRef.current) {
+      buttonRef.current.measure((x, y, width, height, pageX, pageY) => {
+        setButtonLayout({
+          x: pageX,
+          y: pageY,
+          width,
+          height
+        });
+      });
+    }
+  };
+
+  const getDropdownPosition = () => {
+    if (!buttonLayout) return {};
+
+    // Always show above the button with consistent positioning
+    const dropdownOffset = 220; // Consistent offset for all dropdowns
+    const adjustedBottom = Math.floor(windowHeight - buttonLayout.y + dropdownOffset);
+    const minWidth = 150; // Minimum width for all dropdowns
+
+    return {
+      position: 'absolute' as const,
+      bottom: adjustedBottom,
+      left: Math.floor(buttonLayout.x), // Ensure pixel-perfect alignment
+      width: Math.max(Math.floor(buttonLayout.width), minWidth), // Ensure minimum width
+      maxHeight: Math.min(buttonLayout.y - 4, 300),
+      zIndex: 9999
+    };
+  };
+
   return (
     <View style={tw`${width} z-10`}>
-      <TouchableOpacity
-        style={tw`flex-row items-center justify-between bg-white rounded-md px-3 py-2 border border-gray-300`}
-        onPress={() => setModalVisible(true)}
+      <View
+        ref={buttonRef}
+        onLayout={handleButtonLayout}
       >
-        <Text style={tw`text-gray-800 font-medium`} numberOfLines={1}>
-          {displayText}
-        </Text>
-        <AntDesign name="down" size={12} color="#666" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={tw`flex-row items-center justify-between bg-white rounded-md px-3 py-2 border border-gray-300 min-w-[150px]`}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={tw`text-gray-800 font-medium`} numberOfLines={1}>
+            {displayText}
+          </Text>
+          <AntDesign name="down" size={12} color="#666" />
+        </TouchableOpacity>
+      </View>
 
       <Modal
         transparent={true}
         visible={modalVisible}
-        animationType="fade"
+        animationType="none"
         onRequestClose={handleCloseModal}
       >
         <TouchableOpacity
-          style={tw`flex-1 bg-black bg-opacity-30`}
+          style={tw`flex-1`}
           activeOpacity={1}
           onPress={handleCloseModal}
         >
-          <View style={tw`flex-1 justify-start mt-20 mx-4`}>
-            <View style={tw`bg-white rounded-lg overflow-hidden shadow-lg`}>
+          {buttonLayout && (
+            <View 
+              style={[
+                tw`absolute bg-white rounded-lg shadow-lg overflow-hidden`,
+                getDropdownPosition()
+              ]}
+            >
               {searchable && (
                 <View style={tw`px-4 py-2 border-b border-gray-200 flex-row items-center`}>
                   <View style={tw`flex-1 flex-row items-center bg-gray-100 rounded-md px-2`}>
@@ -160,11 +207,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                       </Text>
                     </TouchableOpacity>
                   )}
-                  style={styles.flatList}
+                  style={{...styles.flatList,position: 'relative'}}
                 />
               )}
             </View>
-          </View>
+          )}
         </TouchableOpacity>
       </Modal>
     </View>

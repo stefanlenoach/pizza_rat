@@ -57,6 +57,8 @@ interface UserContextType {
   setSearchQuery: (query: string) => void;
   selectedSearchPlace: PlaceResult | null;
   setSelectedSearchPlace: (place: PlaceResult | null) => void;
+  filterVisible: boolean;
+  setFilterVisible: (visible: boolean) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -70,6 +72,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSearchPlace, setSelectedSearchPlace] = useState<PlaceResult | null>(null);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   const loadUserDetails = async (userId: string) => {
     try {
@@ -392,6 +395,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setSearchQuery,
     selectedSearchPlace,
     setSelectedSearchPlace,
+    filterVisible,
+    setFilterVisible
   };
 
   return (

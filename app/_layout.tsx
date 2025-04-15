@@ -11,6 +11,7 @@ import { UserProvider } from '../contexts/UserContext';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import '../global.css';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +35,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
       <FontProvider>
         <UserProvider>
           <ProtectedRoute>
@@ -69,6 +71,7 @@ export default function RootLayout() {
           </ProtectedRoute>
         </UserProvider>
       </FontProvider>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }

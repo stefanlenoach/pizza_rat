@@ -73,7 +73,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
         <View style={styles.modalContent}>
           <View style={styles.searchHeader}>
             <TouchableOpacity onPress={onClose} style={tw`p-2`}>
-              <Ionicons name="arrow-back" size={24} color="#FF5A5F" />
+              <Ionicons name="arrow-back" size={24} color="#000" />
             </TouchableOpacity>
             <View style={styles.searchInputContainer}>
               <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
@@ -124,11 +124,11 @@ export default SearchModal;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'white',
   },
   modalContent: {
     flex: 1,
-    backgroundColor: '#1c1c1e',
+    backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     marginTop: 50,
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#e5e5e5',
   },
   searchInputContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2c2c2e',
+    backgroundColor: '#f5f5f5',
     borderRadius: 10,
     marginLeft: 10,
     paddingHorizontal: 10,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     height: 40,
-    color: '#fff',
+    color: '#000',
     fontSize: 16,
     marginLeft: 10,
   },
@@ -163,16 +163,16 @@ const styles = StyleSheet.create({
   resultItem: {
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#e5e5e5',
   },
   placeName: {
     fontSize: 16,
-    color: '#fff',
+    color: '#000',
     marginBottom: 4,
   },
   placeAddress: {
     fontSize: 14,
-    color: '#999',
+    color: '#666',
   },
   emptyContainer: {
     flex: 1,
