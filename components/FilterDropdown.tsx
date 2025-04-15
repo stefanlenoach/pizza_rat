@@ -115,7 +115,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                     <Ionicons name="search" size={16} color="#666" />
                     <TextInput
                       ref={searchInputRef}
-                      style={{ ...tw`flex-1 py-2 px-2 text-gray-800`, fontFamily: 'Aujournuit' }}
+                      style={{ ...tw`flex-1 py-2 px-2 text-gray-800`, fontFamily: 'Zodiak' }}
                       placeholder={searchPlaceholder}
                       value={searchQuery}
                       onChangeText={setSearchQuery}

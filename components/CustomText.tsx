@@ -3,7 +3,7 @@ import { Text as RNText, TextProps, StyleSheet } from 'react-native';
 import tw from '@/utils/tw';
 
 /**
- * CustomText component that ensures Aujournuit font is applied to all text
+ * CustomText component that ensures Zodiak font is applied to all text
  * This component should be used instead of the standard React Native Text component
  */
 export const Text: React.FC<TextProps> = ({ style, children, ...props }) => {
@@ -16,7 +16,7 @@ export const Text: React.FC<TextProps> = ({ style, children, ...props }) => {
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
 });
 

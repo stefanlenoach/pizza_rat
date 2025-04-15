@@ -215,14 +215,14 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginBottom: 16,
     textAlign: 'center',
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   description: {
     fontSize: 16,
     color: '#6B7280',
     textAlign: 'center',
     lineHeight: 24,
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   skipButtonText: {
     fontSize: 16,
     color: '#6B7280',
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   nextButton: {
     backgroundColor: '#FF6B6B',
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     fontWeight: '600',
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   arrowIcon: {
     marginLeft: 8,

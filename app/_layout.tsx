@@ -17,7 +17,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    Aujournuit: require('../assets/fonts/Aujournuit-Regular.otf'),
+    Zodiak: require('../assets/fonts/Zodiak-Variable.ttf'),         // default
+    'Zodiak-Italic': require('../assets/fonts/Zodiak-VariableItalic.ttf'),         // italic
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ClashDisplay: require('../assets/fonts/ClashDisplay-Variable.ttf'),
   });
