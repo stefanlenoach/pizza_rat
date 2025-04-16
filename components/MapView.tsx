@@ -610,12 +610,12 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       {/* Search this area button */}
       {showSearchThisArea && !isSearchingPlaces && (
         <View style={styles.searchThisAreaContainer}>
-          <TouchableOpacity 
+          {/* <TouchableOpacity 
             style={styles.searchThisAreaButton}
             onPress={() => searchWithinVisibleArea(region)}
           >
             <Text style={styles.searchThisAreaText}>Search this area</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
       

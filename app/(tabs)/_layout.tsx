@@ -46,7 +46,7 @@ export default function TabLayout() {
         headerShown: shouldShowHeader,
         header: () => (
           <PizzaRatHeader
-            showFilters={true}
+            showFilters={false}
             onFilterChange={handleFilterChange}
             sortFilter={filters.sort}
             locationFilter={filters.location}
