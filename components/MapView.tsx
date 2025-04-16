@@ -339,27 +339,11 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       if (location && allPizzaPlaces.length > 0) {
         setIsSearchingPlaces(true);
         try {
-          const filtered = await filterPizzaPlaces(
-            allPizzaPlaces.map(a => {
-              let rating = a.rating
-              if(placeReviews[a.place_id]){
-                rating = placeReviews[a.place_id].rating
-              }
-
-              return {
-                ...a,
-                ...placeReviews[a.place_id],
-                rating
-              }
-            }),
-            sortFilter,
-            locationFilter,
-            location, 
-          );
+          // First filter by current neighborhood
+          let filteredPlaces = allPizzaPlaces;
           
-          // Filter places by neighborhood if one is selected
-          let filteredPlaces = filtered;
-          if (selectedNeighborhood) {
+          if (currentNeighborhood) {
+            console.log(`Filtering places for neighborhood: ${currentNeighborhood.name}`);
             filteredPlaces = filteredPlaces.filter(place => {
               const point: [number, number] = [
                 place.geometry.location.lng,
@@ -367,14 +351,38 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               ];
               
               // Check if the place is in any of the neighborhood's polygons
-              return selectedNeighborhood.coordinates.some(polygon => {
+              const isInside = currentNeighborhood.coordinates.some(polygon => {
                 return isPointInPolygon(point, polygon);
               });
+              
+              if (!isInside) {
+                console.log(`Place outside neighborhood: ${place.name}`);
+              }
+              return isInside;
             });
+            console.log(`Found ${filteredPlaces.length} places in ${currentNeighborhood.name}`);
           }
+
+          // Then apply other filters
+          // filteredPlaces = await filterPizzaPlaces(
+          //   filteredPlaces.map(a => {
+          //     let rating = a.rating
+          //     if(placeReviews[a.place_id]){
+          //       rating = placeReviews[a.place_id].rating
+          //     }
+          //     return {
+          //       ...a,
+          //       ...placeReviews[a.place_id],
+          //       rating
+          //     }
+          //   }),
+          //   sortFilter,
+          //   locationFilter,
+          //   location
+          // );
           
           if (filteredPlaces && Array.isArray(filteredPlaces)) {
-            setFilteredPizzaPlaces(filteredPlaces);
+            setFilteredPizzaPlaces(filteredPlaces); 
             console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filteredPlaces.length} places shown`);
           } else {
             setFilteredPizzaPlaces([]);
@@ -391,7 +399,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     };
     
     applyFilters();
-  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews, selectedNeighborhood]);
+  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews, currentNeighborhood]);
 
   useEffect(() => {
     (async () => {
@@ -449,7 +457,44 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     })();
   }, []);
   
-  // Function to search for pizza places within the visible map area
+  // Animation state for Brooklyn pizza places
+  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
+  const animationInProgress = useRef(false);
+  
+  // Helper function to check if a place is within a neighborhood
+  const isPlaceInNeighborhood = (place: PlaceResult, neighborhood: NeighborhoodData): boolean => {
+    if (!place.geometry?.location?.lat || !place.geometry?.location?.lng) {
+      console.log(`Place ${place.name} missing coordinates`);
+      return false;
+    }
+
+    const point: [number, number] = [
+      place.geometry.location.lng,
+      place.geometry.location.lat
+    ];
+    
+    const isInside = neighborhood.coordinates.some(polygon => isPointInPolygon(point, polygon));
+    if (!isInside) {
+      // console.log(`Place ${place.name} is outside ${neighborhood.name}`);
+    }
+    return isInside;
+  };
+  
+  // Helper function to calculate distance between two coordinates in miles
+  const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    // Haversine formula to calculate distance between two points on Earth
+    const R = 3958.8; // Earth's radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in miles
+  };
+
+  // Function to search for pizza places within the visible area
   const searchWithinVisibleArea = async (searchRegion: Region) => {
     try { 
       console.log("searchWithinVisibleArea--------",searchRegion)
@@ -479,7 +524,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const centerLng = searchRegion.longitude;
       
       // Calculate approximate radius in meters to cover the visible area
-      // This uses the Haversine formula to get distance from center to corner
       const radiusInMeters = calculateDistanceInMiles(
         centerLat, 
         centerLng, 
@@ -490,13 +534,32 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       console.log(`Searching within visible area with radius: ${radiusInMeters.toFixed(0)} meters`);
       
       // Search for Brooklyn pizza places within the calculated radius
-      const places = await getNearbyBrooklynPizzaPlaces(
+      let places = await getNearbyBrooklynPizzaPlaces(
         centerLat, 
         centerLng, 
         radiusInMeters,
-        setAllPlaces,
-        neighborhoodFilter // Pass the neighborhood filter
+        (allPlaces) => {
+          // Filter allPlaces by neighborhood before setting them
+          const filteredAllPlaces = currentNeighborhood 
+            ? allPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+            : allPlaces;
+          setAllPlaces(filteredAllPlaces);
+        },
+        neighborhoodFilter
       );
+      
+      // Filter places by current neighborhood if one is selected
+      if (currentNeighborhood) {
+        console.log(`Filtering places for neighborhood: ${currentNeighborhood.name}`);
+        places = places.filter(place => {
+          const isInside = isPlaceInNeighborhood(place, currentNeighborhood);
+          if (!isInside) {
+            console.log(`Filtered out: ${place.name} - outside ${currentNeighborhood.name}`);
+          }
+          return isInside;
+        });
+        console.log(`Found ${places.length} places in ${currentNeighborhood.name}`);
+      }
       
       // Sort places by distance from the center of the screen
       const sortedPlaces = places.sort((a, b) => {
@@ -514,9 +577,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         );
         return distanceA - distanceB; // Sort from closest to farthest
       });
- 
       
-      // Limit to 100 places maximum
+      // Limit to 50 places maximum
       const limitedPlaces = sortedPlaces.slice(0, 50);
       
       // Set all pizza places to the filtered list
@@ -532,10 +594,21 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const MAX_ANIMATED_PLACES = 50;
       const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
       
-      // Animate the first 50 places one by one
+      // Clear animated places first
+      setAnimatedPizzaPlaces([]);
+      
+      // Animate the first 50 places one by one, ensuring they're in the neighborhood
       for (let i = 0; i < animationLimit; i++) {
         // Skip animation if user switched to nearby mode
         if (!animationInProgress.current) break;
+        
+        const place = limitedPlaces[i];
+        
+        // Double-check that the place is still in the neighborhood
+        if (currentNeighborhood && !isPlaceInNeighborhood(place, currentNeighborhood)) {
+          console.log(`Skipping animation for ${place.name} - outside ${currentNeighborhood.name}`);
+          continue;
+        }
         
         // Add haptic feedback for each new place
         Haptics.impactAsync(
@@ -547,7 +620,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         );
         
         // Add this place to the animated places
-        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
+        setAnimatedPizzaPlaces(prev => [...prev, place]);
         
         // Wait a short time before showing the next place
         await new Promise(resolve => setTimeout(resolve, 2));
@@ -561,24 +634,35 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       animationInProgress.current = false;
     }
   };
-  
-  // Animation state for Brooklyn pizza places
-  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
-  const animationInProgress = useRef(false);
-  
-  // Helper function to calculate distance between two coordinates in miles
-  const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    // Haversine formula to calculate distance between two points on Earth
-    const R = 3958.8; // Earth's radius in miles
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c; // Distance in miles
-  };
+
+  // Function to render places on the map
+  const renderPlaces = () => {
+    // Safety check for undefined arrays
+    if (!filteredPizzaPlaces) return [];
+    
+    // If a place is selected through search, only show that place
+    if (selectedSearchPlace) {
+      return [selectedSearchPlace];
+    }
+    
+    if (sortFilter !== 'all') {
+      // For sorted views, ensure we only show places in the current neighborhood
+      return currentNeighborhood 
+        ? filteredPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+        : filteredPizzaPlaces;
+    }
+ 
+    if (isBrooklynMode && animatedPizzaPlaces) {
+      // For animated view, ensure we only show places in the current neighborhood
+      return currentNeighborhood 
+        ? animatedPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+        : animatedPizzaPlaces;
+    } 
+
+    return currentNeighborhood 
+      ? filteredPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+      : filteredPizzaPlaces;
+  }
 
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion);
@@ -617,26 +701,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     );
   }
 
-  const renderPlaces = () => {
-    // Safety check for undefined arrays
-    if (!filteredPizzaPlaces) return [];
-    
-    // If a place is selected through search, only show that place
-    if (selectedSearchPlace) {
-      return [selectedSearchPlace];
-    }
-    
-    if (sortFilter !== 'all') {
-      return filteredPizzaPlaces;
-    }
- 
-    if (isBrooklynMode && animatedPizzaPlaces) {
-      return animatedPizzaPlaces;
-    } 
-
-    return filteredPizzaPlaces;
-  }
-  
 
   return (
     <View style={styles.container}> 
@@ -691,12 +755,12 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       {/* Search this area button */}
       {showSearchThisArea && !isSearchingPlaces && (
         <View style={styles.searchThisAreaContainer}>
-          <TouchableOpacity 
+          {/* <TouchableOpacity 
             style={styles.searchThisAreaButton}
             onPress={() => searchWithinVisibleArea(region)}
           >
             <Text style={styles.searchThisAreaText}>Search this area</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
       
