@@ -475,7 +475,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     
     const isInside = neighborhood.coordinates.some(polygon => isPointInPolygon(point, polygon));
     if (!isInside) {
-      // console.log(`Place ${place.name} is outside ${neighborhood.name}`);
+      console.log(`Place ${place.name} is outside ${neighborhood.name}`);
     }
     return isInside;
   };
@@ -700,7 +700,9 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       </View>
     );
   }
-
+  
+  console.log("animatedPizzaPlaces",animatedPizzaPlaces.length)
+  console.log("filteredPizzaPlaces",filteredPizzaPlaces.length)
 
   return (
     <View style={styles.container}> 
