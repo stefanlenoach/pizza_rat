@@ -83,8 +83,6 @@ const BOROUGH_REGIONS = {
   }
 };
 
-// We're using userInterfaceStyle="dark" instead of custom styling
-
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;

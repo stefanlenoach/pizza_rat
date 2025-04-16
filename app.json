@@ -69,8 +69,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "7e1d3749-881c-4abf-b9bd-349aa9955c00"
+        "projectId": "6ad80b31-1d40-4a4a-8b3b-f928cc4cf6e6"
       }
-    }
+    },
+    "owner": "stefanlenoach"
   }
 }

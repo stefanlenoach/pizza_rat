@@ -46,7 +46,7 @@ export default function SignupScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <StatusBar style="dark" />
+      <StatusBar />
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Image

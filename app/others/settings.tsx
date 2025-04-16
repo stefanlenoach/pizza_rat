@@ -21,6 +21,11 @@ export default function SettingsScreen() {
       onPress: () => router.push('/others/quiz')
     },
     {
+      title: 'Trading Card Preview',
+      icon: 'card-outline' as const,
+      onPress: () => router.push('/others/trading-card-preview')
+    },
+    {
       title: 'Send feedback',
       icon: 'mail-outline' as const,
       onPress: () => Linking.openURL('mailto:feedback@pizzarat.com?subject=Pizza Rat Feedback')

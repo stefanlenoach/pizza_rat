@@ -335,21 +335,22 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           <View style={tw`flex-row items-start mb-1`}>
             <View style={tw`flex-1 mr-4`}>
               <Text 
-                style={tw`text-4xl font-bold text-red-600`}
+                style={tw`text-2xl font-bold text-red-600`}
                 numberOfLines={3}
                 ellipsizeMode="tail"
               >
                 {place.name}
               </Text>
+              <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
             </View>
-            <View style={tw`flex items-center shrink-0 ml-4`}>
-              <Text style={tw`text-6xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
+            <View style={tw`flex items-start shrink-0 ml-4`}>
+              <Text style={tw`text-5xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
               <Text style={tw` text-gray-600`}>
                 (<Text>{reviews?.length || 0}</Text> reviews)
               </Text>
             </View>
           </View>
-          <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
+          
           
           
           {/* {place.price_level && (
@@ -372,14 +373,14 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
             }}
           >
             <View style={tw`flex-row items-center justify-center`}>
-              <Text style={tw`text-white font-bold text-center text-lg`}>
+              <Text style={tw`text-white text-center text-lg`}>
                 CHAT
               </Text>
             </View>
           </TouchableOpacity>
         </View>          
           
-          {place.regularOpeningHours && (
+          {/* {place.regularOpeningHours && (
             <> 
               {place.regularOpeningHours?.weekdayDescriptions && (
                 <View style={tw`mt-2 bg-gray-50 p-3 rounded-lg`}>
@@ -392,7 +393,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
                 </View>
               )}
             </>
-          )}
+          )} */}
         </View>
         
         
