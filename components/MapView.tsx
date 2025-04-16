@@ -14,8 +14,9 @@ import FilterBottomSheet from './FilterBottomSheet';
 import { 
   getAllBrooklynPizzaPlaces, 
   getNearbyBrooklynPizzaPlaces, 
-  getNeighborhoodBoundary, 
-  getAllNeighborhoods 
+  getNeighborhoodBoundary,
+  getAllNeighborhoods,
+  loadNeighborhoodBoundaries
 } from '@/utils/brooklynPizzaData';
 import { 
   NeighborhoodData, 
@@ -112,12 +113,14 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodData | null>(null);
 
+  // Add state for current neighborhood
+  const [currentNeighborhood, setCurrentNeighborhood] = useState<NeighborhoodData | null>(null);
+
   //for neighborhood filter
-   const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
-      { label: 'All Neighborhoods', value: 'all' }
-    ]);
-    const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
-  
+  const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
+    { label: 'All Neighborhoods', value: 'all' }
+  ]);
+  const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
 
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
@@ -153,22 +156,20 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   useEffect(() => {
     const loadNeighborhoods = async () => {
       try {
-        const data = require('../neighborhood_data/nyc_neighborhood.json');
+        // Load neighborhood boundaries
+        const boundaries = await loadNeighborhoodBoundaries();
+        setNeighborhoods(boundaries);
+        console.log("Loaded neighborhoods:", boundaries.length);
         
-        if (data && data.features) {
-          const parsedNeighborhoods = data.features.map((feature: any) => {
-            const { properties, geometry, id } = feature;
-            return {
-              id,
-              name: properties.NTAName,
-              borough: properties.BoroName,
-              abbreviation: properties.NTAAbbrev,
-              coordinates: geometry.coordinates[0], // Take the first polygon
-            };
-          });
-          
-          setNeighborhoods(parsedNeighborhoods);
-        }
+        // Update neighborhood options
+        const newOptions = [
+          { label: 'All Neighborhoods', value: 'all' },
+          ...boundaries.map((n: NeighborhoodData) => ({
+            label: n.name,
+            value: n.name
+          }))
+        ];
+        setNeighborhoodOptions(newOptions);
       } catch (error) {
         console.error('Error loading neighborhoods:', error);
       }
@@ -176,40 +177,111 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     
     loadNeighborhoods();
   }, []);
-// Load neighborhoods data on location change
-    useEffect(() => {
-      const loadNeighborhoods = async () => {
-        try { 
-          if (locationFilter === 'all_nyc' || locationFilter === 'all') {
-            setShowNeighborhoodFilter(false);
-            return;
-          }
-          
-          // Get neighborhoods for the selected borough
-          const neighborhoods = await getAllNeighborhoods();
-          
-          // Filter neighborhoods by the selected borough
-          // This will need to be implemented based on how your data is structured
-          // For now, we'll just show all neighborhoods
-          
-          const options = [
-            { label: 'All Neighborhoods', value: 'all' },
-            ...neighborhoods.map(neighborhood => ({
-              label: neighborhood,
-              value: neighborhood
-            }))
-          ];
-          
-          setNeighborhoodOptions(options);
-          setShowNeighborhoodFilter(true);
-        } catch (error) {
-          console.error('Error loading neighborhoods:', error);
-          setShowNeighborhoodFilter(false);
-        }
-      };
+
+  // Add useEffect to detect current neighborhood based on location
+  useEffect(() => {
+    console.log("Location:", location?.coords);
+    console.log("Number of neighborhoods:", neighborhoods.length);
+    
+    if (location && neighborhoods.length > 0) {
+      const userLat = location.coords.latitude;
+      const userLng = location.coords.longitude;
       
-      loadNeighborhoods();
-    }, [locationFilter]);
+      console.log("User location:", { userLat, userLng });
+      
+      // Try to find neighborhood by checking if point is inside any polygon first
+      const point: [number, number] = [userLng, userLat];
+      let foundNeighborhood: NeighborhoodData | undefined = neighborhoods.find((n: NeighborhoodData) => {
+        try {
+          // Each neighborhood has multiple polygons, check each one
+          return n.coordinates.some((polygon: number[][]) => {
+            // Each polygon is an array of [lng, lat] points
+            return isPointInPolygon(point, polygon);
+          });
+        } catch (error) {
+          console.error(`Error checking neighborhood ${n.name}:`, error);
+          return false;
+        }
+      });
+
+      // If no exact match found, find closest neighborhood
+      if (!foundNeighborhood) {
+        console.log("No exact match found, finding closest neighborhood...");
+        let minDistance = Infinity;
+        
+        neighborhoods.forEach((n: NeighborhoodData) => {
+          // Use the first point of the first polygon as reference
+          if (!n.coordinates[0]?.[0]) return;
+          
+          const refPoint = n.coordinates[0][0];
+          const centerLat = Number(refPoint[1]);
+          const centerLng = Number(refPoint[0]);
+          
+          // Calculate distance using Haversine formula
+          const R = 6371e3; // Earth's radius in meters
+          const φ1 = Number(userLat) * Math.PI / 180;
+          const φ2 = Number(centerLat) * Math.PI / 180;
+          const Δφ = (Number(centerLat) - Number(userLat)) * Math.PI / 180;
+          const Δλ = (Number(centerLng) - Number(userLng)) * Math.PI / 180;
+          
+          const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                   Math.cos(φ1) * Math.cos(φ2) *
+                   Math.sin(Δλ/2) * Math.sin(Δλ/2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+          const distance = R * c;
+          
+          // console.log(`Distance to ${n.name}: ${(distance/1000).toFixed(2)}km`);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            foundNeighborhood = n;
+          }
+        });
+        
+        console.log("Closest neighborhood:", foundNeighborhood?.name, "Distance:", (minDistance/1000).toFixed(2) + "km");
+      }
+      
+      if (foundNeighborhood) {
+        setCurrentNeighborhood(foundNeighborhood);
+        const newRegion = calculateNeighborhoodRegion(foundNeighborhood);
+        mapRef.current?.animateToRegion(newRegion, 1000);
+      }
+    }
+  }, [location, neighborhoods]);
+
+  // Load neighborhoods data on location change
+  useEffect(() => {
+    const loadNeighborhoods = async () => {
+      try { 
+        if (locationFilter === 'all_nyc' || locationFilter === 'all') {
+          setShowNeighborhoodFilter(false);
+          return;
+        }
+        
+        // Get neighborhoods for the selected borough
+        const neighborhoods = await getAllNeighborhoods();
+        
+        // Filter neighborhoods by the selected borough
+        // This will need to be implemented based on how your data is structured
+        // For now, we'll just show all neighborhoods
+        const options = [
+          { label: 'All Neighborhoods', value: 'all' },
+          ...neighborhoods.map(neighborhood => ({
+            label: neighborhood,
+            value: neighborhood
+          }))
+        ];
+        
+        setNeighborhoodOptions(options);
+        setShowNeighborhoodFilter(true);
+      } catch (error) {
+        console.error('Error loading neighborhoods:', error);
+        setShowNeighborhoodFilter(false);
+      }
+    };
+    
+    loadNeighborhoods();
+  }, [locationFilter]);
 
   // Update selected neighborhood when neighborhoodFilter changes
   useEffect(() => {
@@ -555,7 +627,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
 
     return filteredPizzaPlaces;
   }
- 
+  
 
   return (
     <View style={styles.container}> 
@@ -610,12 +682,12 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       {/* Search this area button */}
       {showSearchThisArea && !isSearchingPlaces && (
         <View style={styles.searchThisAreaContainer}>
-          {/* <TouchableOpacity 
+          <TouchableOpacity 
             style={styles.searchThisAreaButton}
             onPress={() => searchWithinVisibleArea(region)}
           >
             <Text style={styles.searchThisAreaText}>Search this area</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       )}
       
@@ -642,6 +714,20 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
             strokeWidth={2}
           />
         )}
+        
+        {/* Render current neighborhood polygon with highlight */}
+        {currentNeighborhood && currentNeighborhood.coordinates.map((polygon, index) => (
+          <Polygon
+            key={`${currentNeighborhood.name}-${index}`}
+            coordinates={polygon.map(coord => ({
+              latitude: coord[1],
+              longitude: coord[0]
+            }))}
+            fillColor="rgba(255, 82, 82, 0.2)"
+            strokeColor="rgba(255, 82, 82, 0.8)"
+            strokeWidth={2}
+          />
+        ))}
         
         {/* User's current location marker */}
         {location && (
