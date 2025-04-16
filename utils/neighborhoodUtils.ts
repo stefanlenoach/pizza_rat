@@ -6,7 +6,7 @@ export interface NeighborhoodData {
   name: string;
   borough: string;
   abbreviation: string;
-  coordinates: number[][][];
+  coordinates: Array<Array<[number, number]>>; // Array of polygons, each polygon is array of [lng, lat] points
 }
 
 // Function to parse the GeoJSON data into a more usable format
@@ -25,7 +25,7 @@ export const parseNeighborhoodData = (geojsonData: any): NeighborhoodData[] => {
       name: properties.NTAName,
       borough: properties.BoroName,
       abbreviation: properties.NTAAbbrev,
-      coordinates: geometry.coordinates[0], // Take the first polygon if multiple
+      coordinates: geometry.coordinates, // Take the first polygon if multiple
     };
   });
 };
@@ -33,7 +33,7 @@ export const parseNeighborhoodData = (geojsonData: any): NeighborhoodData[] => {
 // Function to check if a point is inside a polygon using ray casting algorithm
 export const isPointInPolygon = (
   point: [number, number], 
-  polygon: number[][]
+  polygon: Array<[number, number]>
 ): boolean => {
   const x = point[0];
   const y = point[1];
@@ -65,7 +65,10 @@ export const filterPlacesByNeighborhood = (
       place.geometry.location.lat
     ];
     
-    return isPointInPolygon(point, neighborhood.coordinates);
+    // Check each polygon in the neighborhood
+    return neighborhood.coordinates.some(polygon => 
+      isPointInPolygon(point, polygon)
+    );
   });
 };
 
@@ -77,14 +80,14 @@ export const calculateNeighborhoodRegion = (neighborhood: NeighborhoodData): Reg
   let minLng = Infinity;
   let maxLng = -Infinity;
   
-  neighborhood.coordinates.forEach(coord => {
-    const lng = coord[0];
-    const lat = coord[1];
-    
-    minLat = Math.min(minLat, lat);
-    maxLat = Math.max(maxLat, lat);
-    minLng = Math.min(minLng, lng);
-    maxLng = Math.max(maxLng, lng);
+  // Process each coordinate point in each polygon
+  neighborhood.coordinates.forEach(polygon => {
+    polygon.forEach(([lng, lat]) => {
+      minLat = Math.min(minLat, lat);
+      maxLat = Math.max(maxLat, lat);
+      minLng = Math.min(minLng, lng);
+      maxLng = Math.max(maxLng, lng);
+    });
   });
   
   // Calculate center

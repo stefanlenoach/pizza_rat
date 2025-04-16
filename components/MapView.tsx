@@ -29,7 +29,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FilterType } from '@/app/(tabs)/_layout';
 
 // Default coordinates for New York City (Manhattan)
-const NEW_YORK_COORDS = {
+const NEW_YORK_COORDS: Region = {
   latitude: 40.7128,
   longitude: -74.0060,
   latitudeDelta: 0.0922,
@@ -37,7 +37,7 @@ const NEW_YORK_COORDS = {
 };
 
 // Brooklyn coordinates
-const BROOKLYN_COORDS = {
+const BROOKLYN_COORDS: Region = {
   latitude: 40.6782,
   longitude: -73.9442,
   latitudeDelta: 0.1,
@@ -193,9 +193,9 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const point: [number, number] = [userLng, userLat];
       let foundNeighborhood: NeighborhoodData | undefined = neighborhoods.find((n: NeighborhoodData) => {
         try {
-          // Each neighborhood has multiple polygons, check each one
-          return n.coordinates.some((polygon: number[][]) => {
-            // Each polygon is an array of [lng, lat] points
+          // Each neighborhood's coordinates is an array of polygons
+          // Each polygon is an array of [lng, lat] points
+          return n.coordinates.some(polygon => {
             return isPointInPolygon(point, polygon);
           });
         } catch (error) {
@@ -211,26 +211,30 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         
         neighborhoods.forEach((n: NeighborhoodData) => {
           // Use the first point of the first polygon as reference
-          if (!n.coordinates[0]?.[0]) return;
+          const firstPolygon = n.coordinates[0];
+          if (!firstPolygon?.length) return;
           
-          const refPoint = n.coordinates[0][0];
-          const centerLat = Number(refPoint[1]);
-          const centerLng = Number(refPoint[0]);
+          const firstPoint = firstPolygon[0];
+          if (!firstPoint) return;
+          
+          const [centerLng, centerLat] = firstPoint;
           
           // Calculate distance using Haversine formula
           const R = 6371e3; // Earth's radius in meters
-          const φ1 = Number(userLat) * Math.PI / 180;
-          const φ2 = Number(centerLat) * Math.PI / 180;
-          const Δφ = (Number(centerLat) - Number(userLat)) * Math.PI / 180;
-          const Δλ = (Number(centerLng) - Number(userLng)) * Math.PI / 180;
+          const φ1 = userLat * Math.PI / 180;
+          const φ2 = centerLat * Math.PI / 180;
+          const Δφ = (centerLat - userLat) * Math.PI / 180;
+          const Δλ = (centerLng - userLng) * Math.PI / 180;
           
-          const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                   Math.cos(φ1) * Math.cos(φ2) *
-                   Math.sin(Δλ/2) * Math.sin(Δλ/2);
+          const a = 
+            Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-          const distance = R * c;
+          const distance = R * c; // Distance in meters
           
           // console.log(`Distance to ${n.name}: ${(distance/1000).toFixed(2)}km`);
+         
           
           if (distance < minDistance) {
             minDistance = distance;
@@ -238,7 +242,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           }
         });
         
-        console.log("Closest neighborhood:", foundNeighborhood?.name, "Distance:", (minDistance/1000).toFixed(2) + "km");
+        // console.log("Closest neighborhood:", foundNeighborhood?.name, "Distance:", (minDistance/1000).toFixed(2) + "km");
+        // console.log(`Closest-----`,foundNeighborhood);
       }
       
       if (foundNeighborhood) {
@@ -352,21 +357,25 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
             location, 
           );
           
-          // Apply additional neighborhood filter if selected
-          let finalFiltered = filtered;
-          if (selectedNeighborhood && Array.isArray(filtered)) {
-            finalFiltered = filtered.filter(place => {
+          // Filter places by neighborhood if one is selected
+          let filteredPlaces = filtered;
+          if (selectedNeighborhood) {
+            filteredPlaces = filteredPlaces.filter(place => {
               const point: [number, number] = [
                 place.geometry.location.lng,
                 place.geometry.location.lat
               ];
-              return isPointInPolygon(point, selectedNeighborhood.coordinates);
+              
+              // Check if the place is in any of the neighborhood's polygons
+              return selectedNeighborhood.coordinates.some(polygon => {
+                return isPointInPolygon(point, polygon);
+              });
             });
           }
           
-          if (finalFiltered && Array.isArray(finalFiltered)) {
-            setFilteredPizzaPlaces(finalFiltered);
-            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${finalFiltered.length} places shown`);
+          if (filteredPlaces && Array.isArray(filteredPlaces)) {
+            setFilteredPizzaPlaces(filteredPlaces);
+            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filteredPlaces.length} places shown`);
           } else {
             setFilteredPizzaPlaces([]);
             console.log('No places found after filtering');
@@ -413,7 +422,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
                        currentLocation.coords.longitude <= -73.7004;
         
         // Set region based on location
-        const newRegion = isInNYC ? {
+        const newRegion: Region = isInNYC ? {
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
           latitudeDelta: 0.0922,
@@ -703,17 +712,18 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         zoomControlEnabled={true}
       >
         {/* Render the selected neighborhood polygon with a pink fill */}
-        {selectedNeighborhood && (
+        {selectedNeighborhood && selectedNeighborhood.coordinates.map((polygon, polygonIndex) => (
           <Polygon
-            coordinates={selectedNeighborhood.coordinates.map((coord: any) => ({
+            key={`neighborhood-${polygonIndex}`}
+            coordinates={polygon.map((coord: [number, number]) => ({
               latitude: coord[1],
               longitude: coord[0],
             }))}
-            strokeColor="rgba(255, 141, 161, 1)"
-            fillColor="rgba(255, 141, 161, 0.2)"
+            fillColor="rgba(255, 192, 203, 0.5)"
+            strokeColor="pink"
             strokeWidth={2}
           />
-        )}
+        ))}
         
         {/* Render current neighborhood polygon with highlight */}
         {currentNeighborhood && currentNeighborhood.coordinates.map((polygon, index) => (
