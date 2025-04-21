@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated, AppState } from 'react-native';
 import { Text } from '@/components/CustomText';
 import MapView, { Marker, Region, Callout, Circle, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -212,7 +212,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
 
       console.log("filteredUsers",filteredUsers)
 
-      setNearbyUsers(filteredUsers);
+      setNearbyUsers([...filteredUsers]);
     } catch (error) {
       console.error('Error in fetchNearbyUsers:', error);
     }
@@ -227,12 +227,58 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         currentNeighborhood.name
       );
       
-      // Start polling for nearby users
-      const interval = setInterval(() => {
-        fetchNearbyUsers(currentNeighborhood.name);
-      }, 10000); // Poll every 10 seconds
+      // Initial fetch of nearby users
+      fetchNearbyUsers(currentNeighborhood.name);
+      
+      // Subscribe to realtime updates for UserLocation table
+      const channel = supabase
+        .channel('user-locations')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+            schema: 'public',
+            table: 'UserLocation',
+            
+          },
+          async (payload) => {
+            console.log('Realtime update:', payload);
+            // Fetch all nearby users again when there's any change
+            await fetchNearbyUsers(currentNeighborhood.name);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Realtime subscription status:', status);
+        });
 
-      return () => clearInterval(interval);
+      // Also listen for changes in user active state
+      const activeStateChannel = supabase
+        .channel('active-state-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'UserLocation',
+            filter: `neighborhood=eq.${currentNeighborhood.name} AND is_active=eq.false`,
+          },
+          async (payload) => {
+            console.log('User active state changed:', payload);
+            // Remove inactive users immediately
+            setNearbyUsers(current => 
+              current.filter(user => user.id !== payload.old.id)
+            );
+          }
+        )
+        .subscribe((status) => {
+          console.log('Active state subscription status:', status);
+        });
+
+      // Cleanup subscription when component unmounts or neighborhood changes
+      return () => {
+        channel.unsubscribe();
+        activeStateChannel.unsubscribe();
+      };
     }
   }, [location?.coords, currentNeighborhood]); 
 
@@ -563,7 +609,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       }
     })();
   }, []);
-  
+
   // Animation state for Brooklyn pizza places
   const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
   const animationInProgress = useRef(false);
@@ -790,6 +836,47 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     }
   };
 
+  // Update user's active status
+  const updateUserActiveStatus = async (isActive: boolean) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      const { error } = await supabase
+        .from('UserLocation')
+        .update({ is_active: isActive })
+        .eq('user_id', session.user.id);
+
+      if (error) {
+        console.error('Error updating active status:', error);
+      }
+    } catch (error) {
+      console.error('Error in updateUserActiveStatus:', error);
+    }
+  };
+
+  // Handle app state changes
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        // App came to foreground
+        updateUserActiveStatus(true);
+      } else if (nextAppState === 'background' || nextAppState === 'inactive') {
+        // App went to background or became inactive
+        updateUserActiveStatus(false);
+      }
+    });
+
+    // Set active when component mounts
+    updateUserActiveStatus(true);
+
+    // Cleanup: Set inactive when component unmounts
+    return () => {
+      subscription.remove();
+      updateUserActiveStatus(false);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
@@ -808,9 +895,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     );
   }
   
-  // console.log("animatedPizzaPlaces",animatedPizzaPlaces.length)
-  // console.log("filteredPizzaPlaces",filteredPizzaPlaces.length)
-  console.log('nearbyUsers',nearbyUsers)
+ 
 
   return (
     <View style={styles.container}> 
