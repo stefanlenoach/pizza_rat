@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Platform, TouchableOpacity, Animated, AppState } from 'react-native';
 import { Text } from '@/components/CustomText';
 import MapView, { Marker, Region, Callout, Circle, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -14,8 +14,9 @@ import FilterBottomSheet from './FilterBottomSheet';
 import { 
   getAllBrooklynPizzaPlaces, 
   getNearbyBrooklynPizzaPlaces, 
-  getNeighborhoodBoundary, 
-  getAllNeighborhoods 
+  getNeighborhoodBoundary,
+  getAllNeighborhoods,
+  loadNeighborhoodBoundaries
 } from '@/utils/brooklynPizzaData';
 import { 
   NeighborhoodData, 
@@ -28,7 +29,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FilterType } from '@/app/(tabs)/_layout';
 
 // Default coordinates for New York City (Manhattan)
-const NEW_YORK_COORDS = {
+const NEW_YORK_COORDS: Region = {
   latitude: 40.7128,
   longitude: -74.0060,
   latitudeDelta: 0.0922,
@@ -36,7 +37,7 @@ const NEW_YORK_COORDS = {
 };
 
 // Brooklyn coordinates
-const BROOKLYN_COORDS = {
+const BROOKLYN_COORDS: Region = {
   latitude: 40.6782,
   longitude: -73.9442,
   latitudeDelta: 0.1,
@@ -110,12 +111,16 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodData | null>(null);
 
+  // Add state for current neighborhood
+  const [currentNeighborhood, setCurrentNeighborhood] = useState<NeighborhoodData | null>(null);
+
   //for neighborhood filter
-   const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
-      { label: 'All Neighborhoods', value: 'all' }
-    ]);
-    const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
-  
+  const [neighborhoodOptions, setNeighborhoodOptions] = useState<{label: string, value: string}[]>([
+    { label: 'All Neighborhoods', value: 'all' }
+  ]);
+  const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
+
+  const [showSearchThisArea, setShowSearchThisArea] = useState(false);
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
   
@@ -125,6 +130,159 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
 
   const [userReviewedPlaces, setUserReviewedPlaces] = useState<Set<string>>(new Set());
   const initialLoadDone = useRef(false);
+
+  // State for other users in the neighborhood
+  const [nearbyUsers, setNearbyUsers] = useState<Array<{
+    id: string;
+    latitude: number;
+    longitude: number;
+    last_updated: string;
+  }>>([]);
+
+  // Update user's location in Supabase
+  const updateUserLocation = async (lat: number, lng: number, neighborhood: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      const { error } = await supabase
+        .from('UserLocation')
+        .upsert({
+          user_id: session.user.id,
+          neighborhood,
+          latitude: lat,
+          longitude: lng,
+          is_active: true,
+          last_updated: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        });
+
+      if (error) {
+        console.error('Error updating location:', error);
+      }
+    } catch (error) {
+      console.error('Error in updateUserLocation:', error);
+    }
+  };
+
+  // Fetch nearby users in the same neighborhood
+  const fetchNearbyUsers = async (neighborhood: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      // First get the neighborhood data
+      const selectedNeighborhood = neighborhoods.find(n => n.name === neighborhood);
+      if (!selectedNeighborhood) {
+        console.log('Neighborhood not found:', neighborhood);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('UserLocation')
+        .select('id, latitude, longitude, last_updated')
+        .eq('neighborhood', neighborhood)
+        .eq('is_active', true)
+        .neq('user_id', session.user.id)
+        // Only show users who have updated their location in the last 5 minutes
+        .gt('last_updated', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+
+      if (error) {
+        console.error('Error fetching nearby users:', error);
+        return;
+      }
+
+      console.log("data",data)
+
+      // Filter users to ensure they are within the neighborhood boundaries
+      const filteredUsers = (data || []).filter(user => {
+        const userPlace: PlaceResult = {
+          id: user.id,
+          place_id: user.id,
+          name: 'Nearby User',
+          vicinity: neighborhood,
+          geometry: {
+            location: {
+              lat: user.latitude,
+              lng: user.longitude
+            }
+          }
+        };
+        return isPlaceInNeighborhood(userPlace, selectedNeighborhood);
+      });
+
+      console.log("filteredUsers",filteredUsers)
+
+      setNearbyUsers([...filteredUsers]);
+    } catch (error) {
+      console.error('Error in fetchNearbyUsers:', error);
+    }
+  };
+
+  // Update location when neighborhood changes
+  useEffect(() => {
+    if (location && currentNeighborhood) {
+      updateUserLocation(
+        location.coords.latitude,
+        location.coords.longitude,
+        currentNeighborhood.name
+      );
+      
+      // Initial fetch of nearby users
+      fetchNearbyUsers(currentNeighborhood.name);
+      
+      // Subscribe to realtime updates for UserLocation table
+      const channel = supabase
+        .channel('user-locations')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+            schema: 'public',
+            table: 'UserLocation',
+            
+          },
+          async (payload) => {
+            console.log('Realtime update:', payload);
+            // Fetch all nearby users again when there's any change
+            await fetchNearbyUsers(currentNeighborhood.name);
+          }
+        )
+        .subscribe((status) => {
+          console.log('Realtime subscription status:', status);
+        });
+
+      // Also listen for changes in user active state
+      const activeStateChannel = supabase
+        .channel('active-state-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'UserLocation',
+            filter: `neighborhood=eq.${currentNeighborhood.name} AND is_active=eq.false`,
+          },
+          async (payload) => {
+            console.log('User active state changed:', payload);
+            // Remove inactive users immediately
+            setNearbyUsers(current => 
+              current.filter(user => user.id !== payload.old.id)
+            );
+          }
+        )
+        .subscribe((status) => {
+          console.log('Active state subscription status:', status);
+        });
+
+      // Cleanup subscription when component unmounts or neighborhood changes
+      return () => {
+        channel.unsubscribe();
+        activeStateChannel.unsubscribe();
+      };
+    }
+  }, [location?.coords, currentNeighborhood]); 
 
   // Load user's reviewed places
   useEffect(() => {
@@ -153,22 +311,20 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   useEffect(() => {
     const loadNeighborhoods = async () => {
       try {
-        const data = require('../neighborhood_data/nyc_neighborhood.json');
+        // Load neighborhood boundaries
+        const boundaries = await loadNeighborhoodBoundaries();
+        setNeighborhoods(boundaries);
+        console.log("Loaded neighborhoods:", boundaries.length);
         
-        if (data && data.features) {
-          const parsedNeighborhoods = data.features.map((feature: any) => {
-            const { properties, geometry, id } = feature;
-            return {
-              id,
-              name: properties.NTAName,
-              borough: properties.BoroName,
-              abbreviation: properties.NTAAbbrev,
-              coordinates: geometry.coordinates[0], // Take the first polygon
-            };
-          });
-          
-          setNeighborhoods(parsedNeighborhoods);
-        }
+        // Update neighborhood options
+        const newOptions = [
+          { label: 'All Neighborhoods', value: 'all' },
+          ...boundaries.map((n: NeighborhoodData) => ({
+            label: n.name,
+            value: n.name
+          }))
+        ];
+        setNeighborhoodOptions(newOptions);
       } catch (error) {
         console.error('Error loading neighborhoods:', error);
       }
@@ -176,40 +332,116 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     
     loadNeighborhoods();
   }, []);
-// Load neighborhoods data on location change
-    useEffect(() => {
-      const loadNeighborhoods = async () => {
-        try { 
-          if (locationFilter === 'all_nyc' || locationFilter === 'all') {
-            setShowNeighborhoodFilter(false);
-            return;
-          }
-          
-          // Get neighborhoods for the selected borough
-          const neighborhoods = await getAllNeighborhoods();
-          
-          // Filter neighborhoods by the selected borough
-          // This will need to be implemented based on how your data is structured
-          // For now, we'll just show all neighborhoods
-          
-          const options = [
-            { label: 'All Neighborhoods', value: 'all' },
-            ...neighborhoods.map(neighborhood => ({
-              label: neighborhood,
-              value: neighborhood
-            }))
-          ];
-          
-          setNeighborhoodOptions(options);
-          setShowNeighborhoodFilter(true);
-        } catch (error) {
-          console.error('Error loading neighborhoods:', error);
-          setShowNeighborhoodFilter(false);
-        }
-      };
+
+  // Add useEffect to detect current neighborhood based on location
+  useEffect(() => {
+    console.log("Location:", location?.coords);
+    console.log("Number of neighborhoods:", neighborhoods.length);
+    
+    if (location && neighborhoods.length > 0) {
+      const userLat = location.coords.latitude;
+      const userLng = location.coords.longitude;
       
-      loadNeighborhoods();
-    }, [locationFilter]);
+      console.log("User location:", { userLat, userLng });
+      
+      // Try to find neighborhood by checking if point is inside any polygon first
+      const point: [number, number] = [userLng, userLat];
+      let foundNeighborhood: NeighborhoodData | undefined = neighborhoods.find((n: NeighborhoodData) => {
+        try {
+          // Each neighborhood's coordinates is an array of polygons
+          // Each polygon is an array of [lng, lat] points
+          return n.coordinates.some(polygon => {
+            return isPointInPolygon(point, polygon);
+          });
+        } catch (error) {
+          console.error(`Error checking neighborhood ${n.name}:`, error);
+          return false;
+        }
+      });
+
+      // If no exact match found, find closest neighborhood
+      if (!foundNeighborhood) {
+        console.log("No exact match found, finding closest neighborhood...");
+        let minDistance = Infinity;
+        
+        neighborhoods.forEach((n: NeighborhoodData) => {
+          // Use the first point of the first polygon as reference
+          const firstPolygon = n.coordinates[0];
+          if (!firstPolygon?.length) return;
+          
+          const firstPoint = firstPolygon[0];
+          if (!firstPoint) return;
+          
+          const [centerLng, centerLat] = firstPoint;
+          
+          // Calculate distance using Haversine formula
+          const R = 6371e3; // Earth's radius in meters
+          const φ1 = userLat * Math.PI / 180;
+          const φ2 = centerLat * Math.PI / 180;
+          const Δφ = (centerLat - userLat) * Math.PI / 180;
+          const Δλ = (centerLng - userLng) * Math.PI / 180;
+          
+          const a = 
+            Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+          const distance = R * c; // Distance in meters
+          
+          // console.log(`Distance to ${n.name}: ${(distance/1000).toFixed(2)}km`);
+         
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            foundNeighborhood = n;
+          }
+        });
+        
+        // console.log("Closest neighborhood:", foundNeighborhood?.name, "Distance:", (minDistance/1000).toFixed(2) + "km");
+        // console.log(`Closest-----`,foundNeighborhood);
+      }
+      
+      if (foundNeighborhood) {
+        setCurrentNeighborhood(foundNeighborhood);
+        const newRegion = calculateNeighborhoodRegion(foundNeighborhood);
+        mapRef.current?.animateToRegion(newRegion, 1000);
+      }
+    }
+  }, [location, neighborhoods]);
+
+  // Load neighborhoods data on location change
+  useEffect(() => {
+    const loadNeighborhoods = async () => {
+      try { 
+        if (locationFilter === 'all_nyc' || locationFilter === 'all') {
+          setShowNeighborhoodFilter(false);
+          return;
+        }
+        
+        // Get neighborhoods for the selected borough
+        const neighborhoods = await getAllNeighborhoods();
+        
+        // Filter neighborhoods by the selected borough
+        // This will need to be implemented based on how your data is structured
+        // For now, we'll just show all neighborhoods
+        const options = [
+          { label: 'All Neighborhoods', value: 'all' },
+          ...neighborhoods.map(neighborhood => ({
+            label: neighborhood,
+            value: neighborhood
+          }))
+        ];
+        
+        setNeighborhoodOptions(options);
+        setShowNeighborhoodFilter(true);
+      } catch (error) {
+        console.error('Error loading neighborhoods:', error);
+        setShowNeighborhoodFilter(false);
+      }
+    };
+    
+    loadNeighborhoods();
+  }, [locationFilter]);
 
   // Update selected neighborhood when neighborhoodFilter changes
   useEffect(() => {
@@ -261,39 +493,51 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       if (location && allPizzaPlaces.length > 0) {
         setIsSearchingPlaces(true);
         try {
-          const filtered = await filterPizzaPlaces(
-            allPizzaPlaces.map(a => {
-              let rating = a.rating
-              if(placeReviews[a.place_id]){
-                rating = placeReviews[a.place_id].rating
-              }
-
-              return {
-                ...a,
-                ...placeReviews[a.place_id],
-                rating
-              }
-            }),
-            sortFilter,
-            locationFilter,
-            location, 
-          );
+          // First filter by current neighborhood
+          let filteredPlaces = allPizzaPlaces;
           
-          // Apply additional neighborhood filter if selected
-          let finalFiltered = filtered;
-          if (selectedNeighborhood && Array.isArray(filtered)) {
-            finalFiltered = filtered.filter(place => {
+          if (currentNeighborhood) {
+            console.log(`Filtering places for neighborhood: ${currentNeighborhood.name}`);
+            filteredPlaces = filteredPlaces.filter(place => {
               const point: [number, number] = [
                 place.geometry.location.lng,
                 place.geometry.location.lat
               ];
-              return isPointInPolygon(point, selectedNeighborhood.coordinates);
+              
+              // Check if the place is in any of the neighborhood's polygons
+              const isInside = currentNeighborhood.coordinates.some(polygon => {
+                return isPointInPolygon(point, polygon);
+              });
+              
+              if (!isInside) {
+                console.log(`Place outside neighborhood: ${place.name}`);
+              }
+              return isInside;
             });
+            console.log(`Found ${filteredPlaces.length} places in ${currentNeighborhood.name}`);
           }
+
+          // Then apply other filters
+          // filteredPlaces = await filterPizzaPlaces(
+          //   filteredPlaces.map(a => {
+          //     let rating = a.rating
+          //     if(placeReviews[a.place_id]){
+          //       rating = placeReviews[a.place_id].rating
+          //     }
+          //     return {
+          //       ...a,
+          //       ...placeReviews[a.place_id],
+          //       rating
+          //     }
+          //   }),
+          //   sortFilter,
+          //   locationFilter,
+          //   location
+          // );
           
-          if (finalFiltered && Array.isArray(finalFiltered)) {
-            setFilteredPizzaPlaces(finalFiltered);
-            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${finalFiltered.length} places shown`);
+          if (filteredPlaces && Array.isArray(filteredPlaces)) {
+            setFilteredPizzaPlaces(filteredPlaces); 
+            console.log(`Applied filters: ${sortFilter}, ${locationFilter} - ${filteredPlaces.length} places shown`);
           } else {
             setFilteredPizzaPlaces([]);
             console.log('No places found after filtering');
@@ -309,7 +553,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     };
     
     applyFilters();
-  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews, selectedNeighborhood]);
+  }, [allPizzaPlaces, sortFilter, locationFilter, location, placeReviews, currentNeighborhood]);
 
   useEffect(() => {
     (async () => {
@@ -340,7 +584,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
                        currentLocation.coords.longitude <= -73.7004;
         
         // Set region based on location
-        const newRegion = isInNYC ? {
+        const newRegion: Region = isInNYC ? {
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
           latitudeDelta: 0.0922,
@@ -365,8 +609,45 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       }
     })();
   }, []);
+
+  // Animation state for Brooklyn pizza places
+  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
+  const animationInProgress = useRef(false);
   
-  // Function to search for pizza places within the visible map area
+  // Helper function to check if a place is within a neighborhood
+  const isPlaceInNeighborhood = (place: PlaceResult, neighborhood: NeighborhoodData): boolean => {
+    if (!place.geometry?.location?.lat || !place.geometry?.location?.lng) {
+      console.log(`Place ${place.name} missing coordinates`);
+      return false;
+    }
+
+    const point: [number, number] = [
+      place.geometry.location.lng,
+      place.geometry.location.lat
+    ];
+    
+    const isInside = neighborhood.coordinates.some(polygon => isPointInPolygon(point, polygon));
+    if (!isInside) {
+      // console.log(`Place ${place.name} is outside ${neighborhood.name}`);
+    }
+    return isInside;
+  };
+  
+  // Helper function to calculate distance between two coordinates in miles
+  const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    // Haversine formula to calculate distance between two points on Earth
+    const R = 3958.8; // Earth's radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in miles
+  };
+
+  // Function to search for pizza places within the visible area
   const searchWithinVisibleArea = async (searchRegion: Region) => {
     try { 
       console.log("searchWithinVisibleArea--------",searchRegion)
@@ -396,7 +677,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const centerLng = searchRegion.longitude;
       
       // Calculate approximate radius in meters to cover the visible area
-      // This uses the Haversine formula to get distance from center to corner
       const radiusInMeters = calculateDistanceInMiles(
         centerLat, 
         centerLng, 
@@ -407,13 +687,32 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       console.log(`Searching within visible area with radius: ${radiusInMeters.toFixed(0)} meters`);
       
       // Search for Brooklyn pizza places within the calculated radius
-      const places = await getNearbyBrooklynPizzaPlaces(
+      let places = await getNearbyBrooklynPizzaPlaces(
         centerLat, 
         centerLng, 
         radiusInMeters,
-        setAllPlaces,
-        neighborhoodFilter // Pass the neighborhood filter
+        (allPlaces) => {
+          // Filter allPlaces by neighborhood before setting them
+          const filteredAllPlaces = currentNeighborhood 
+            ? allPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+            : allPlaces;
+          setAllPlaces(filteredAllPlaces);
+        },
+        neighborhoodFilter
       );
+      
+      // Filter places by current neighborhood if one is selected
+      if (currentNeighborhood) {
+        console.log(`Filtering places for neighborhood: ${currentNeighborhood.name}`);
+        places = places.filter(place => {
+          const isInside = isPlaceInNeighborhood(place, currentNeighborhood);
+          if (!isInside) {
+            console.log(`Filtered out: ${place.name} - outside ${currentNeighborhood.name}`);
+          }
+          return isInside;
+        });
+        console.log(`Found ${places.length} places in ${currentNeighborhood.name}`);
+      }
       
       // Sort places by distance from the center of the screen
       const sortedPlaces = places.sort((a, b) => {
@@ -431,10 +730,9 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         );
         return distanceA - distanceB; // Sort from closest to farthest
       });
- 
       
-      // Limit to 80 places maximum
-      const limitedPlaces = sortedPlaces.slice(0, 80);
+      // Limit to 50 places maximum
+      const limitedPlaces = sortedPlaces.slice(0, 50);
       
       // Set all pizza places to the filtered list
       setAllPizzaPlaces(limitedPlaces);
@@ -448,10 +746,21 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const MAX_ANIMATED_PLACES = 80;
       const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
       
-      // Animate the first 80 places one by one
+      // Clear animated places first
+      setAnimatedPizzaPlaces([]);
+      
+      // Animate the first 50 places one by one, ensuring they're in the neighborhood
       for (let i = 0; i < animationLimit; i++) {
         // Skip animation if user switched to nearby mode
         if (!animationInProgress.current) break;
+        
+        const place = limitedPlaces[i];
+        
+        // Double-check that the place is still in the neighborhood
+        if (currentNeighborhood && !isPlaceInNeighborhood(place, currentNeighborhood)) {
+          console.log(`Skipping animation for ${place.name} - outside ${currentNeighborhood.name}`);
+          continue;
+        }
         
         // Add haptic feedback for each new place
         Haptics.impactAsync(
@@ -463,7 +772,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         );
         
         // Add this place to the animated places
-        setAnimatedPizzaPlaces(prev => [...prev, limitedPlaces[i]]);
+        setAnimatedPizzaPlaces(prev => [...prev, place]);
         
         // Wait a short time before showing the next place
         await new Promise(resolve => setTimeout(resolve, 2));
@@ -477,24 +786,35 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       animationInProgress.current = false;
     }
   };
-  
-  // Animation state for Brooklyn pizza places
-  const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
-  const animationInProgress = useRef(false);
-  
-  // Helper function to calculate distance between two coordinates in miles
-  const calculateDistanceInMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    // Haversine formula to calculate distance between two points on Earth
-    const R = 3958.8; // Earth's radius in miles
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c; // Distance in miles
-  };
+
+  // Function to render places on the map
+  const renderPlaces = () => {
+    // Safety check for undefined arrays
+    if (!filteredPizzaPlaces) return [];
+    
+    // If a place is selected through search, only show that place
+    if (selectedSearchPlace) {
+      return [selectedSearchPlace];
+    }
+    
+    if (sortFilter !== 'all') {
+      // For sorted views, ensure we only show places in the current neighborhood
+      return currentNeighborhood 
+        ? filteredPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+        : filteredPizzaPlaces;
+    }
+ 
+    if (isBrooklynMode && animatedPizzaPlaces) {
+      // For animated view, ensure we only show places in the current neighborhood
+      return currentNeighborhood 
+        ? animatedPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+        : animatedPizzaPlaces;
+    } 
+
+    return currentNeighborhood 
+      ? filteredPizzaPlaces.filter(place => isPlaceInNeighborhood(place, currentNeighborhood))
+      : filteredPizzaPlaces;
+  }
 
   const onRegionChange = (newRegion: Region) => {
     mapMovementOngoing.current = true;
@@ -533,6 +853,47 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     }
   };
 
+  // Update user's active status
+  const updateUserActiveStatus = async (isActive: boolean) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      const { error } = await supabase
+        .from('UserLocation')
+        .update({ is_active: isActive })
+        .eq('user_id', session.user.id);
+
+      if (error) {
+        console.error('Error updating active status:', error);
+      }
+    } catch (error) {
+      console.error('Error in updateUserActiveStatus:', error);
+    }
+  };
+
+  // Handle app state changes
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        // App came to foreground
+        updateUserActiveStatus(true);
+      } else if (nextAppState === 'background' || nextAppState === 'inactive') {
+        // App went to background or became inactive
+        updateUserActiveStatus(false);
+      }
+    });
+
+    // Set active when component mounts
+    updateUserActiveStatus(true);
+
+    // Cleanup: Set inactive when component unmounts
+    return () => {
+      subscription.remove();
+      updateUserActiveStatus(false);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
@@ -550,26 +911,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       </View>
     );
   }
-
-  const renderPlaces = () => {
-    // Safety check for undefined arrays
-    if (!filteredPizzaPlaces) return [];
-    
-    // If a place is selected through search, only show that place
-    if (selectedSearchPlace) {
-      return [selectedSearchPlace];
-    }
-    
-    if (sortFilter !== 'all') {
-      return filteredPizzaPlaces;
-    }
- 
-    if (isBrooklynMode && animatedPizzaPlaces) {
-      return animatedPizzaPlaces;
-    } 
-
-    return filteredPizzaPlaces;
-  }
+  
  
 
   return (
@@ -622,6 +964,18 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         }}
       />
       
+      {/* Search this area button */}
+      {showSearchThisArea && !isSearchingPlaces && (
+        <View style={styles.searchThisAreaContainer}>
+          {/* <TouchableOpacity 
+            style={styles.searchThisAreaButton}
+            onPress={() => searchWithinVisibleArea(region)}
+          >
+            <Text style={styles.searchThisAreaText}>Search this area</Text>
+          </TouchableOpacity> */}
+        </View>
+      )}
+      
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -635,17 +989,32 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         zoomControlEnabled={true}
       >
         {/* Render the selected neighborhood polygon with a pink fill */}
-        {selectedNeighborhood && (
+        {selectedNeighborhood && selectedNeighborhood.coordinates.map((polygon, polygonIndex) => (
           <Polygon
-            coordinates={selectedNeighborhood.coordinates.map((coord: any) => ({
+            key={`neighborhood-${polygonIndex}`}
+            coordinates={polygon.map((coord: [number, number]) => ({
               latitude: coord[1],
               longitude: coord[0],
             }))}
-            strokeColor="rgba(255, 141, 161, 1)"
-            fillColor="rgba(255, 141, 161, 0.2)"
+            fillColor="rgba(255, 192, 203, 0.5)"
+            strokeColor="pink"
             strokeWidth={2}
           />
-        )}
+        ))}
+        
+        {/* Render current neighborhood polygon with highlight */}
+        {currentNeighborhood && currentNeighborhood.coordinates.map((polygon, index) => (
+          <Polygon
+            key={`${currentNeighborhood.name}-${index}`}
+            coordinates={polygon.map(coord => ({
+              latitude: coord[1],
+              longitude: coord[0]
+            }))}
+            fillColor="rgba(255, 82, 82, 0.2)"
+            strokeColor="rgba(255, 82, 82, 0.8)"
+            strokeWidth={2}
+          />
+        ))}
         
         {/* User's current location marker */}
         {location && (
@@ -679,8 +1048,16 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               // Trigger haptic feedback when a pizza place is selected
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               
+              // Reset any existing search selection
+              setSelectedSearchPlace(null);
+              
+              // Set the selected place first
               setSelectedPlace(place);
-              setBottomSheetVisible(true);
+              
+              // Then show the bottom sheet after a small delay to ensure state is updated
+              setTimeout(() => {
+                setBottomSheetVisible(true);
+              }, 50);
             }}
           >
             <PizzaMarker 
@@ -689,6 +1066,22 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               animated={isBrooklynMode && sortFilter === 'all' && index < 100} 
               rating={place.rating || 0}
             />
+          </Marker>
+        ))}
+        
+        {/* Render nearby users */}
+        {nearbyUsers.map((user) => (
+          <Marker
+            key={user.id}
+            coordinate={{
+              latitude: user.latitude,
+              longitude: user.longitude
+            }}
+            title="Nearby Pizza Lover"
+          >
+            <View style={tw`bg-blue-500 p-2 rounded-full border-2 border-white`}>
+              <View style={tw`w-3 h-3 bg-white rounded-full`} />
+            </View>
           </Marker>
         ))}
       </MapView>
@@ -703,7 +1096,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       
       {/* Bottom sheet for pizza place details */}
       <PizzaPlaceBottomSheet 
-        place={selectedSearchPlace || selectedPlace}
+        place={selectedPlace}
         isVisible={bottomSheetVisible}
         onClose={() => {
           setBottomSheetVisible(false);

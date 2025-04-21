@@ -313,10 +313,27 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   );
 
   // If no place is selected, don't render anything
-  if (!place || !isVisible) {
+  if (!isVisible) {
     return null;
   }
- 
+
+  // Handle null place data gracefully
+  if (!place) {
+    return (
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={isVisible ? 1 : -1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose
+      >
+        <View style={tw`p-4 items-center justify-center`}>
+          <Text style={tw`text-gray-500`}>Unable to load place details</Text>
+        </View>
+      </BottomSheet>
+    );
+  }
 
   const averageRating = calculateAverageRating(reviews);
 
@@ -339,7 +356,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
                 numberOfLines={3}
                 ellipsizeMode="tail"
               >
-                {place.name}
+                {place?.name || 'Unknown Place'}
               </Text>
               <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
             </View>
@@ -350,7 +367,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
               </Text>
             </View>
           </View>
-          
+          <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text>
           
           
           {/* {place.price_level && (

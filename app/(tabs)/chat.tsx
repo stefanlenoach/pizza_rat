@@ -123,24 +123,16 @@ export default function ChatScreen() {
       setBrooklynPizzaData(brooklynPizzaData.places);
       // If placeId is provided, load specific chat group
       if (placeId) {
-        setMessages([]);
-        const { data: groups } = await supabase.from('Chats').select('*')  
-        const placeGroup = groups?.find(group => group.placeId === placeId); 
-        if (placeGroup) {
-          setChatGroups([placeGroup]);
-          openChat(placeGroup);
-          setActiveChat(placeGroup);
-          Animated.timing(slideAnim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-            easing: Easing.inOut(Easing.ease)
-          }).start();
-        } else { 
+        const { data: groups } = await supabase.from('Chats').select('*').eq('placeId', placeId);
+        if (groups && groups.length > 0) {
           const placeGroup = mockPizzaPlaces.concat(brooklynPizzaData.places).find(place => place.id === placeId); 
           setChatGroups(groups || []);
-          setActiveChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || '' });
-          openChat({ placeId, name: placeGroup?.name || placeGroup?.displayName?.text || ''  });
+          const chatGroup: ChatGroup = {
+            placeId,
+            name: placeGroup?.name || 'Pizza Place'
+          };
+          setActiveChat(chatGroup);
+          openChat(chatGroup);
         } 
       } else {
         const { data: groups } = await supabase.from('Chats').select('*').order('timestamp', { ascending: false });
@@ -152,7 +144,7 @@ export default function ChatScreen() {
       setIsLoading(false);
     }
   };
-  
+
   // Keyboard listeners
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -335,88 +327,69 @@ export default function ChatScreen() {
     </TouchableOpacity>
   };
 
-  const renderMessage = ({ item }: { item: ChatMessage }) => (
-    <View 
-      style={[
-        tw`mb-4 max-w-[80%]`, 
-        item.isCurrentUser ? tw`self-end` : tw`self-start`
-      ]}
-    >
-      <View style={[
-        tw`flex-row items-end`,
-        item.isCurrentUser ? tw`flex-row-reverse` : ''
-      ]}>
-        {!item.isCurrentUser && (
-          <>
-           {item.avatar ? (
-            <Image 
-              source={{ uri: item.avatar }} 
-              style={tw`w-8 h-8 rounded-full mr-2`}
-            />
-          ) : (
-            <View style={tw`mr-3`}>
-              <AvatarCircle 
-                name={item.sender} 
-                size={48} 
-              />
-            </View>
-          )}
-          </>
-         
-        )}
-        <View 
-          style={[
-            tw`rounded-2xl p-2.5`, 
-            item.isCurrentUser 
-              ? tw`bg-blue-500 rounded-br-none ml-auto` 
-              : tw`bg-gray-200 rounded-bl-none mr-auto`
-          ]}
-        >
-          {!item.isCurrentUser && (
-            <Label style={tw`mb-1 text-gray-700`}>
-              {item.sender}
-            </Label>
-          )}
-          <Text 
-            style={[
-              tw`text-sm`, 
-              item.isCurrentUser ? tw`text-white` : tw`text-black`
-            ]}
-          >
+  const renderMessage = ({ item }: { item: ChatMessage }) => {
+    const messageTime = moment(item.timestamp);
+    const formattedDate = messageTime.format('MM/DD/YYYY h:mm A');
+
+    return (
+      <View style={tw`mb-4`}>
+        {/* Username and timestamp row */}
+        <View style={tw`flex-row items-center mb-1`}>
+          <View style={tw`mr-2`}>
+            <AvatarCircle name={item.sender || 'User'} size={32} />
+          </View>
+          <Text style={[tw`font-semibold text-base `, { fontWeight:"bold" }]}>
+            {item.sender || 'User'}
+          </Text>
+          <Text style={tw`text-xs text-gray-400 ml-2`}>
+            {formattedDate}
+          </Text>
+        </View>
+
+        {/* Message content */}
+        <View style={tw`ml-10`}>
+          <Text style={[tw`text-base leading-relaxed`, { color: '#2E3338' }]}>
             {item.text}
           </Text>
         </View>
-        {item.isCurrentUser && (
-          <Image 
-            source={{ uri: item.avatar }} 
-            style={tw`w-8 h-8 rounded-full ml-2`}
-          />
-        )}
       </View>
-      <Text 
-        style={[
-          tw`text-xs text-gray-500 mt-1`, 
-          item.isCurrentUser ? tw`text-right` : tw`text-left ml-10`
-        ]}
-      >
-        { item.timestamp }
-      </Text>
-    </View>
-  );
+    );
+  };
 
   const AvatarCircle = ({ name, size = 40 }: { name: string; size?: number }) => {
     const initial = name?.charAt?.(0)?.toUpperCase?.();
-    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500'];
-    const colorIndex = (name?.length ?? 0) % colors.length;
-  
+    
+    // Discord's brand colors
+    const colors = ['#5865F2', '#57F287', '#FEE75C', '#EB459E', '#ED4245'];
+    
+    // Generate a consistent hash from the name
+    const hashString = (str: string) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+      }
+      return Math.abs(hash);
+    };
+
+    // Get a consistent color for this user
+    const colorIndex = name ? hashString(name) % colors.length : 0;
+    const backgroundColor = colors[colorIndex];
+    
     return (
-      <View 
-        style={[
-          tw`${colors[colorIndex]} rounded-full items-center justify-center`,
-          { width: size, height: size }
-        ]}
-      >
-        <Text style={[tw`text-white font-bold`, { fontSize: size * 0.4 }]}>
+      <View style={[
+        tw`rounded-full items-center justify-center`,
+        {
+          width: size,
+          height: size,
+          backgroundColor
+        }
+      ]}>
+        <Text style={[
+          tw`text-white font-bold`,
+          { fontSize: size * 0.4 }
+        ]}>
           {initial}
         </Text>
       </View>
@@ -453,8 +426,8 @@ export default function ChatScreen() {
           headerShown: false,
         }} 
       />
-      <SafeAreaView style={tw`flex-1 bg-white`}>
-        <StatusBar />
+      <SafeAreaView style={tw`flex-1 bg-[#FFFFFF]`}>
+        <StatusBar style="light" />
       
         {/* Chat List View */}
         {/* <Animated.View 
@@ -490,7 +463,7 @@ export default function ChatScreen() {
         {/* Chat Detail View */}
         <Animated.View 
           style={[
-            tw`absolute top-0 bottom-0 left-0 right-0 bg-white`,
+            tw`absolute top-0 bottom-0 left-0 right-0 bg-[#FFFFFF]`,
             { width: windowWidth },
             chatDetailTransform
           ]}
@@ -498,29 +471,20 @@ export default function ChatScreen() {
           {activeChat && (
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              style={[tw`flex-1`, { width: windowWidth }]}
+              style={[tw`flex-1`, { width: windowWidth, backgroundColor: '#FFFFFF' }]}
               keyboardVerticalOffset={Platform.OS === 'ios' ? (keyboardVisible ? 0 : 0) : 0}
             >
               {/* Chat Header with Safe Area */}
               <View style={[tw`flex-row items-center border-b border-gray-200 bg-white`, { paddingTop: insets.top }]}>
                 <View style={tw`flex-row items-center p-4 w-full`}>
                   <TouchableOpacity onPress={goBack} style={tw`mr-2`}>
-                    <IconSymbol name="chevron.left" size={24} color="#000" />
+                    <IconSymbol name="chevron.left" size={24} color="#000000" />
                   </TouchableOpacity>
-                  {/* {activeChat.avatar ? (
-                    <Image 
-                      source={{ uri: activeChat.avatar }} 
-                      style={tw`w-10 h-10 rounded-full mr-3`}
-                    />
-                  ) : (
-                    <View style={tw`mr-3`}>
-                      <AvatarCircle name={renderPlaceName(activeChat.placeId)} />
-                    </View>
-                  )} */}
                   <View style={tw`flex-1 items-center`}>
-                    <Subheading style={tw`text-center`}>{renderPlaceName(activeChat.placeId)}</Subheading> 
+                    <Subheading style={[tw`text-center`, { color: '#000000' }]}>
+                      {renderPlaceName(activeChat.placeId)}
+                    </Subheading> 
                   </View>
-                   
                 </View>
               </View>
             
@@ -547,6 +511,7 @@ export default function ChatScreen() {
                     keyExtractor={item => item.id}
                     contentContainerStyle={tw`p-4`}
                     onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
+                    style={{ backgroundColor: '#FFFFFF' }}
                   />
                 </TouchableWithoutFeedback>
               )}
@@ -555,8 +520,16 @@ export default function ChatScreen() {
               <View style={tw`flex-row items-center p-2 border-t border-gray-200 bg-white ${keyboardVisible? '' : 'mb-6'}`}> 
                 <TextInput
                   ref={inputRef}
-                  style={[tw`flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2 text-sm`, { fontFamily: 'Aujournuit' }]}
+                  style={[
+                    tw`flex-1 rounded-full px-4 py-2 mr-2 text-sm`,
+                    { 
+                      fontFamily: 'Aujournuit',
+                      backgroundColor: '#F2F3F5',
+                      color: '#2E3338'
+                    }
+                  ]}
                   placeholder="Message"
+                  placeholderTextColor="#72767D"
                   value={inputText}
                   onChangeText={handleTextChange}
                   multiline
@@ -566,7 +539,10 @@ export default function ChatScreen() {
                   blurOnSubmit={false}
                 />
                 <TouchableOpacity 
-                  style={[tw`p-2 rounded-full`, inputText.trim() === '' ? tw`bg-blue-300` : tw`bg-blue-500`]}
+                  style={[
+                    tw`p-2 rounded-full`,
+                    inputText.trim() === '' ? { backgroundColor: '#E3E5E8' } : { backgroundColor: '#5865F2' }
+                  ]}
                   onPress={handleSendMessage}
                   disabled={inputText.trim() === '' || isSending}
                 >
