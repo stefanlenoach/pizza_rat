@@ -129,6 +129,113 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [userReviewedPlaces, setUserReviewedPlaces] = useState<Set<string>>(new Set());
   const initialLoadDone = useRef(false);
 
+  // State for other users in the neighborhood
+  const [nearbyUsers, setNearbyUsers] = useState<Array<{
+    id: string;
+    latitude: number;
+    longitude: number;
+    last_updated: string;
+  }>>([]);
+
+  // Update user's location in Supabase
+  const updateUserLocation = async (lat: number, lng: number, neighborhood: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      const { error } = await supabase
+        .from('UserLocation')
+        .upsert({
+          user_id: session.user.id,
+          neighborhood,
+          latitude: lat,
+          longitude: lng,
+          is_active: true,
+          last_updated: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        });
+
+      if (error) {
+        console.error('Error updating location:', error);
+      }
+    } catch (error) {
+      console.error('Error in updateUserLocation:', error);
+    }
+  };
+
+  // Fetch nearby users in the same neighborhood
+  const fetchNearbyUsers = async (neighborhood: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+
+      // First get the neighborhood data
+      const selectedNeighborhood = neighborhoods.find(n => n.name === neighborhood);
+      if (!selectedNeighborhood) {
+        console.log('Neighborhood not found:', neighborhood);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('UserLocation')
+        .select('id, latitude, longitude, last_updated')
+        .eq('neighborhood', neighborhood)
+        .eq('is_active', true)
+        .neq('user_id', session.user.id)
+        // Only show users who have updated their location in the last 5 minutes
+        .gt('last_updated', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+
+      if (error) {
+        console.error('Error fetching nearby users:', error);
+        return;
+      }
+
+      console.log("data",data)
+
+      // Filter users to ensure they are within the neighborhood boundaries
+      const filteredUsers = (data || []).filter(user => {
+        const userPlace: PlaceResult = {
+          id: user.id,
+          place_id: user.id,
+          name: 'Nearby User',
+          vicinity: neighborhood,
+          geometry: {
+            location: {
+              lat: user.latitude,
+              lng: user.longitude
+            }
+          }
+        };
+        return isPlaceInNeighborhood(userPlace, selectedNeighborhood);
+      });
+
+      console.log("filteredUsers",filteredUsers)
+
+      setNearbyUsers(filteredUsers);
+    } catch (error) {
+      console.error('Error in fetchNearbyUsers:', error);
+    }
+  };
+
+  // Update location when neighborhood changes
+  useEffect(() => {
+    if (location && currentNeighborhood) {
+      updateUserLocation(
+        location.coords.latitude,
+        location.coords.longitude,
+        currentNeighborhood.name
+      );
+      
+      // Start polling for nearby users
+      const interval = setInterval(() => {
+        fetchNearbyUsers(currentNeighborhood.name);
+      }, 10000); // Poll every 10 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [location?.coords, currentNeighborhood]); 
+
   // Load user's reviewed places
   useEffect(() => {
     const loadUserReviews = async () => {
@@ -703,6 +810,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   
   // console.log("animatedPizzaPlaces",animatedPizzaPlaces.length)
   // console.log("filteredPizzaPlaces",filteredPizzaPlaces.length)
+  console.log('nearbyUsers',nearbyUsers)
 
   return (
     <View style={styles.container}> 
@@ -855,6 +963,22 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               animated={isBrooklynMode && sortFilter === 'all' && index < 100} 
               rating={place.rating || 0}
             />
+          </Marker>
+        ))}
+        
+        {/* Render nearby users */}
+        {nearbyUsers.map((user) => (
+          <Marker
+            key={user.id}
+            coordinate={{
+              latitude: user.latitude,
+              longitude: user.longitude
+            }}
+            title="Nearby Pizza Lover"
+          >
+            <View style={tw`bg-blue-500 p-2 rounded-full border-2 border-white`}>
+              <View style={tw`w-3 h-3 bg-white rounded-full`} />
+            </View>
           </Marker>
         ))}
       </MapView>
