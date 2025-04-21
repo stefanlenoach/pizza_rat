@@ -18,8 +18,15 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    Zodiak: require('../assets/fonts/Zodiak-Variable.ttf'),         // default
-    'Zodiak-Italic': require('../assets/fonts/Zodiak-VariableItalic.ttf'),         // italic
+    'Zodiak': require('../assets/fonts/Zodiak-Bold.otf'),         // default
+    'Zodiak-200': require('../assets/fonts/Zodiak-Thin.otf'),         // Thin
+    'Zodiak-300': require('../assets/fonts/Zodiak-Light.otf'),         // Light
+    'Zodiak-400': require('../assets/fonts/Zodiak-Bold.otf'),         // Regular
+    'Zodiak-500': require('../assets/fonts/Zodiak-Bold.otf'),         // Bold
+    'Zodiak-600': require('../assets/fonts/Zodiak-Extrabold.otf'),         // Extrabold
+    'Zodiak-700': require('../assets/fonts/Zodiak-Black.otf'),         // Black
+    'Zodiak-800': require('../assets/fonts/Zodiak-Black.otf'),
+    'Zodiak-900': require('../assets/fonts/Zodiak-Black.otf'),
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ClashDisplay: require('../assets/fonts/ClashDisplay-Variable.ttf'),
   });

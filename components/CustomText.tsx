@@ -17,6 +17,7 @@ export const Text: React.FC<TextProps> = ({ style, children, ...props }) => {
 const styles = StyleSheet.create({
   text: {
     fontFamily: 'Zodiak',
+    fontWeight: 500,
   },
 });
 
