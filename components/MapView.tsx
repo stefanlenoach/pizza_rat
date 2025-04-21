@@ -475,7 +475,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     
     const isInside = neighborhood.coordinates.some(polygon => isPointInPolygon(point, polygon));
     if (!isInside) {
-      console.log(`Place ${place.name} is outside ${neighborhood.name}`);
+      // console.log(`Place ${place.name} is outside ${neighborhood.name}`);
     }
     return isInside;
   };
@@ -701,8 +701,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     );
   }
   
-  console.log("animatedPizzaPlaces",animatedPizzaPlaces.length)
-  console.log("filteredPizzaPlaces",filteredPizzaPlaces.length)
+  // console.log("animatedPizzaPlaces",animatedPizzaPlaces.length)
+  // console.log("filteredPizzaPlaces",filteredPizzaPlaces.length)
 
   return (
     <View style={styles.container}> 
@@ -837,8 +837,16 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               // Trigger haptic feedback when a pizza place is selected
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               
+              // Reset any existing search selection
+              setSelectedSearchPlace(null);
+              
+              // Set the selected place first
               setSelectedPlace(place);
-              setBottomSheetVisible(true);
+              
+              // Then show the bottom sheet after a small delay to ensure state is updated
+              setTimeout(() => {
+                setBottomSheetVisible(true);
+              }, 50);
             }}
           >
             <PizzaMarker 
@@ -861,7 +869,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       
       {/* Bottom sheet for pizza place details */}
       <PizzaPlaceBottomSheet 
-        place={selectedSearchPlace || selectedPlace}
+        place={selectedPlace}
         isVisible={bottomSheetVisible}
         onClose={() => {
           setBottomSheetVisible(false);
