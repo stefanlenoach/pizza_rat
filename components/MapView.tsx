@@ -982,7 +982,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         style={styles.map}
         initialRegion={region}
         onRegionChange={onRegionChange}
-        onRegionChangeComplete={onRegionChangeComplete}
+        // onRegionChangeComplete={onRegionChangeComplete}
         zoomEnabled={true}
         scrollEnabled={true}
         rotateEnabled={true}
