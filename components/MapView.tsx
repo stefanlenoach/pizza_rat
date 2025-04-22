@@ -106,6 +106,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
   const { placeReviews, searchModalVisible, setSearchModalVisible,filterVisible,setFilterVisible } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
+  const { session } = useUser()
   
   // Add state for neighborhood data
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
@@ -137,6 +138,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     latitude: number;
     longitude: number;
     last_updated: string;
+    user_id: string;
   }>>([]);
 
   // Update user's location in Supabase
@@ -181,12 +183,12 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
 
       const { data, error } = await supabase
         .from('UserLocation')
-        .select('id, latitude, longitude, last_updated')
+        .select('*')
         .eq('neighborhood', neighborhood)
         .eq('is_active', true)
-        .neq('user_id', session.user.id)
+        // .neq('user_id', session.user.id)
         // Only show users who have updated their location in the last 5 minutes
-        .gt('last_updated', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+        // .gt('last_updated', new Date(Date.now() - 5 * 60 * 1000).toISOString());
 
       if (error) {
         console.error('Error fetching nearby users:', error);
@@ -911,8 +913,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       </View>
     );
   }
-  
- 
+   
 
   return (
     <View style={styles.container}> 
@@ -1077,9 +1078,9 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               latitude: user.latitude,
               longitude: user.longitude
             }}
-            title="Nearby Pizza Lover"
+            title={user.user_id === session?.user?.id?"You":"Nearby Pizza Lover"}
           >
-            <View style={tw`bg-blue-500 p-2 rounded-full border-2 border-white`}>
+            <View style={tw`${user.user_id === session?.user?.id? 'bg-red-500' : 'bg-blue-500'} p-2 rounded-full border-2 border-white`}>
               <View style={tw`w-3 h-3 bg-white rounded-full`} />
             </View>
           </Marker>
