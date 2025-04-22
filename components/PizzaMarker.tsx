@@ -15,6 +15,7 @@ import {
   Pizza9,
   Pizza10,
 } from '@/components/PizzaMarkerIcons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface PizzaMarkerProps {
   size?: number;
@@ -29,7 +30,7 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   color = '#FF6B6B',
   backgroundColor = '#222',
   animated = false,
-  rating,
+  rating = null,
 }) => {
   // Animation values
   const scaleAnim = useRef(new Animated.Value(0)).current;
@@ -62,31 +63,25 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   const renderImageBasedOnRating = (rating: number) => {
     const actualSize = size * 0.7;
 
-    if (!rating) {
-      return (
-        <SvgXml 
-          xml={svgContent}
-          width={actualSize} 
-          height={actualSize}
-        />
-      );
+    if (!rating && rating !== 0) {
+      return <Ionicons name="help-outline" size={actualSize} color="#fff" />;
     }
     
     let roundedRating = Math.round(rating);
     
     // Define the path to each asset
     const pizzaImagePaths = {
-      0: Pizza0,
+      0: Pizza1,
       1: Pizza1,
-      2: Pizza2,
+      2: Pizza1,
       3: Pizza3,
-      4: Pizza4,
-      5: Pizza5,
-      6: Pizza6,
-      7: Pizza7,
-      8: Pizza8,
-      9: Pizza9,
-      10: Pizza10,
+      4: Pizza3,
+      5: Pizza4,
+      6: Pizza4,
+      7: Pizza9,
+      8: Pizza9,
+      9: Pizza7,
+      10: Pizza7,
     } as any;
     
     const source = pizzaImagePaths[roundedRating] || pizzaImagePaths[0];
@@ -122,7 +117,7 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
           }
         ]}
       >
-        {renderImageBasedOnRating(rating ?? 0)}
+        {renderImageBasedOnRating(rating || null as any)}
       </Animated.View>
     </View>
   );
