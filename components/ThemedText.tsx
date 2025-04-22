@@ -37,29 +37,29 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '600',
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     lineHeight: 32,
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
   subtitle: {
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
     fontSize: 20,
     fontWeight: 'bold',
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
     color: '#0a7ea4',
   },
 });

@@ -84,8 +84,6 @@ const BOROUGH_REGIONS = {
   }
 };
 
-// We're using userInterfaceStyle="dark" instead of custom styling
-
 interface PizzaMapViewProps {
   sortFilter: string;
   locationFilter: string;
@@ -125,6 +123,10 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
   const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
+  
+  // For debouncing map movements
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const mapMovementOngoing = useRef(false);
 
   const [userReviewedPlaces, setUserReviewedPlaces] = useState<Set<string>>(new Set());
   const initialLoadDone = useRef(false);
@@ -478,9 +480,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       // Only update the search area without moving the map
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
       setTimeout(() => {
-        searchWithinVisibleArea(newRegion);
+        // searchWithinVisibleArea(newRegion); // This is removed since searching the area comes when onRegionChangeComplete is triggered
         setLastSearchRegion(newRegion);
-        setShowSearchThisArea(false);
         mapRef.current?.animateToRegion(newRegion, 1000);
       }, 500);
     }
@@ -596,7 +597,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         // Search for places in the visible area
         setTimeout(() => searchWithinVisibleArea(newRegion), 500);
         setLastSearchRegion(newRegion);
-        setShowSearchThisArea(false);
         setLastKnownRegion(newRegion);
         
       } catch (error) {
@@ -737,14 +737,13 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       // Set all pizza places to the filtered list
       setAllPizzaPlaces(limitedPlaces);
       setLastSearchRegion(searchRegion);
-      setShowSearchThisArea(false);
       
       console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within visible area (sorted by distance from center)`);
       
       // Start the animation sequence
       animationInProgress.current = true;
       
-      const MAX_ANIMATED_PLACES = 50;
+      const MAX_ANIMATED_PLACES = 80;
       const animationLimit = Math.min(MAX_ANIMATED_PLACES, limitedPlaces.length);
       
       // Clear animated places first
@@ -818,20 +817,38 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   }
 
   const onRegionChange = (newRegion: Region) => {
+    mapMovementOngoing.current = true;
     setRegion(newRegion);
     setLastKnownRegion(newRegion);
+  };
+
+  // When map movement completes, check if we should trigger a new search
+  const onRegionChangeComplete = (newRegion: Region) => {
+    mapMovementOngoing.current = false;
     
-    // If the map has moved significantly from the last search position, show the "Search this area" button
+    // Only trigger a search if the map has moved significantly from the last search position
     if (lastSearchRegion) {
       const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
       const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
       const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
       
-      // Show button if the map has moved more than 25% of the visible area
-      if (latChange > lastSearchRegion.latitudeDelta * 0.25 || 
-          lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
-          deltaChange > lastSearchRegion.latitudeDelta * 0.25) {
-        setShowSearchThisArea(true);
+      const shouldSearch = latChange > lastSearchRegion.latitudeDelta * 0.25 || 
+                           lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
+                           deltaChange > lastSearchRegion.latitudeDelta * 0.25;
+      
+      if (shouldSearch && !isSearchingPlaces) {
+        // Clear any existing timeout
+        if (searchTimeoutRef.current) {
+          clearTimeout(searchTimeoutRef.current);
+        }
+        
+        // Set a short delay before searching to prevent multiple rapid searches
+        searchTimeoutRef.current = setTimeout(() => {
+          // Only search if no further movement is detected
+          if (!mapMovementOngoing.current && !isSearchingPlaces) {
+            searchWithinVisibleArea(newRegion);
+          }
+        }, 400); // 400ms delay gives a good balance between responsiveness and avoiding too many searches
       }
     }
   };
@@ -963,7 +980,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         ref={mapRef}
         style={styles.map}
         initialRegion={region}
-        onRegionChangeComplete={onRegionChange}
+        onRegionChange={onRegionChange}
+        onRegionChangeComplete={onRegionChangeComplete}
         zoomEnabled={true}
         scrollEnabled={true}
         rotateEnabled={true}
@@ -1067,7 +1085,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           </Marker>
         ))}
       </MapView>
-      
+
       {/* Loading indicator when searching for places */}
       {isSearchingPlaces && (
         <View style={tw`absolute bottom-6 right-6 bg-white p-3 rounded-full shadow-lg flex-row items-center`}>
@@ -1130,27 +1148,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.45,
     shadowRadius: 3.84,
-  },
-  searchThisAreaContainer: {
-    position: 'absolute',
-    top: 200,
-    alignSelf: 'center',
-    zIndex: 5,
-  },
-  searchThisAreaButton: {
-    backgroundColor: '#111',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.45,
-    shadowRadius: 3.84,
-  },
-  searchThisAreaText: {
-    color: '#FF5A5F',
-    // fontWeight: 'bold',
-    fontSize: 14,
   },
 });

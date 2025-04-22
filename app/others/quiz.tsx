@@ -4,7 +4,6 @@ import { Text } from '@/components/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack } from 'expo-router';
 import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -159,8 +158,6 @@ export default function QuizScreen() {
   if (hasPassedQuiz) {
     return (
       <SafeAreaView style={styles.container}>
-        <Stack.Screen options={{ title: 'Quiz', headerShown: false }} />
-        
         {/* Back Button */}
         <TouchableOpacity
           onPress={() => router.back()}
@@ -190,8 +187,6 @@ export default function QuizScreen() {
   
   return (
     <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: 'Quiz', headerShown: false }} />
-      
       {/* Back Button */}
       <TouchableOpacity
         onPress={() => router.back()}

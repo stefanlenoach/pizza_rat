@@ -2,19 +2,19 @@
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    // Override the entire theme's fontFamily to use Aujournuit by default
+    // Override the entire theme's fontFamily to use Zodiak by default
     fontFamily: {
-      sans: ['Aujournuit'],
-      serif: ['Aujournuit'],
+      sans: ['Zodiak'],
+      serif: ['Zodiak'],
       mono: ['SpaceMono'],
       // Add a base key to ensure it's applied everywhere
-      base: ['Aujournuit'],
+      base: ['Zodiak'],
     },
     extend: {
       // Additional font configurations
       fontFamily: {
-        // Ensure all text uses Aujournuit by default
-        DEFAULT: ['Aujournuit'],
+        // Ensure all text uses Zodiak by default
+        DEFAULT: ['Zodiak'],
       },
     },
   },
