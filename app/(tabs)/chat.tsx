@@ -123,8 +123,7 @@ export default function ChatScreen() {
       setBrooklynPizzaData(brooklynPizzaData.places);
       // If placeId is provided, load specific chat group
       if (placeId) {
-        const { data: groups } = await supabase.from('Chats').select('*').eq('placeId', placeId);
-        if (groups && groups.length > 0) {
+        const { data: groups } = await supabase.from('Chats').select('*').eq('placeId', placeId); 
           const placeGroup = mockPizzaPlaces.concat(brooklynPizzaData.places).find(place => place.id === placeId); 
           setChatGroups(groups || []);
           const chatGroup: ChatGroup = {
@@ -132,8 +131,7 @@ export default function ChatScreen() {
             name: placeGroup?.name || 'Pizza Place'
           };
           setActiveChat(chatGroup);
-          openChat(chatGroup);
-        } 
+          openChat(chatGroup); 
       } else {
         const { data: groups } = await supabase.from('Chats').select('*').order('timestamp', { ascending: false });
         setChatGroups(groups || []);
