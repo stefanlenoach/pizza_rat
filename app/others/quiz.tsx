@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 
 // Sample quiz data - replace with your actual music samples and answers
 const quizQuestions = [
@@ -160,7 +161,7 @@ export default function QuizScreen() {
       <SafeAreaView style={styles.container}>
         {/* Back Button */}
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back()}}
           style={styles.backButton}
         >
           <Ionicons name="chevron-back" size={24} color="#333" />
@@ -189,7 +190,7 @@ export default function QuizScreen() {
     <SafeAreaView style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity
-        onPress={() => router.back()}
+        onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back()}}
         style={styles.backButton}
       >
         <Ionicons name="chevron-back" size={24} color="#333" />
