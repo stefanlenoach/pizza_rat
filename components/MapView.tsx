@@ -985,7 +985,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         // onRegionChangeComplete={onRegionChangeComplete}
         zoomEnabled={true}
         scrollEnabled={true}
-        rotateEnabled={true}
+        rotateEnabled={false}
         pitchEnabled={true}
         zoomControlEnabled={true}
       >
