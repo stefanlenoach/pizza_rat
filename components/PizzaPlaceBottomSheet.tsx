@@ -241,7 +241,9 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   // Calculate average rating from fetched reviews
   const calculateAverageRating = (reviews: any[]) => {
     if (!reviews || reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc, review) => acc + review.rate, 0);
+    const sum = reviews.reduce((acc, review) => acc + (review.rate * 2), 0);
+ 
+
     return Number((sum / reviews.length).toFixed(1)); // Round to 1 decimal place
   };
 
