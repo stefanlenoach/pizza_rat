@@ -363,7 +363,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
               >
                 {place?.name || 'Unknown Place'}
               </Text>
-              <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
+              <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text>
             </View>
             <View style={tw`flex items-start shrink-0 ml-4`}>
               <Text style={tw`text-5xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
@@ -372,7 +372,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
               </Text>
             </View>
           </View>
-          <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text>
+          {/* <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text> */}
           
           
           {/* {place.price_level && (
