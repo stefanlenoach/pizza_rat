@@ -303,7 +303,10 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   const renderReviewButton = () => (
     <TouchableOpacity 
       style={tw`bg-red-600 py-3 px-6 rounded-xl flex-1`}
-      onPress={() => setReviewSheetVisible(true)}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        setReviewSheetVisible(true)
+      }}
     >
       <View style={tw`flex-row items-center justify-center`}>
         <AntDesign name={userReview ? "edit" : "star"} size={20} color="#FFFFFF" style={tw`mr-2`} />

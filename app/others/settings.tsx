@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -13,22 +14,22 @@ export default function SettingsScreen() {
     {
       title: 'Account',
       icon: 'person-outline' as const,
-      onPress: () => router.push('/account')
+      onPress: () => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.push('/account')}
     },
     {
       title: 'Quiz',
       icon: 'document-text-outline' as const,
-      onPress: () => router.push('/others/quiz')
+      onPress: () => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.push('/others/quiz')}
     },
     {
       title: 'Trading Card Preview',
       icon: 'card-outline' as const,
-      onPress: () => router.push('/others/trading-card-preview')
+      onPress: () => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.push('/others/trading-card-preview')}
     },
     {
       title: 'Send feedback',
       icon: 'mail-outline' as const,
-      onPress: () => Linking.openURL('mailto:feedback@pizzarat.com?subject=Pizza Rat Feedback')
+      onPress: () => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Linking.openURL('mailto:feedback@pizzarat.com?subject=Pizza Rat Feedback')}
     },
     {
       title: 'Rate our app',
@@ -60,7 +61,7 @@ export default function SettingsScreen() {
         >
           {/* Back Button */}
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back()}}
             style={{
               padding: 16,
               flexDirection: 'row',

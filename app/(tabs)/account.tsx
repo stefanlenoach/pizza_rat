@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '@/lib/supabase';
 import { deleteUserData } from '../../services/user';
 import { Stack } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 export default function AccountScreen() {
   const { user, userDetails, signOut } = useUser();
@@ -106,7 +107,7 @@ export default function AccountScreen() {
         >
           {/* Back Button */}
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back()}}
             style={{
               padding: 16,
               flexDirection: 'row',
