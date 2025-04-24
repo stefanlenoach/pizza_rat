@@ -8,11 +8,13 @@ import * as Haptics from 'expo-haptics';
 interface PokemonCardProps {
   card?: TradingCard;
   onAddToBelt?: (card: TradingCard) => void;
+  isSelected?: boolean;
 }
 
 export default function PokemonCard({ 
   card,
-  onAddToBelt 
+  onAddToBelt,
+  isSelected = false
 }: PokemonCardProps) {
   // Use default card data if none provided
   const defaultCard: TradingCard = {
@@ -85,11 +87,11 @@ export default function PokemonCard({
   // --- Simplified Holographic Effects --- React Native limitations
 
   const cardBorderStyle = {
-    borderColor: isInBelt ? '#10b981' : 'purple', // Green border when in belt
-    borderWidth: isInBelt ? 3 : 2,
+    borderColor: isSelected ? '#10b981' : isInBelt ? '#10b981' : 'purple', // Green border when selected or in belt
+    borderWidth: isSelected ? 4 : isInBelt ? 3 : 2,
     ...Platform.select({
       ios: {
-        shadowColor: isInBelt ? '#10b981' : '#f0f',
+        shadowColor: isSelected ? '#10b981' : isInBelt ? '#10b981' : '#f0f',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         shadowRadius: 15,

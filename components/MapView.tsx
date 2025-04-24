@@ -913,6 +913,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       </View>
     );
   }
+
+  console.log('nearbyUsers',nearbyUsers)
    
 
   return (

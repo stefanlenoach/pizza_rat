@@ -21,10 +21,14 @@ export interface TradingCard {
 
 interface CardBeltContextType {
   beltCards: TradingCard[];
+  selectedCards: TradingCard[];
   addCardToBelt: (card: TradingCard) => void;
   removeCardFromBelt: (cardId: string) => void;
   isCardInBelt: (cardId: string) => boolean;
   maxBeltSize: number;
+  toggleCardSelection: (card: TradingCard) => void;
+  clearSelectedCards: () => void;
+  isCardSelected: (cardId: string) => boolean;
 }
 
 const CardBeltContext = createContext<CardBeltContextType | undefined>(undefined);
@@ -39,6 +43,7 @@ export const CardBeltProvider = ({
   maxBeltSize = 3 
 }: CardBeltProviderProps) => {
   const [beltCards, setBeltCards] = useState<TradingCard[]>([]);
+  const [selectedCards, setSelectedCards] = useState<TradingCard[]>([]);
 
   const addCardToBelt = (card: TradingCard) => {
     if (beltCards.length < maxBeltSize && !isCardInBelt(card.id)) {
@@ -54,13 +59,36 @@ export const CardBeltProvider = ({
     return beltCards.some(card => card.id === cardId);
   };
 
+  const toggleCardSelection = (card: TradingCard) => {
+    setSelectedCards(prev => {
+      const isSelected = prev.some(c => c.id === card.id);
+      if (isSelected) {
+        return prev.filter(c => c.id !== card.id);
+      } else {
+        return [...prev, card];
+      }
+    });
+  };
+
+  const clearSelectedCards = () => {
+    setSelectedCards([]);
+  };
+
+  const isCardSelected = (cardId: string) => {
+    return selectedCards.some(card => card.id === cardId);
+  };
+
   return (
     <CardBeltContext.Provider value={{ 
       beltCards, 
+      selectedCards,
       addCardToBelt, 
       removeCardFromBelt, 
       isCardInBelt,
-      maxBeltSize 
+      maxBeltSize,
+      toggleCardSelection,
+      clearSelectedCards,
+      isCardSelected
     }}>
       {children}
     </CardBeltContext.Provider>

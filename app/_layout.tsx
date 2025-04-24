@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FontProvider } from '@/components/FontProvider';
 import { UserProvider } from '../contexts/UserContext';
+import { CardBeltProvider } from '../contexts/CardBeltContext';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import '../global.css';
@@ -46,51 +47,53 @@ export default function RootLayout() {
       <BottomSheetModalProvider>
       <FontProvider>
         <UserProvider>
-          <ProtectedRoute>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen 
-                  name="account" 
-                  options={{ 
-                    headerShown: false,
-                    presentation: 'modal',
-                    animation: 'slide_from_bottom'
-                  }} 
-                />
-                <Stack.Screen 
-                  name="login" 
-                  options={{ 
-                    headerShown: false,
-                    presentation: 'modal'
-                  }} 
-                />
-                <Stack.Screen 
-                  name="signup" 
-                  options={{ 
-                    headerShown: false,
-                    presentation: 'modal'
-                  }} 
-                />
-                <Stack.Screen name="+not-found" />
-                <Stack.Screen 
-                  name="others/quiz" 
-                  options={{ 
-                    headerShown: false,
-                    animation: 'slide_from_right'
-                  }} 
-                />
-                <Stack.Screen 
-                  name="others/trading-card-preview" 
-                  options={{ 
-                    headerShown: false,
-                    animation: 'slide_from_right'
-                  }} 
-                />
-              </Stack>
-              <StatusBar style="auto" />
-            </ThemeProvider>
-          </ProtectedRoute>
+          <CardBeltProvider>
+            <ProtectedRoute>
+              <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen 
+                    name="account" 
+                    options={{ 
+                      headerShown: false,
+                      presentation: 'modal',
+                      animation: 'slide_from_bottom'
+                    }} 
+                  />
+                  <Stack.Screen 
+                    name="login" 
+                    options={{ 
+                      headerShown: false,
+                      presentation: 'modal'
+                    }} 
+                  />
+                  <Stack.Screen 
+                    name="signup" 
+                    options={{ 
+                      headerShown: false,
+                      presentation: 'modal'
+                    }} 
+                  />
+                  <Stack.Screen name="+not-found" />
+                  <Stack.Screen 
+                    name="others/quiz" 
+                    options={{ 
+                      headerShown: false,
+                      animation: 'slide_from_right'
+                    }} 
+                  />
+                  <Stack.Screen 
+                    name="others/trading-card-preview" 
+                    options={{ 
+                      headerShown: false,
+                      animation: 'slide_from_right'
+                    }} 
+                  />
+                </Stack>
+                <StatusBar style="auto" />
+              </ThemeProvider>
+            </ProtectedRoute>
+          </CardBeltProvider>
         </UserProvider>
       </FontProvider>
       </BottomSheetModalProvider>
