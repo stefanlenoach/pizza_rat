@@ -11,6 +11,7 @@ import PizzaMarker from './PizzaMarker';
 import PizzaPlaceBottomSheet from './PizzaPlaceBottomSheet';
 import SearchModal from './SearchModal';
 import FilterBottomSheet from './FilterBottomSheet';
+import UserBottomSheet from './UserBottomSheet';
 import { 
   getAllBrooklynPizzaPlaces, 
   getNearbyBrooklynPizzaPlaces, 
@@ -103,6 +104,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [selectedSearchPlace, setSelectedSearchPlace] = useState<PlaceResult | null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [userBottomSheetVisible, setUserBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false); 
   const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
   const { placeReviews, searchModalVisible, setSearchModalVisible,filterVisible,setFilterVisible } = useUser();
@@ -111,6 +114,9 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const { selectedCards } = useCardBelt();
   const hasNYCAccessCard =  selectedCards.some(card => card.id === 'nyc-access-001');
   
+  const hasChatCard =  selectedCards.some(card => card.id === 'direct-msg-003');
+  
+
   // Add state for neighborhood data
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodData | null>(null);
@@ -906,6 +912,15 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     };
   }, []);
 
+  const handleUserMarkerPress = (user: any) => { 
+    if (user.user_id === session?.user.id) return;
+    if(!hasChatCard){ return  }
+    
+    // Don't show bottom sheet for own marker
+    setSelectedUser(user);
+    setUserBottomSheetVisible(true);
+  };
+
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
@@ -1092,6 +1107,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               longitude: user.longitude
             }}
             title={user.user_id === session?.user?.id?"You":"Nearby Pizza Lover"}
+            onPress={() => handleUserMarkerPress(user)}
           >
             <View style={tw`${user.user_id === session?.user?.id? 'bg-red-500' : 'bg-blue-500'} p-2 rounded-full border-2 border-white`}>
               <View style={tw`w-3 h-3 bg-white rounded-full`} />
@@ -1117,6 +1133,17 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           setSelectedPlace(null);
           refreshUserReviews(); // Refresh user reviews when bottom sheet closes
         }}
+      />
+
+    { console.log("userBottomSheetVisible",userBottomSheetVisible)}
+      {/* User Bottom Sheet */}
+      <UserBottomSheet
+        isVisible={userBottomSheetVisible}
+        onClose={() => {
+          setUserBottomSheetVisible(false);
+          setSelectedUser(null);
+        }}
+        userId={selectedUser?.id || ''} 
       />
 
       {/* Filter sheet */}
