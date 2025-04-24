@@ -80,6 +80,13 @@ export default function RootLayout() {
                     animation: 'slide_from_right'
                   }} 
                 />
+                <Stack.Screen 
+                  name="others/trading-card-preview" 
+                  options={{ 
+                    headerShown: false,
+                    animation: 'slide_from_right'
+                  }} 
+                />
               </Stack>
               <StatusBar style="auto" />
             </ThemeProvider>

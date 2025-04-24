@@ -1,7 +1,48 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Platform } from 'react-native';
+import { View, StyleSheet, Animated, Platform } from 'react-native';
+import { TouchableOpacity } from '@/components/CustomTouchableOpacity';
+import { Text } from '@/components/CustomText';
+import { useCardBelt, TradingCard, CardAbility } from '@/contexts/CardBeltContext';
+import * as Haptics from 'expo-haptics';
 
-export default function PokemonCard() {
+interface PokemonCardProps {
+  card?: TradingCard;
+  onAddToBelt?: (card: TradingCard) => void;
+}
+
+export default function PokemonCard({ 
+  card,
+  onAddToBelt 
+}: PokemonCardProps) {
+  // Use default card data if none provided
+  const defaultCard: TradingCard = {
+    id: 'sparkitty-042',
+    name: 'Sparkitty',
+    abilities: [
+      {
+        name: 'Stunning Static',
+        description: 'Stun an opponent\'s card for 2 turns',
+        isActive: false
+      },
+      {
+        name: 'Water Weakness',
+        description: 'Deals double damage against Water-type cards',
+        isActive: false
+      }
+    ],
+    attack: 70,
+    defense: 40,
+    rarity: 'Uncommon',
+    collectorNumber: '042',
+    flavorText: 'The static electricity in its fur can light up a small town for days.'
+  };
+
+  const cardData = card || defaultCard;
+  
+  // Belt integration
+  const { isCardInBelt, addCardToBelt, beltCards, maxBeltSize } = useCardBelt();
+  const isInBelt = isCardInBelt(cardData.id);
+
   // Use Animated.Value for animations
   const rotation = useRef(new Animated.Value(0)).current;
   const borderPhase = useRef(new Animated.Value(0)).current;
@@ -44,11 +85,11 @@ export default function PokemonCard() {
   // --- Simplified Holographic Effects --- React Native limitations
 
   const cardBorderStyle = {
-    borderColor: 'purple',
-    borderWidth: 2,
+    borderColor: isInBelt ? '#10b981' : 'purple', // Green border when in belt
+    borderWidth: isInBelt ? 3 : 2,
     ...Platform.select({
       ios: {
-        shadowColor: '#f0f',
+        shadowColor: isInBelt ? '#10b981' : '#f0f',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         shadowRadius: 15,
@@ -74,7 +115,7 @@ export default function PokemonCard() {
     }),
   };
 
-    const imageContainerStyle = {
+  const imageContainerStyle = {
     backgroundColor: '#dbeafe', // Fallback solid color
      ...Platform.select({
       ios: {
@@ -110,83 +151,103 @@ export default function PokemonCard() {
       outputRange: [1, 0.7, 1, 0.7, 1] // Simple pulse
   });
 
+  const handleAddToBelt = () => {
+    if (!isInBelt && beltCards.length < maxBeltSize) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      addCardToBelt(cardData);
+      if (onAddToBelt) {
+        onAddToBelt(cardData);
+      }
+    }
+  };
 
   return (
-    // Use Animated.View and apply RN styles
-    <Animated.View
-      style={[styles.cardBase, cardBorderStyle]} // Apply RN shadow/border styles
-    >
-      {/* Simplified Card Border/Background */}
-      <View style={styles.cardBorder}>
-        {/* Placeholder for border shine - animated opacity */}
-         <Animated.View
-          style={[
+    <View>
+      {/* Use Animated.View and apply RN styles */}
+      <Animated.View
+        style={[styles.cardBase, cardBorderStyle]} // Apply RN shadow/border styles
+      >
+        {/* Simplified Card Border/Background */}
+        <View style={styles.cardBorder}>
+          {/* Placeholder for border shine - animated opacity */}
+          <Animated.View
+            style={[
               styles.borderShineBase,
               {
                 opacity: borderPhase.interpolate({ inputRange: [0, 50, 100], outputRange: [0.3, 0.7, 0.3] })
-                // transform: [{ rotate: animatedRotation }] // Can rotate the shine if needed
               }
             ]}
-        />
-      </View>
-
-      {/* Card inner content container */}
-      <View style={styles.innerContainer}>
-        {/* Card Header */}
-        <View style={[styles.headerBase, headerStyle]}>
-          <Text style={styles.headerText}>Sparkitty</Text>
-          {/* Simplified header overlay */}
-           <View style={styles.headerOverlay} />
+          />
         </View>
 
-        {/* Pokemon Image Container - Now with grey background */}
-        <View style={[styles.imageContainerBase, imageContainerStyle, { backgroundColor: 'grey' }]}>
-          {/* Simplified Image overlay */}
-           <View style={styles.imageOverlay} />
-        </View>
-
-        {/* Card Description */}
-        <View style={[styles.descriptionBase, descriptionStyle]}>
-          <Text style={styles.descriptionText}>
-            When played, Sparkitty can stun an opponent's card for 2 turns.
-            If your opponent has a Water type card active, Sparkitty deals
-            double damage.
-          </Text>
-          <View style={styles.statsContainer}>
-            <Text style={styles.statText}>Attack: 70</Text>
-            <Text style={styles.statText}>Defense: 40</Text>
+        {/* Card inner content container */}
+        <View style={styles.innerContainer}>
+          {/* Card Header */}
+          <View style={[styles.headerBase, headerStyle]}>
+            <Text style={styles.headerText}>{cardData.name}</Text>
+            {/* Simplified header overlay */}
+            <View style={styles.headerOverlay} />
           </View>
-          <View style={styles.flavorContainer}>
-            <Text style={styles.flavorText}>
-              "The static electricity in its fur can light up a small town for days."
+
+          {/* Pokemon Image Container - Now with grey background */}
+          <View style={[styles.imageContainerBase, imageContainerStyle, { backgroundColor: 'grey' }]}>
+            {/* Simplified Image overlay */}
+            <View style={styles.imageOverlay} />
+          </View>
+
+          {/* Card Description */}
+          <View style={[styles.descriptionBase, descriptionStyle]}>
+            <Text style={styles.descriptionText}>
+              {cardData.abilities.map((ability, index) => (
+                <Text key={index}>
+                  <Text style={styles.abilityName}>{ability.name}: </Text>
+                  {ability.description}
+                  {index < cardData.abilities.length - 1 ? '\n' : ''}
+                </Text>
+              ))}
             </Text>
+            <View style={styles.statsContainer}>
+              <Text style={styles.statText}>Attack: {cardData.attack}</Text>
+              <Text style={styles.statText}>Defense: {cardData.defense}</Text>
+            </View>
+            <View style={styles.flavorContainer}>
+              <Text style={styles.flavorText}>
+                "{cardData.flavorText}"
+              </Text>
+            </View>
+            <View style={styles.footerContainer}>
+              <Text style={styles.footerText}>Collector #{cardData.collectorNumber}</Text>
+              <Text style={styles.footerText}>{cardData.rarity}</Text>
+            </View>
+
+            {/* Ability Status Indicators */}
+            {isInBelt && (
+              <View style={styles.abilityStatusContainer}>
+                <Text style={styles.abilityStatusText}>Abilities Active</Text>
+                <View style={styles.activeIndicator} />
+              </View>
+            )}
           </View>
-          <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>Collector #042</Text>
-            <Text style={styles.footerText}>Uncommon</Text>
-          </View>
+
+          {/* Simplified Holographic Overlays */}
+          <View style={styles.holoOverlay1} />
+          <View style={styles.holoOverlay2} />
         </View>
 
-         {/* Simplified Holographic Overlays */}
-        <View style={styles.holoOverlay1} />
-         <View style={styles.holoOverlay2} />
-
-      </View>
-
-      {/* Simplified Corner Sparkles */}
-      {[0, 1, 2, 3].map(corner => (
-        <Animated.View
-          key={corner}
-          style={[
-            styles.sparkleBase,
-            {
-              top: corner < 2 ? -2 : undefined,
-              bottom: corner >= 2 ? -2 : undefined,
-              left: corner % 2 === 0 ? -2 : undefined,
-              right: corner % 2 === 1 ? -2 : undefined,
-              opacity: sparkleOpacity,
-              // Simple shadow for sparkle
-              ...Platform.select({
+        {/* Simplified Corner Sparkles */}
+        {[0, 1, 2, 3].map(corner => (
+          <Animated.View
+            key={corner}
+            style={[
+              styles.sparkleBase,
+              {
+                top: corner < 2 ? -2 : undefined,
+                bottom: corner >= 2 ? -2 : undefined,
+                left: corner % 2 === 0 ? -2 : undefined,
+                right: corner % 2 === 1 ? -2 : undefined,
+                opacity: sparkleOpacity,
+                // Simple shadow for sparkle
+                ...Platform.select({
                   ios: {
                     shadowColor: '#fff',
                     shadowOffset: { width: 0, height: 0 },
@@ -197,11 +258,22 @@ export default function PokemonCard() {
                     elevation: 2,
                   },
                 }),
-            }
-          ]}
-        />
-      ))}
-    </Animated.View>
+              }
+            ]}
+          />
+        ))}
+      </Animated.View>
+
+      {/* Add to Belt Button */}
+      {!isInBelt && beltCards.length < maxBeltSize && (
+        <TouchableOpacity 
+          style={styles.addToBeltButton}
+          onPress={handleAddToBelt}
+        >
+          <Text style={styles.addToBeltText}>Add to Belt</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }
 
@@ -281,6 +353,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 10, // z-10
   },
+  abilityName: {
+    fontWeight: 'bold',
+  },
   statsContainer: {
     marginBottom: 8, // mb-2
     flexDirection: 'row', // flex
@@ -333,5 +408,42 @@ const styles = StyleSheet.create({
     zIndex: 20, // z-20
     backgroundColor: 'white',
     borderRadius: 8,
+  },
+  addToBeltButton: {
+    backgroundColor: '#EC4899',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignSelf: 'center',
+    marginTop: 12,
+  },
+  addToBeltText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  abilityStatusContainer: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 4,
+    zIndex: 20,
+  },
+  abilityStatusText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#10b981',
+    marginRight: 4,
+  },
+  activeIndicator: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#10b981',
   },
 });
