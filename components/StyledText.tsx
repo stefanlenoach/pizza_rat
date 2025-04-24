@@ -19,6 +19,6 @@ export function StyledText({ style, children, ...otherProps }: StyledTextProps) 
 
 const styles = StyleSheet.create({
   defaultText: {
-    fontFamily: 'Aujournuit',
+    fontFamily: 'Zodiak',
   },
 });

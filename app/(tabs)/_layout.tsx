@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-
+import * as Haptics from 'expo-haptics';
 import PizzaRatHeader from '@/components/PizzaRatHeader';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -46,7 +46,7 @@ export default function TabLayout() {
         headerShown: shouldShowHeader,
         header: () => (
           <PizzaRatHeader
-            showFilters={true}
+            showFilters={false}
             onFilterChange={handleFilterChange}
             sortFilter={filters.sort}
             locationFilter={filters.location}
@@ -56,7 +56,7 @@ export default function TabLayout() {
                 name="settings"
                 size={24}
                 color={Colors[colorScheme ?? 'light'].tint}
-                onPress={() => router.push('/others/settings')}
+                onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.push('/others/settings')}}
                 style={{ padding: 8 }}
               />
             }

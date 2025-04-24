@@ -9,6 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import ReviewSheet from './ReviewSheet';
 import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import * as Haptics from 'expo-haptics';
 
 interface PizzaPlaceBottomSheetProps {
   place: PlaceResult | null;
@@ -184,7 +185,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           .insert({
             id: new Date().getTime(),
             rate: rating / 2,
-            content: comment,
+            content: comment || "",
             placeId: place.place_id,
             userId: session.user.id,
             updatedAt: new Date().toISOString()
@@ -240,7 +241,9 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   // Calculate average rating from fetched reviews
   const calculateAverageRating = (reviews: any[]) => {
     if (!reviews || reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc, review) => acc + review.rate, 0);
+    const sum = reviews.reduce((acc, review) => acc + (review.rate * 2), 0);
+ 
+
     return Number((sum / reviews.length).toFixed(1)); // Round to 1 decimal place
   };
 
@@ -300,7 +303,10 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   const renderReviewButton = () => (
     <TouchableOpacity 
       style={tw`bg-red-600 py-3 px-6 rounded-xl flex-1`}
-      onPress={() => setReviewSheetVisible(true)}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        setReviewSheetVisible(true)
+      }}
     >
       <View style={tw`flex-row items-center justify-center`}>
         <AntDesign name={userReview ? "edit" : "star"} size={20} color="#FFFFFF" style={tw`mr-2`} />
@@ -312,10 +318,27 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
   );
 
   // If no place is selected, don't render anything
-  if (!place || !isVisible) {
+  if (!isVisible) {
     return null;
   }
- 
+
+  // Handle null place data gracefully
+  if (!place) {
+    return (
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={isVisible ? 1 : -1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose
+      >
+        <View style={tw`p-4 items-center justify-center`}>
+          <Text style={tw`text-gray-500`}>Unable to load place details</Text>
+        </View>
+      </BottomSheet>
+    );
+  }
 
   const averageRating = calculateAverageRating(reviews);
 
@@ -334,21 +357,22 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           <View style={tw`flex-row items-start mb-1`}>
             <View style={tw`flex-1 mr-4`}>
               <Text 
-                style={tw`text-4xl font-bold text-red-600`}
+                style={tw`text-2xl font-bold text-red-600`}
                 numberOfLines={3}
                 ellipsizeMode="tail"
               >
-                {place.name}
+                {place?.name || 'Unknown Place'}
               </Text>
+              <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text>
             </View>
-            <View style={tw`flex items-center shrink-0 ml-4`}>
-              <Text style={tw`text-6xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
+            <View style={tw`flex items-start shrink-0 ml-4`}>
+              <Text style={tw`text-5xl font-bold text-red-600`}>{averageRating.toFixed(1)}</Text>
               <Text style={tw` text-gray-600`}>
                 (<Text>{reviews?.length || 0}</Text> reviews)
               </Text>
             </View>
           </View>
-          <Text style={tw`text-gray-600 mb-2`}>{place.vicinity}</Text>
+          {/* <Text style={tw`text-gray-600 mb-2`}>{place?.vicinity || 'No address available'}</Text> */}
           
           
           {/* {place.price_level && (
@@ -362,20 +386,23 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
           {renderReviewButton()}
           <TouchableOpacity 
             style={tw`bg-blue-600 py-3 px-6 rounded-xl flex-1 ml-3`}
-            onPress={() => router.push({
-              pathname: "/(tabs)/chat",
-              params: { placeId: place?.place_id || '' }
-            })}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push({
+                pathname: "/(tabs)/chat",
+                params: { placeId: place?.place_id || '' }
+              })
+            }}
           >
             <View style={tw`flex-row items-center justify-center`}>
-              <Text style={tw`text-white font-bold text-center text-lg`}>
+              <Text style={tw`text-white text-center text-lg`}>
                 CHAT
               </Text>
             </View>
           </TouchableOpacity>
         </View>          
           
-          {place.regularOpeningHours && (
+          {/* {place.regularOpeningHours && (
             <> 
               {place.regularOpeningHours?.weekdayDescriptions && (
                 <View style={tw`mt-2 bg-gray-50 p-3 rounded-lg`}>
@@ -388,7 +415,7 @@ const PizzaPlaceBottomSheet: React.FC<PizzaPlaceBottomSheetProps> = ({
                 </View>
               )}
             </>
-          )}
+          )} */}
         </View>
         
         

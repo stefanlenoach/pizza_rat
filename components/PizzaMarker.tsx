@@ -2,6 +2,20 @@ import React, { useEffect, useRef } from 'react';
 import { View, Animated, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import tw from '@/utils/tw';
+import {
+  Pizza0,
+  Pizza1,
+  Pizza2,
+  Pizza3,
+  Pizza4,
+  Pizza5,
+  Pizza6,
+  Pizza7,
+  Pizza8,
+  Pizza9,
+  Pizza10,
+} from '@/components/PizzaMarkerIcons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface PizzaMarkerProps {
   size?: number;
@@ -16,7 +30,7 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   color = '#FF6B6B',
   backgroundColor = '#222',
   animated = false,
-  rating,
+  rating = null,
 }) => {
   // Animation values
   const scaleAnim = useRef(new Animated.Value(0)).current;
@@ -47,39 +61,36 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
   }, []);
 
   const renderImageBasedOnRating = (rating: number) => {
-    if (!rating) {
-      return (
-        <SvgXml 
-          xml={svgContent}
-          width={size * 0.7} 
-          height={size * 0.7}
-        />
-      );
+    const actualSize = size * 0.7;
+
+    if (!rating && rating !== 0) {
+      return <Ionicons name="help-outline" size={actualSize} color="#fff" />;
     }
     
     let roundedRating = Math.round(rating);
-
-    const pizzaImages = {
-      0: require('@/assets/images/pizza-markers/0.png'),
-      1: require('@/assets/images/pizza-markers/1.png'),
-      2: require('@/assets/images/pizza-markers/2.png'),
-      3: require('@/assets/images/pizza-markers/3.png'),
-      4: require('@/assets/images/pizza-markers/4.png'),
-      5: require('@/assets/images/pizza-markers/5.png'),
-      6: require('@/assets/images/pizza-markers/6.png'),
-      7: require('@/assets/images/pizza-markers/7.png'),
-      8: require('@/assets/images/pizza-markers/8.png'),
-      9: require('@/assets/images/pizza-markers/9.png'),
-      10: require('@/assets/images/pizza-markers/10.png'),
+    
+    // Define the path to each asset
+    const pizzaImagePaths = {
+      0: Pizza1,
+      1: Pizza1,
+      2: Pizza1,
+      3: Pizza3,
+      4: Pizza3,
+      5: Pizza4,
+      6: Pizza4,
+      7: Pizza9,
+      8: Pizza9,
+      9: Pizza7,
+      10: Pizza7,
     } as any;
-
-    const actualSize = size * 0.7;
-    const source = pizzaImages[roundedRating] ?? pizzaImages[0];
-
+    
+    const source = pizzaImagePaths[roundedRating] || pizzaImagePaths[0];
+    
     return (
-      <Image
-        source={source} 
-        style={tw`w-[${actualSize}px] h-[${actualSize}px] rounded-full`}
+      <SvgXml
+        xml={source}
+        width={actualSize}
+        height={actualSize}
       />
     );
   };
@@ -106,7 +117,7 @@ const PizzaMarker: React.FC<PizzaMarkerProps> = ({
           }
         ]}
       >
-        {renderImageBasedOnRating(rating ?? 0)}
+        {renderImageBasedOnRating(rating || null as any)}
       </Animated.View>
     </View>
   );
