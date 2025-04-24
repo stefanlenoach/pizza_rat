@@ -27,6 +27,7 @@ import { supabase } from '@/lib/supabase';
 import { useUser } from "@/contexts/UserContext";
 import { Ionicons } from '@expo/vector-icons';
 import { FilterType } from '@/app/(tabs)/_layout';
+import { useCardBelt } from '@/contexts/CardBeltContext';
 
 // Default coordinates for New York City (Manhattan)
 const NEW_YORK_COORDS: Region = {
@@ -107,6 +108,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const { placeReviews, searchModalVisible, setSearchModalVisible,filterVisible,setFilterVisible } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
   const { session } = useUser()
+  const { selectedCards } = useCardBelt();
+  const hasNYCAccessCard =  selectedCards.some(card => card.id === 'nyc-access-001');
   
   // Add state for neighborhood data
   const [neighborhoods, setNeighborhoods] = useState<NeighborhoodData[]>([]);
@@ -193,9 +196,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       if (error) {
         console.error('Error fetching nearby users:', error);
         return;
-      }
-
-      console.log("data",data)
+      } 
 
       // Filter users to ensure they are within the neighborhood boundaries
       const filteredUsers = (data || []).filter(user => {
@@ -212,9 +213,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           }
         };
         return isPlaceInNeighborhood(userPlace, selectedNeighborhood);
-      });
-
-      console.log("filteredUsers",filteredUsers)
+      }); 
 
       setNearbyUsers([...filteredUsers]);
     } catch (error) {
@@ -510,6 +509,10 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
               const isInside = currentNeighborhood.coordinates.some(polygon => {
                 return isPointInPolygon(point, polygon);
               });
+
+              if(hasNYCAccessCard){
+                return true
+              }
               
               if (!isInside) {
                 console.log(`Place outside neighborhood: ${place.name}`);
@@ -610,7 +613,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [hasNYCAccessCard]);
 
   // Animation state for Brooklyn pizza places
   const [animatedPizzaPlaces, setAnimatedPizzaPlaces] = useState<PlaceResult[]>([]);
@@ -632,6 +635,11 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     if (!isInside) {
       // console.log(`Place ${place.name} is outside ${neighborhood.name}`);
     }
+
+    if(hasNYCAccessCard){
+      return true
+    }
+
     return isInside;
   };
   
@@ -641,8 +649,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     const R = 3958.8; // Earth's radius in miles
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
@@ -707,9 +714,12 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       if (currentNeighborhood) {
         console.log(`Filtering places for neighborhood: ${currentNeighborhood.name}`);
         places = places.filter(place => {
+          if(hasNYCAccessCard){
+            return true
+          }
           const isInside = isPlaceInNeighborhood(place, currentNeighborhood);
           if (!isInside) {
-            console.log(`Filtered out: ${place.name} - outside ${currentNeighborhood.name}`);
+            // console.log(`Filtered out: ${place.name} - outside ${currentNeighborhood.name}`);
           }
           return isInside;
         });
@@ -914,7 +924,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     );
   }
 
-  console.log('nearbyUsers',nearbyUsers)
+  // console.log('nearbyUsers',nearbyUsers)
+  // console.log("hasNYCAccessCard",hasNYCAccessCard)
    
 
   return (
@@ -1006,7 +1017,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         ))}
         
         {/* Render current neighborhood polygon with highlight */}
-        {currentNeighborhood && currentNeighborhood.coordinates.map((polygon, index) => (
+        {!hasNYCAccessCard && currentNeighborhood && currentNeighborhood.coordinates.map((polygon, index) => (
           <Polygon
             key={`${currentNeighborhood.name}-${index}`}
             coordinates={polygon.map(coord => ({
