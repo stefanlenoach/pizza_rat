@@ -1133,9 +1133,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           setSelectedPlace(null);
           refreshUserReviews(); // Refresh user reviews when bottom sheet closes
         }}
-      />
-
-    { console.log("userBottomSheetVisible",userBottomSheetVisible)}
+      /> 
       {/* User Bottom Sheet */}
       <UserBottomSheet
         isVisible={userBottomSheetVisible}
@@ -1143,7 +1141,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
           setUserBottomSheetVisible(false);
           setSelectedUser(null);
         }}
-        userId={selectedUser?.id || ''} 
+        userId={selectedUser?.user_id || ''} 
       />
 
       {/* Filter sheet */}

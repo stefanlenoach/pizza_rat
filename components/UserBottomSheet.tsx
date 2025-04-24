@@ -56,7 +56,10 @@ const UserBottomSheet: React.FC<UserBottomSheetProps> = ({
           style={tw`flex-row items-center justify-center bg-pink-500 rounded-md py-3 px-8`}
           onPress={() => {
             onClose();
-            router.push('/chat' as any);
+            router.push({
+              pathname: '/chat/[id]' as '/chat/[id]',
+              params: { id: userId }
+            });
           }}
         >
           <Ionicons name="chatbubbles" size={24} color="white" style={tw`mr-2`} />
