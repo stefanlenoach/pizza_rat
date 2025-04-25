@@ -131,7 +131,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
 
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
-  const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
+  const lastSearchRegionRef = useRef<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
   
   // For debouncing map movements
@@ -488,7 +488,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
       setTimeout(() => {
         // searchWithinVisibleArea(newRegion); // This is removed since searching the area comes when onRegionChangeComplete is triggered
-        setLastSearchRegion(newRegion);
+        lastSearchRegionRef.current = newRegion;
         mapRef.current?.animateToRegion(newRegion, 1000);
       }, 500);
     }
@@ -607,7 +607,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         
         // Search for places in the visible area
         setTimeout(() => searchWithinVisibleArea(newRegion), 500);
-        setLastSearchRegion(newRegion);
+        lastSearchRegionRef.current = newRegion;
         setLastKnownRegion(newRegion);
         
       } catch (error) {
@@ -669,6 +669,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       // Stop any animation in progress
       animationInProgress.current = false;
       
+      setShowSearchThisArea(false);
       setSelectedSearchPlace(null);
       setIsSearchingPlaces(true);
       setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
@@ -750,11 +751,11 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       });
       
       // Limit to 50 places maximum
-      const limitedPlaces = sortedPlaces.slice(0, 50);
+      const limitedPlaces = sortedPlaces.slice(0, 30);
       
       // Set all pizza places to the filtered list
       setAllPizzaPlaces(limitedPlaces);
-      setLastSearchRegion(searchRegion);
+      lastSearchRegionRef.current = searchRegion;
       
       console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within visible area (sorted by distance from center)`);
       
@@ -802,6 +803,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
     } finally {
       setIsSearchingPlaces(false);
       animationInProgress.current = false;
+      setShowSearchThisArea(false);
     }
   };
 
@@ -835,39 +837,32 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   }
 
   const onRegionChange = (newRegion: Region) => {
-    mapMovementOngoing.current = true;
     setRegion(newRegion);
     setLastKnownRegion(newRegion);
+    
+    // Only show search button if this isn't the initial load and we've moved significantly
+    if (initialLoadDone.current && lastSearchRegionRef.current) {
+      const latChange = Math.abs(newRegion.latitude - lastSearchRegionRef.current.latitude);
+      const lngChange = Math.abs(newRegion.longitude - lastSearchRegionRef.current.longitude);
+      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegionRef.current.latitudeDelta);
+      
+      // Show button if the map has moved more than 25% of the visible area
+      if (latChange > lastSearchRegionRef.current.latitudeDelta * 0.25 || 
+          lngChange > lastSearchRegionRef.current.longitudeDelta * 0.25 ||
+          deltaChange > lastSearchRegionRef.current.latitudeDelta * 0.25) {
+        setShowSearchThisArea(true);
+      }
+    }
   };
 
   // When map movement completes, check if we should trigger a new search
   const onRegionChangeComplete = (newRegion: Region) => {
     mapMovementOngoing.current = false;
     
-    // Only trigger a search if the map has moved significantly from the last search position
-    if (lastSearchRegion) {
-      const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
-      const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
-      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
-      
-      const shouldSearch = latChange > lastSearchRegion.latitudeDelta * 0.25 || 
-                           lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
-                           deltaChange > lastSearchRegion.latitudeDelta * 0.25;
-      
-      if (shouldSearch && !isSearchingPlaces) {
-        // Clear any existing timeout
-        if (searchTimeoutRef.current) {
-          clearTimeout(searchTimeoutRef.current);
-        }
-        
-        // Set a short delay before searching to prevent multiple rapid searches
-        searchTimeoutRef.current = setTimeout(() => {
-          // Only search if no further movement is detected
-          if (!mapMovementOngoing.current && !isSearchingPlaces) {
-            searchWithinVisibleArea(newRegion);
-          }
-        }, 400); // 400ms delay gives a good balance between responsiveness and avoiding too many searches
-      }
+    // Don't auto-search anymore, let user trigger it with the button
+    if (!initialLoadDone.current) {
+      initialLoadDone.current = true;
+      searchWithinVisibleArea(newRegion);
     }
   };
 
@@ -994,14 +989,14 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       />
       
       {/* Search this area button */}
-      {showSearchThisArea && !isSearchingPlaces && (
+      {showSearchThisArea && !isSearchingPlaces && hasNYCAccessCard && (
         <View style={styles.searchThisAreaContainer}>
-          {/* <TouchableOpacity 
+          <TouchableOpacity 
             style={styles.searchThisAreaButton}
             onPress={() => searchWithinVisibleArea(region)}
           >
             <Text style={styles.searchThisAreaText}>Search this area</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       )}
       
@@ -1187,5 +1182,27 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.45,
     shadowRadius: 3.84,
+  },
+  searchThisAreaContainer: {
+    position: 'absolute',
+    top: 200,
+    alignSelf: 'center',
+    zIndex: 5,
+  },
+  searchThisAreaButton: {
+    backgroundColor: '#111',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.45,
+    shadowRadius: 3.84,
+  },
+  searchThisAreaText: {
+    color: '#FF5A5F',
+    // fontWeight: 'bold',
+    fontSize: 14,
   },
 });
