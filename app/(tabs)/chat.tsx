@@ -425,7 +425,7 @@ export default function ChatScreen() {
         }} 
       />
       <SafeAreaView style={tw`flex-1 bg-[#FFFFFF]`}>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
       
         {/* Chat List View */}
         {/* <Animated.View 

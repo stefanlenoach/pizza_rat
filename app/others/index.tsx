@@ -47,7 +47,7 @@ export default function HomeScreen() {
 
   return (
     <View style={tw`flex-1 bg-[#0E1010] text-[#E2FCFC]`}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <PizzaRatHeader title="" />
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-4`}>
         <ThemedView>

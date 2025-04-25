@@ -228,7 +228,7 @@ const MovingRedCircle = () => {
 export default function ExploreScreen() {
   return (
     <View style={tw`flex-1`}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <PizzaRatHeader title="Explore" />
       <View style={tw`flex-1 p-4 relative`}>
         <MovingRedCircle />

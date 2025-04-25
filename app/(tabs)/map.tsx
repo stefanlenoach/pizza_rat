@@ -45,7 +45,7 @@ export default function MapScreen() {
 
   return (
     <View style={tw`flex-1`}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <View style={tw`flex-1`}>
         <PizzaMapView 
           sortFilter={filters.sort}

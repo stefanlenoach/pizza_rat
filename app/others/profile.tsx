@@ -78,7 +78,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <StatusBar  />
+      <StatusBar style="dark"  />
       <PizzaRatHeader title="Profile" />
       
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-6`}>

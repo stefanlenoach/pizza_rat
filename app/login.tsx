@@ -69,7 +69,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <StatusBar />
+      <StatusBar style="dark" />
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Image
