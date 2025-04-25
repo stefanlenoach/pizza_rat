@@ -108,6 +108,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [userBottomSheetVisible, setUserBottomSheetVisible] = useState(false);
   const [isBrooklynMode, setIsBrooklynMode] = useState(false); 
   const [lastKnownRegion, setLastKnownRegion] = useState<Region | null>(null);
+  const [lastSearchRegion, setLastSearchRegion] = useState<Region | null>(null);
   const { placeReviews, searchModalVisible, setSearchModalVisible,filterVisible,setFilterVisible } = useUser();
   const [allPlaces, setAllPlaces] = useState<PlaceResult[]>([]);
   const { session } = useUser()
@@ -131,7 +132,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const [showNeighborhoodFilter, setShowNeighborhoodFilter] = useState(false); 
 
   const [showSearchThisArea, setShowSearchThisArea] = useState(false);
-  const lastSearchRegionRef = useRef<Region | null>(null);
   const mapRef = useRef<MapView | null>(null);
   
   // For debouncing map movements
@@ -487,8 +487,8 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       // Only update the search area without moving the map
       const newRegion = BOROUGH_REGIONS[locationFilter as keyof typeof BOROUGH_REGIONS];
       setTimeout(() => {
-        // searchWithinVisibleArea(newRegion); // This is removed since searching the area comes when onRegionChangeComplete is triggered
-        lastSearchRegionRef.current = newRegion;
+        searchWithinVisibleArea(newRegion); // This is removed since searching the area comes when onRegionChangeComplete is triggered
+        setLastSearchRegion(newRegion);
         mapRef.current?.animateToRegion(newRegion, 1000);
       }, 500);
     }
@@ -607,7 +607,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         
         // Search for places in the visible area
         setTimeout(() => searchWithinVisibleArea(newRegion), 500);
-        lastSearchRegionRef.current = newRegion;
+        setLastSearchRegion(newRegion);
         setLastKnownRegion(newRegion);
         
       } catch (error) {
@@ -669,7 +669,6 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       // Stop any animation in progress
       animationInProgress.current = false;
       
-      setShowSearchThisArea(false);
       setSelectedSearchPlace(null);
       setIsSearchingPlaces(true);
       setIsBrooklynMode(true); // Set to Brooklyn mode since we're using Brooklyn data
@@ -755,7 +754,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
       
       // Set all pizza places to the filtered list
       setAllPizzaPlaces(limitedPlaces);
-      lastSearchRegionRef.current = searchRegion;
+      setLastSearchRegion(searchRegion);
       
       console.log(`Found ${limitedPlaces.length} Brooklyn pizza places within visible area (sorted by distance from center)`);
       
@@ -797,13 +796,13 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         await new Promise(resolve => setTimeout(resolve, 2));
       }
       
+      setIsSearchingPlaces(false);
+      setShowSearchThisArea(false);
     } catch (error) {
       console.error('Error finding pizza places in visible area:', error);
       console.log('Failed to find pizza places in visible area');
     } finally {
-      setIsSearchingPlaces(false);
       animationInProgress.current = false;
-      setShowSearchThisArea(false);
     }
   };
 
@@ -839,17 +838,18 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const onRegionChange = (newRegion: Region) => {
     setRegion(newRegion);
     setLastKnownRegion(newRegion);
+    mapMovementOngoing.current = true;
     
     // Only show search button if this isn't the initial load and we've moved significantly
-    if (initialLoadDone.current && lastSearchRegionRef.current) {
-      const latChange = Math.abs(newRegion.latitude - lastSearchRegionRef.current.latitude);
-      const lngChange = Math.abs(newRegion.longitude - lastSearchRegionRef.current.longitude);
-      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegionRef.current.latitudeDelta);
+    if (initialLoadDone.current && lastSearchRegion && !isSearchingPlaces) {
+      const latChange = Math.abs(newRegion.latitude - lastSearchRegion.latitude);
+      const lngChange = Math.abs(newRegion.longitude - lastSearchRegion.longitude);
+      const deltaChange = Math.abs(newRegion.latitudeDelta - lastSearchRegion.latitudeDelta);
       
       // Show button if the map has moved more than 25% of the visible area
-      if (latChange > lastSearchRegionRef.current.latitudeDelta * 0.25 || 
-          lngChange > lastSearchRegionRef.current.longitudeDelta * 0.25 ||
-          deltaChange > lastSearchRegionRef.current.latitudeDelta * 0.25) {
+      if (latChange > lastSearchRegion.latitudeDelta * 0.25 || 
+          lngChange > lastSearchRegion.longitudeDelta * 0.25 ||
+          deltaChange > lastSearchRegion.latitudeDelta * 0.25) {
         setShowSearchThisArea(true);
       }
     }
@@ -859,10 +859,11 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   const onRegionChangeComplete = (newRegion: Region) => {
     mapMovementOngoing.current = false;
     
-    // Don't auto-search anymore, let user trigger it with the button
+    // Only search on initial load
     if (!initialLoadDone.current) {
       initialLoadDone.current = true;
       searchWithinVisibleArea(newRegion);
+      setLastSearchRegion(newRegion);
     }
   };
 
@@ -935,7 +936,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
   }
 
   // console.log('nearbyUsers',nearbyUsers)
-  // console.log("hasNYCAccessCard",hasNYCAccessCard)
+  // console.log("showSearchThisArea",showSearchThisArea)
    
 
   return (
@@ -1005,7 +1006,7 @@ export default function PizzaMapView({ sortFilter, locationFilter, neighborhoodF
         style={styles.map}
         initialRegion={region}
         onRegionChange={onRegionChange}
-        // onRegionChangeComplete={onRegionChangeComplete}
+        onRegionChangeComplete={onRegionChangeComplete}
         zoomEnabled={true}
         scrollEnabled={true}
         rotateEnabled={false}

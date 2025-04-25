@@ -6,7 +6,8 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import PizzaRatHeader from '@/components/PizzaRatHeader';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from '@/hooks/useColorScheme'; 
+import { useCardBelt } from '@/contexts/CardBeltContext';
 
 export type FilterType = {
   sort: string;
@@ -25,6 +26,9 @@ export default function TabLayout() {
   });
 
   const shouldShowHeader = !pathname.includes('/account');
+
+  const { selectedCards } = useCardBelt();
+  const hasNYCAccessCard = selectedCards.some(card => card.id === 'nyc-access-001');
 
   const handleFilterChange = (filterType: keyof FilterType, value: string) => {
     setFilters(prev => ({
@@ -46,7 +50,7 @@ export default function TabLayout() {
         headerShown: shouldShowHeader,
         header: () => (
           <PizzaRatHeader
-            showFilters={false}
+            showFilters={hasNYCAccessCard}
             onFilterChange={handleFilterChange}
             sortFilter={filters.sort}
             locationFilter={filters.location}
